@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="Avalonia.Desktop" Version="[12.1.2]" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="[8.4.2]" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="[18.8.1]" />
+    <PackageVersion Include="MyAvaloniaManagement.Plugin.Build" Version="[3.4.1]" />
+    <PackageVersion Include="MyAvaloniaManagement.PluginSdk" Version="[3.4.1]" />
+    <PackageVersion Include="MyAvaloniaManagement.Icons" Version="[3.4.1]" />
+    <PackageVersion Include="MyAvaloniaManagement.PluginSdk.UI" Version="[3.4.1]" />
+    <PackageVersion Include="xunit" Version="[2.9.3]" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="[3.1.5]" />
+  </ItemGroup>
+</Project>

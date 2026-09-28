@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "CommunityToolkit.Mvvm": {
+        "type": "Direct",
+        "requested": "[8.4.2, 8.4.2]",
+        "resolved": "8.4.2",
+        "contentHash": "WadCzGEc2U+3e20avRLng4qNtt4zoOGWrdUISqJWrHe3/FSnrYjuM5Sb4yQb09LhkBXrrI4Zt3dLKgRMbItsrg=="
+      },
+      "MyAvaloniaManagement.Icons": {
+        "type": "Direct",
+        "requested": "[3.4.1, 3.4.1]",
+        "resolved": "3.4.1",
+        "contentHash": "JdudIRwCM+0ClH12/kpGPRymZUl33RkIPA9HBhsu45G2QGP5QOFaMzqg+f40IPpamYCJRc5vCWTQlJxdyjo9eA=="
+      },
+      "MyAvaloniaManagement.Plugin.Build": {
+        "type": "Direct",
+        "requested": "[3.4.1, 3.4.1]",
+        "resolved": "3.4.1",
+        "contentHash": "cvCdzyfHY4nUKwSPdwjgRTEDasi7j14/mtgSwB6lIp3y/gnqZB5NsvyAqH+g8IfDVgaCmPl9V7O02LYF1QfXyg=="
+      },
+      "MyAvaloniaManagement.PluginSdk": {
+        "type": "Direct",
+        "requested": "[3.4.1, 3.4.1]",
+        "resolved": "3.4.1",
+        "contentHash": "KtA5oySrPaiwFFrqMw1dHvXpFD6hr6x+5zMnvYcBALNieOi68OJYPi4xIgmFyOcGNLbkzBTFLRy6LlhYES1EvA=="
+      },
+      "MyAvaloniaManagement.PluginSdk.UI": {
+        "type": "Direct",
+        "requested": "[3.4.1, 3.4.1]",
+        "resolved": "3.4.1",
+        "contentHash": "JY8cCQMhjye0TO5egqVtwysdKpHUJ5SpgxU3YORkFJjNdKRa6OyVMjQ2Xkm+1kP5lv1friX8JMqdNMAT4B65Tw==",
+        "dependencies": {
+          "Avalonia": "[12.1.2]",
+          "Avalonia.Themes.Fluent": "[12.1.2]",
+          "Irihi.Ursa": "[2.1.0]",
+          "Irihi.Ursa.Themes.Semi": "[2.1.0]",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[10.0.10]",
+          "MyAvaloniaManagement.PluginSdk": "3.4.1",
+          "Semi.Avalonia": "[12.1.0]"
+        }
+      },
+      "Avalonia": {
+        "type": "Transitive",
+        "resolved": "12.1.2",
+        "contentHash": "GHSe4qxjbqqxB570xuB4KtoD+Qhk3uKXJUXbelGYhGz/ti8xEoL7e5DGun8hcsXHondszPPBEdcC68szw7vUKg==",
+        "dependencies": {
+          "Avalonia.BuildServices": "11.3.2",
+          "Avalonia.Remote.Protocol": "12.1.2",
+          "MicroCom.Runtime": "0.11.6"
+        }
+      },
+      "Avalonia.BuildServices": {
+        "type": "Transitive",
+        "resolved": "11.3.2",
+        "contentHash": "qHDToxto1e3hci5YqbG9n0Ty8mlp3zBUN5wT66wKqaDVzXyQ0do3EnRILd4Ke9jpvsktaPpgE0YjEk7hornryQ=="
+      },
+      "Avalonia.Remote.Protocol": {
+        "type": "Transitive",
+        "resolved": "12.1.2",
+        "contentHash": "DdLTe9xKXxxfRcXmUw1trXZpBpz1YiZYWXx0DfMVPFAnkCszKsHLi67kaZfGJqtfQq2EySKd2qgRYX2QYkSxcg=="
+      },
+      "Avalonia.Themes.Fluent": {
+        "type": "Transitive",
+        "resolved": "12.1.2",
+        "contentHash": "EKw1PzlIfqB8n0+yGuHThR9cUEiqZYj0EHYp89jrTwSuudu8pji6I4SGe1UmdwJWdgWf+kuss8T7KT+0wsUyow==",
+        "dependencies": {
+          "Avalonia": "12.1.2"
+        }
+      },
+      "Irihi.Avalonia.Shared": {
+        "type": "Transitive",
+        "resolved": "0.4.0",
+        "contentHash": "T6+jezCUjisJNz6zkNcNLVNI2ttWznbyQnW6MS9L45EXhePqRCIxB3xV/5L8gFAJ83JrhiCIokMOxRWdq9/1Zg==",
+        "dependencies": {
+          "Avalonia": "12.0.0"
+        }
+      },
+      "Irihi.Avalonia.Shared.Contracts": {
+        "type": "Transitive",
+        "resolved": "0.4.0",
+        "contentHash": "Du8DY2YqlSmCmywqZtuOhgwLkgklMeE1ajZ4Dd/iqVz6HmAKptjVTqA1oloZX5ihqsdKRiNuUGCdYPe1rekf2Q=="
+      },
+      "Irihi.Ursa": {
+        "type": "Transitive",
+        "resolved": "2.1.0",
+        "contentHash": "G2wAmenCgMZkBOqs5MYRtlurhU2tAKKmcNJzjjaA9Mj5v3YIivuv7wyNpIpgYZ602sOZhFtQwYrCaLVUhn9Htw==",
+        "dependencies": {
+          "Avalonia": "12.0.2",
+          "Irihi.Avalonia.Shared": "0.4.0",
+          "Irihi.Avalonia.Shared.Contracts": "0.4.0"
+        }
+      },
+      "Irihi.Ursa.Themes.Semi": {
+        "type": "Transitive",
+        "resolved": "2.1.0",
+        "contentHash": "vz7iA6YcAqJ9Z34CXGtapsROERLjZ7vD1CqblO7V5NWQyrJ5igbAYSuFFWnZnPVFKkyKM/c43oGmcWjiDBLoHA==",
+        "dependencies": {
+          "Avalonia": "12.0.2",
+          "Irihi.Ursa": "2.1.0",
+          "Semi.Avalonia": "12.0.1"
+        }
+      },
+      "MicroCom.Runtime": {
+        "type": "Transitive",
+        "resolved": "0.11.6",
+        "contentHash": "NdNWGDiZ6eS/Mf/9+QHR91cj1K7Hy+PX9yrHI/zM7xFYuj9IWT2uxtB6sCHjrnxAeLV9fut1R6zHDUGKX6f9lQ=="
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions": {
+        "type": "Transitive",
+        "resolved": "10.0.10",
+        "contentHash": "z/2xXlFw2aLGjHyEm6E0tQ+In6VfzQzTrtArbQ2c0TQE16ZbyDCMGPvaUT9I0s8rgy9sRWlU2P9waW37qV04qA=="
+      },
+      "Semi.Avalonia": {
+        "type": "Transitive",
+        "resolved": "12.1.0",
+        "contentHash": "me56M9qqcCTdYrsnf2vmd1xNF9gBN33PE3CXc9Gq1NPHO8fieZgFkmeqvaJnLMHg927UQyb7xmRSRf/ORAbv/w==",
+        "dependencies": {
+          "Avalonia": "12.1.0",
+          "Irihi.Avalonia.Shared": "0.4.0"
+        }
+      }
+    }
+  }
+}

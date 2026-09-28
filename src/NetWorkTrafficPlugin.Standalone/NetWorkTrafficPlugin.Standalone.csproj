@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetWorkTrafficPlugin.Plugin\NetWorkTrafficPlugin.Plugin.csproj" />
+    <PackageReference Include="Avalonia.Desktop" />
+  </ItemGroup>
+
+</Project>

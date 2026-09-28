@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/NetWorkTrafficPlugin.Plugin/NetWorkTrafficPlugin.Plugin.csproj" />
+    <Project Path="src/NetWorkTrafficPlugin.Standalone/NetWorkTrafficPlugin.Standalone.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/NetWorkTrafficPlugin.Tests/NetWorkTrafficPlugin.Tests.csproj" />
+  </Folder>
+</Solution>
