@@ -1,9 +1,10 @@
 # HTTP 流量工作台分阶段验证计划
 
 > 配套：[产品方案](../roadmap/network-traffic-product-plan.md)、[M0–M6 路线图](../roadmap/network-traffic-capability-roadmap.md)。
-> 编写日期：2026-09-28。状态：分阶段验证设计；M0 自动结果见 V2 实施记录，其余阶段和真实 Host/人工验收待执行。
+> 编写日期：2026-09-28；更新日期：2026-09-30。状态：分阶段验证设计；M0/M1 自动结果分别见 V2/V3 实施记录，V4 UX 待实施；后续阶段及真实 Host/客户端/人工验收按实际记录登记。
 > 2026-09-29 补充：[V2 / M0 专用验证矩阵](network-traffic-v2-m0-verification-plan.md)细化单元测试、协议探针、资源测量、门禁自测与证据；[执行计划](../roadmap/network-traffic-v2-m0-technical-baseline-plan.md)规定 V2-01～10 的实施顺序，M0 已实现，结果见[当日记录](../archive/2026-09-29-v2-m0-implementation.md)。
 > 同日补充：[V3 / M1 专用验证矩阵](network-traffic-v3-m1-verification-plan.md)定义 53 项业务场景、SOLID/中文注释审查、生产 UI、资源/存档故障、8 组门禁自测和 4 项人工验证；业务及本地 M1 门禁已实现，结果见[V3 记录](../archive/2026-09-29-v3-m1-implementation.md)。P06 按用户确认的产品降级验证 HTTP/2 空闲仅提示、客户端单流取消和全局停止。
+> 2026-09-30 补充：[V4 / M1 UX 专用矩阵](network-traffic-v4-m1-ux-verification-plan.md)定义 40 项业务场景、4 项工程审查、10 组门禁自测及 4 项人工验收；配套[V4 执行计划](../roadmap/network-traffic-v4-m1-ux-plan.md)和[专项设计](../design/network-traffic-v4-m1-ux-design.md)。当前仅文档，生产测试与 `-Mode UX` 待实现。
 
 ## 1. 验证层次与结果表达
 
@@ -16,6 +17,8 @@
 | 性能与交付 | 指定设备上的负载、资源曲线、包内容、干净安装 | 不代表正式发布已发生 |
 
 每阶段采用必要的最小验证组合，并持续回归前置行为。只有文档变化时检查内容、链接、空白和状态一致性，无需运行与修改无关的业务测试。
+
+V4 专项把紧凑度、用户/程序滚动区分、视口锚点、独立跟随、正文模式、筛选/快照范围、方向导出、焦点及平台迟到列为可验证契约。后续 UX 开发门禁须在同一轮完整校验 50 项 M0、53 项 V3 和 40 项 V4，保留原资源阈值与人工边界；本轮不使用 AIFLOW、Windows CI、Release 或发布门禁。
 
 ## 2. 受控样本与测量负载
 
