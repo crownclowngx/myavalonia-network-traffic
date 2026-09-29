@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:NetWorkTrafficPlugin.Features.ProxyStatus"
+             x:Class="NetWorkTrafficPlugin.Features.ProxyStatus.ProxyPanelView" x:DataType="vm:ProxyPanelModel">
+  <ScrollViewer>
+    <StackPanel Margin="20" Spacing="12">
+      <TextBlock Text="HTTP 流量工作台 · M0 技术基线" FontSize="22" TextWrapping="Wrap" />
+      <TextBlock Text="{Binding StatusText}" FontSize="18" />
+      <TextBlock Text="{Binding Address}" />
+      <WrapPanel>
+        <TextBox Width="110" Text="{Binding Port}" PlaceholderText="监听端口" Margin="0,0,8,0" />
+        <Button Content="启动代理" Command="{Binding StartCommand}" Margin="0,0,8,0" />
+        <Button Content="停止代理" Command="{Binding StopCommand}" />
+      </WrapPanel>
+      <TextBlock Text="{Binding Message}" TextWrapping="Wrap" />
+      <TextBlock Text="{Binding ProtocolPolicy}" TextWrapping="Wrap" />
+      <TextBlock Text="{Binding MetricsText}" TextWrapping="Wrap" />
+      <TextBlock Text="最近请求（仅元信息）" FontWeight="SemiBold" />
+      <TextBlock Text="{Binding RecentText}" TextWrapping="Wrap" />
+      <Expander Header="本次运行的公开根证书（未安装系统信任）">
+        <StackPanel Spacing="8">
+          <TextBlock Text="仅供显式配置的测试客户端使用；重启代理会更换证书。此处没有私钥。" TextWrapping="Wrap" />
+          <TextBox Text="{Binding CertificatePem, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" />
+        </StackPanel>
+      </Expander>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

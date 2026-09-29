@@ -1,0 +1,829 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {
+      "id": "B01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ResourceProbeTests.独立进程三模式大文件三次对照和十分钟持续流满足冻结预算",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.未知长度与短读真实传输不会被有限记录截断",
+          "rows": [
+            "(mode: None)",
+            "(mode: MetadataOnly)",
+            "(mode: BoundedBody)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ResourceProbeTests.独立进程三模式大文件三次对照和十分钟持续流满足冻结预算",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.未知长度与短读真实传输不会被有限记录截断",
+          "rows": [
+            "(mode: None)",
+            "(mode: MetadataOnly)",
+            "(mode: BoundedBody)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.活动请求达到上限时拒绝新增且停止取消持续流",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.未知长度与短读真实传输不会被有限记录截断",
+          "rows": [
+            "(mode: None)",
+            "(mode: MetadataOnly)",
+            "(mode: BoundedBody)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ResourceProbeTests.独立进程三模式大文件三次对照和十分钟持续流满足冻结预算",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.磁盘失败与全局配额不会丢失观察字节",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.慢盘队列满后不阻塞且后续块不拼接为完整正文",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.实际落盘失败时仍完整转发并明确记录失败",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ResourceProbeTests.独立进程三模式大文件三次对照和十分钟持续流满足冻结预算",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.活动请求达到上限时拒绝新增且停止取消持续流",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ResourceProbeTests.独立进程三模式大文件三次对照和十分钟持续流满足冻结预算",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProcessExitTests.隔离进程并发响应退出后释放句柄",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.多页面和工具共享运行且两种容器释放路径回收监听",
+          "rows": [
+            "(asynchronous: False)",
+            "(asynchronous: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.多页面和工具共享运行且两种容器释放路径回收监听",
+          "rows": [
+            "(asynchronous: False)",
+            "(asynchronous: True)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.页面取消只退出等待不取消共享启动",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.多页面和工具共享运行且两种容器释放路径回收监听",
+          "rows": [
+            "(asynchronous: False)",
+            "(asynchronous: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.多页面和工具共享运行且两种容器释放路径回收监听",
+          "rows": [
+            "(asynchronous: False)",
+            "(asynchronous: True)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.停止使迟到的启动失效并清理旧实例",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.启动不响应取消时停止有截止且迟到结果不能复活运行",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.多页面和工具共享运行且两种容器释放路径回收监听",
+          "rows": [
+            "(asynchronous: False)",
+            "(asynchronous: True)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.清理失败不宣称停止也不允许新运行",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.初始化时采用Host提供的标题",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.工作台命令只修改当前实例并定向通知状态变化",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.工作台命令拒绝未知身份并观察取消",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.工作台命令并发进入时只有一次能够修改实例状态",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.普通请求真实经过代理且内容不变",
+          "rows": [
+            "(https: False)",
+            "(https: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.普通请求真实经过代理且内容不变",
+          "rows": [
+            "(https: False)",
+            "(https: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.双端严格证书验证拒绝错误名称和不信任根",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.双端严格证书验证拒绝错误名称和不信任根",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.上游未知根和过期证书都被拒绝",
+          "rows": [
+            "(expired: False)",
+            "(expired: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.端口冲突回滚且不会停止别人的监听",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.预取消无副作用且启动失败回滚后可以重试",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.B失败不会回退A或自动重发POST",
+          "rows": [
+            "(failure: \"refused\")",
+            "(failure: \"certificate\")",
+            "(failure: \"timeout\")"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.活动请求达到上限时拒绝新增且停止取消持续流",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTP2记录两端实际协议并独立取消一个流",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTP2记录两端实际协议并独立取消一个流",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTPS映射实际到B并保留SNI与未命中请求",
+          "rows": [
+            "(h2: False)",
+            "(h2: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P09",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTP2记录两端实际协议并独立取消一个流",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P10",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.KeepAlive压缩无正文与重定向保持传输语义",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTPS映射实际到B并保留SNI与未命中请求",
+          "rows": [
+            "(h2: False)",
+            "(h2: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTPS映射实际到B并保留SNI与未命中请求",
+          "rows": [
+            "(h2: False)",
+            "(h2: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTPS映射实际到B并保留SNI与未命中请求",
+          "rows": [
+            "(h2: False)",
+            "(h2: True)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.精确域名大小写与条件映射保留原始编码和版本",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTPS映射实际到B并保留SNI与未命中请求",
+          "rows": [
+            "(h2: False)",
+            "(h2: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.B失败不会回退A或自动重发POST",
+          "rows": [
+            "(failure: \"refused\")",
+            "(failure: \"certificate\")",
+            "(failure: \"timeout\")"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.非法目标与自代理在发送前拒绝",
+          "rows": [
+            "(target: \"ftp://host/\")",
+            "(target: \"https://user:pass@host/\")",
+            "(target: \"https://host/#fragment\")",
+            "(target: \"http://localhost:8888/\")",
+            "(target: \"http://127.0.0.1:8888/\")"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.并发决策不共享目标且旧修订不受新配置影响",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.并发同配置仅启动一次且重复停止和释放幂等",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.映射后的SSE与大文件保持增量和完整哈希",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTPS映射实际到B并保留SNI与未命中请求",
+          "rows": [
+            "(h2: False)",
+            "(h2: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.SSE在端点结束之前收到首事件且跨块字符完整",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.SSE在端点结束之前收到首事件且跨块字符完整",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.SSE逐字节解析保持Unicode多行空行心跳与尾部状态",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.SSE逐字节解析保持Unicode多行空行心跳与尾部状态",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.活动请求达到上限时拒绝新增且停止取消持续流",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.未知长度与短读真实传输不会被有限记录截断",
+          "rows": [
+            "(mode: None)",
+            "(mode: MetadataOnly)",
+            "(mode: BoundedBody)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.B失败不会回退A或自动重发POST",
+          "rows": [
+            "(failure: \"refused\")",
+            "(failure: \"certificate\")",
+            "(failure: \"timeout\")"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.响应空闲超时只结束沉默响应而不截断活跃流",
+          "rows": [
+            "(silent: False)",
+            "(silent: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.慢盘队列满后不阻塞且后续块不拼接为完整正文",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.未知长度与短读真实传输不会被有限记录截断",
+          "rows": [
+            "(mode: None)",
+            "(mode: MetadataOnly)",
+            "(mode: BoundedBody)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ResourceProbeTests.独立进程三模式大文件三次对照和十分钟持续流满足冻结预算",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.并发同配置仅启动一次且重复停止和释放幂等",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.预取消无副作用且启动失败回滚后可以重试",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.清理失败不宣称停止也不允许新运行",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.端口冲突回滚且不会停止别人的监听",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.停止使迟到的启动失效并清理旧实例",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.启动不响应取消时停止有截止且迟到结果不能复活运行",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.并发同配置仅启动一次且重复停止和释放幂等",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.多页面和工具共享运行且两种容器释放路径回收监听",
+          "rows": [
+            "(asynchronous: False)",
+            "(asynchronous: True)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.页面取消只退出等待不取消共享启动",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.预取消无副作用且启动失败回滚后可以重试",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.部分和未知长度不会伪装完整",
+          "rows": [
+            "(state: Cancelled)",
+            "(state: Failed)",
+            "(state: Completed)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.未知长度与短读真实传输不会被有限记录截断",
+          "rows": [
+            "(mode: None)",
+            "(mode: MetadataOnly)",
+            "(mode: BoundedBody)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.正文限额精确边界且记录保持连续前缀",
+          "rows": [
+            "(sent: 0, stored: 0, state: Complete)",
+            "(sent: 4, stored: 4, state: Complete)",
+            "(sent: 5, stored: 4, state: Partial)"
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.高频小块与待关闭记录的数量也受限",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.慢盘队列满后不阻塞且后续块不拼接为完整正文",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.磁盘失败与全局配额不会丢失观察字节",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U09",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.SSE逐字节解析保持Unicode多行空行心跳与尾部状态",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U10",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.停止使迟到的启动失效并清理旧实例",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.无效端口只更新页面错误且关闭页面不再刷新",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U11",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.两个容器不共享运行且同步释放也会完成收口",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.并发同配置仅启动一次且重复停止和释放幂等",
+          "rows": [
+            ""
+          ]
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.清理失败不宣称停止也不允许新运行",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U12",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.精确域名大小写与条件映射保留原始编码和版本",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U13",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.并发决策不共享目标且旧修订不受新配置影响",
+          "rows": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U14",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.非法目标与自代理在发送前拒绝",
+          "rows": [
+            "(target: \"ftp://host/\")",
+            "(target: \"https://user:pass@host/\")",
+            "(target: \"https://host/#fragment\")",
+            "(target: \"http://localhost:8888/\")",
+            "(target: \"http://127.0.0.1:8888/\")"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -13,6 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Titanium.Web.Proxy" />
+    <ManagedPluginPrivatePackage Include="Titanium.Web.Proxy" />
+    <!-- Build 3.4.1 要求逐项声明运行时私有依赖；日志抽象仍由 Host 共享。 -->
+    <ManagedPluginPrivatePackage Include="Titanium.Web.Proxy.Abstractions" />
+    <ManagedPluginPrivatePackage Include="BouncyCastle.Cryptography" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="MyAvaloniaManagement.Plugin.Build" PrivateAssets="all" />
     <PackageReference Include="MyAvaloniaManagement.PluginSdk" />

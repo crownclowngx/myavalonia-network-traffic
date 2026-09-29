@@ -1,14 +1,18 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using NetWorkTrafficPlugin.Constants;
 using MyAvaloniaManagement.PluginSdk;
+using NetWorkTrafficPlugin.Features.ProxyStatus;
 
 namespace NetWorkTrafficPlugin.Features.Main;
 
 public sealed partial class MainDocument :
     ObservableObject,
     IPluginDocument,
-    IWorkbenchDocumentCommandTarget
+    IWorkbenchDocumentCommandTarget, IDisposable
 {
+    public MainDocument(ProxyPanelModel proxy) => Proxy = proxy;
+    public ProxyPanelModel Proxy { get; }
+    public void Dispose() => Proxy.Dispose();
     private DocumentPresentationState _presentation = new("示例文档");
     private int _workbenchMessageApplied;
 

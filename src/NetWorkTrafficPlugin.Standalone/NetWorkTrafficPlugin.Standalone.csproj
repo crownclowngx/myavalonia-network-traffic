@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NetWorkTrafficPlugin.Plugin\NetWorkTrafficPlugin.Plugin.csproj" />
     <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "warmupBytes": 16777216,
+  "warmupConcurrency": 20,
+  "sizes": [134217728, 1073741824],
+  "repetitions": 3,
+  "streamSeconds": 600,
+  "sampleMilliseconds": 250,
+  "maxPrivateDeltaBytes": 268435456,
+  "maxMedianGrowthBytes": 67108864,
+  "maxQueueBytes": 4194304,
+  "maxBodyCacheBytes": 33554432,
+  "maxDiskBytes": 67108864,
+  "maxActiveRequests": 20,
+  "maxStopMilliseconds": 10000,
+  "maxHandleGrowthAfterStop": 32
+}

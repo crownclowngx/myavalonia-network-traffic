@@ -6,6 +6,7 @@ namespace NetWorkTrafficPlugin.Constants;
 public static class PluginIds
 {
     public static readonly PluginId Plugin = new("myavalonia.plugin.network.traffic");
+    public static readonly ToolTypeId ProxyStatus = new("myavalonia.plugin.network.traffic.tool.proxy-status");
 
     public static readonly DocumentTypeId MainDocument =
         new("myavalonia.plugin.network.traffic.document.main");

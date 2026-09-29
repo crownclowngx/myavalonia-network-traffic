@@ -7,10 +7,13 @@ namespace NetWorkTrafficPlugin.Tests;
 
 public sealed class MainDocumentTests
 {
+    private static MainDocument CreateDocument() => new(new NetWorkTrafficPlugin.Features.ProxyStatus.ProxyPanelModel(
+        new NetWorkTrafficPlugin.Application.Proxy.ProxySessionCoordinator(() => new NetWorkTrafficPlugin.Infrastructure.Proxy.TitaniumProxyRuntime())));
+
     [Fact]
     public async Task 初始化时采用Host提供的标题()
     {
-        var document = new MainDocument();
+        var document = CreateDocument();
 
         await document.InitializeAsync(
             new NewDocumentActivation("测试标题"),
@@ -22,8 +25,8 @@ public sealed class MainDocumentTests
     [Fact]
     public async Task 工作台命令只修改当前实例并定向通知状态变化()
     {
-        var current = new MainDocument();
-        var other = new MainDocument();
+        var current = CreateDocument();
+        var other = CreateDocument();
         var notifications = new List<CommandId>();
         current.CommandStateChanged += (_, args) => notifications.Add(args.CommandId);
 
@@ -44,7 +47,7 @@ public sealed class MainDocumentTests
     [Fact]
     public async Task 工作台命令拒绝未知身份并观察取消()
     {
-        var document = new MainDocument();
+        var document = CreateDocument();
         var unknown = new CommandId("myavalonia.plugin.network.traffic.command.main.unknown");
 
         Assert.False(document.CanExecute(unknown));
@@ -63,7 +66,7 @@ public sealed class MainDocumentTests
     [Fact]
     public async Task 工作台命令并发进入时只有一次能够修改实例状态()
     {
-        var document = new MainDocument();
+        var document = CreateDocument();
 
         var attempts = Enumerable.Range(0, 8)
             .Select(_ => Task.Run(async () =>

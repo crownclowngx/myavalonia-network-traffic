@@ -2,6 +2,8 @@ using MyAvaloniaManagement.PluginSdk.UI;
 using MyAvaloniaManagement.Icons;
 using NetWorkTrafficPlugin.Constants;
 using NetWorkTrafficPlugin.Features.Main;
+using NetWorkTrafficPlugin.Features.ProxyStatus;
+using MyAvaloniaManagement.PluginSdk;
 
 namespace NetWorkTrafficPlugin.Plugin;
 
@@ -12,6 +14,7 @@ public sealed class NetWorkTrafficPluginModule : IPluginModule
         ArgumentNullException.ThrowIfNull(registration);
 
         registration.Services.AddNetWorkTrafficPluginServices();
+        registration.UseLifecycle<NetWorkTrafficPluginLifecycle>();
         // 将插件自选版本的公共资源复制为 SDK 数据；Host 无需升级资源包即可显示这个别名。
         var asset = CommonIcons.TextCheck;
         var icon = registration.AddIcon("main-document", new VectorIconDefinition(
@@ -19,9 +22,11 @@ public sealed class NetWorkTrafficPluginModule : IPluginModule
         registration.AddDocument<MainDocument, MainView>(
             new DocumentDescriptor(
                 PluginIds.MainDocument,
-                "示例文档",
-                "由独立预览程序和真实 Host 共用的示例功能",
+                "HTTP 流量工作台",
+                "M0 代理技术基线与最小诊断",
                 "NetWorkTrafficPlugin", iconPath: icon));
+        registration.AddTool<ProxyStatusTool, ProxyStatusView>(new ToolDescriptor(
+            PluginIds.ProxyStatus, "代理状态", "查看共享运行状态并停止代理", ToolDockSide.Right, ToolCloseBehavior.Hide, iconPath: icon));
 
         // Command 注册只冻结稳定身份、展示文本和目标 Document 类型，不保存 MainDocument 实例、
         // ICommand、回调或 Provider。真正执行时由 Host 路由到当前活动的 MainDocument 实例。

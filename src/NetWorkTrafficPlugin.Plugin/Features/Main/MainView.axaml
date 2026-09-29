@@ -1,17 +1,5 @@
-<UserControl
-    x:Class="NetWorkTrafficPlugin.Features.Main.MainView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:NetWorkTrafficPlugin.Features.Main"
-    x:DataType="vm:MainDocument">
-  <StackPanel Margin="24" Spacing="12">
-    <Viewbox Width="24" Height="24" HorizontalAlignment="Left">
-      <Canvas x:Name="IconCanvas">
-        <Path x:Name="DocumentIcon" Fill="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-      </Canvas>
-    </Viewbox>
-    <TextBlock FontSize="24" Text="NetWorkTrafficPlugin" />
-    <TextBlock Text="同一个 View 和 ViewModel 可以独立预览，也可以由 Host 创建。" TextWrapping="Wrap" />
-    <TextBox PlaceholderText="输入一些内容" Text="{Binding Message}" />
-  </StackPanel>
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:vm="using:NetWorkTrafficPlugin.Features.Main" xmlns:proxy="using:NetWorkTrafficPlugin.Features.ProxyStatus"
+ x:Class="NetWorkTrafficPlugin.Features.Main.MainView" x:DataType="vm:MainDocument">
+ <proxy:ProxyPanelView DataContext="{Binding Proxy}" />
 </UserControl>

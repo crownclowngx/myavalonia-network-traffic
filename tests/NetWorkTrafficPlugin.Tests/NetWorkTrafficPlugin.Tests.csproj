@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <ProjectReference Include="..\..\src\NetWorkTrafficPlugin.Plugin\NetWorkTrafficPlugin.Plugin.csproj" />
   </ItemGroup>
 
