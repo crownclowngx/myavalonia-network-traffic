@@ -1,4 +1,27 @@
-# NetWorkTrafficPlugin 开发快速开始
+# NetWorkTrafficPlugin 文档导航与开发快速开始
+
+> 更新日期：2026-09-29。当前为模板工程；V2 / M0 执行文档已编写，业务与专用门禁尚未实施。
+
+## 产品规划与当前状态
+
+| 阅读目的 | 入口 |
+| --- | --- |
+| 产品定位、需求、界面形态、数据模型、DSL 与边界 | [产品与规划方案](roadmap/network-traffic-product-plan.md) |
+| M0–M6 阶段范围、交付物、依赖和验收条件 | [能力路线图](roadmap/network-traffic-capability-roadmap.md) |
+| V2-01～10 任务、实施顺序、文件交付与完成条件 | [V2 / M0 技术基线执行计划](roadmap/network-traffic-v2-m0-technical-baseline-plan.md) |
+| SOLID、代理适配、TLS、流式预算、目标映射与寿命 | [V2 / M0 专项技术设计](design/network-traffic-v2-m0-technical-design.md) |
+| 单元测试、真实协议探针、故障注入及开发门禁 | [V2 / M0 专用验证矩阵](maintenance/network-traffic-v2-m0-verification-plan.md) |
+| 协议、规则、资源、UI、Host 的分阶段验证 | [专用验证计划](maintenance/network-traffic-verification-plan.md) |
+
+当前源码包含示例 Document、示例工作台命令与模板测试；尚未引入 Titanium，M0–M6 均未开始业务实施。
+正式工程及插件身份保持不变，候选显示名称为 `HttpLab / HTTP 工作台`。V1 是产品方案，V2 是 M0 执行方案，均不是包版本；本轮补充详细执行、设计和验证文档，未实施业务功能。
+
+规划放入 `roadmap`，待实现专项设计放入 `design`，可复用验证方法放入 `maintenance`。后续实现后再新增当前行为 `reference`、使用步骤
+`quick-start` 和带日期的实施/验收记录；现有模板开发文档暂保留当前位置。实现、自动验证、真实 Host、人工验收和发布分别记录。
+
+## 开发快速开始
+
+V2 / M0 首要满足 SOLID，设计模式朴素使用，关键实现与测试写详细中文注释。不使用 AIFLOW；只运行本地 Debug 开发检查，不新增或运行 Windows CI、发布门禁。专用脚本尚待 V2-09 实现，其未来入口见 V2 验证矩阵，不能当作当前可用命令。以下是现有模板开发流程，后文发布说明仅在正式发布阶段适用。
 
 本解决方案用于开发 `myavalonia.plugin.network.traffic` Managed Plugin。它把真实插件、独立 Avalonia 开发窗口和
 自动化测试放在同一个解决方案中，使界面与业务代码既能快速预览，也能由 MyAvaloniaManagement Host
