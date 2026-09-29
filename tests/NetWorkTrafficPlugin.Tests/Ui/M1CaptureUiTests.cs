@@ -187,12 +187,23 @@ public sealed class M1CaptureUiTests
                 Assert.Equal(model.Rows[1].RecordId, model.Selected!.RecordId); Assert.Equal("a", model.BodyText);
                 window.KeyPress(Key.Escape, RawInputModifiers.None, PhysicalKey.None, null); window.KeyRelease(Key.Escape, RawInputModifiers.None, PhysicalKey.None, null); Assert.False(model.ShowDetails);
                 var input = view.FindControl<TextBox>("FilterBox")!; input.Focus(); window.KeyTextInput("not-matched");
-                await Task.Delay(250); await model.RefreshAsync(); Assert.Equal("not-matched", model.Keyword); Assert.Empty(model.Rows); Assert.Null(model.Selected);
-                input.Text = "/b"; await Task.Delay(250); await model.RefreshAsync(); Assert.Single(model.Rows); Assert.Equal("/b", model.Rows[0].Path);
+                await WaitForUiAsync(window, model, () => model.Status.Contains("匹配 0", StringComparison.Ordinal));
+                Assert.Equal("not-matched", model.Keyword); Assert.Empty(model.Rows); Assert.Null(model.Selected);
+                input.Text = "/b";
+                await WaitForUiAsync(window, model, () => model.Rows.Count == 1 && model.Keyword == "/b");
+                Assert.Single(model.Rows); Assert.Equal("/b", model.Rows[0].Path);
             }
             finally { window.Close(); }
             return true;
         }, default);
+    }
+
+    private static async Task WaitForUiAsync(Window window, CaptureWorkspace model, Func<bool> applied)
+    {
+        // 生产时钟可能正在查询，RefreshAsync 会让出；固定等待 250ms 不能证明消抖查询已经应用。
+        // 等待实际可观察条件，并设有限截止，既避免调度偶发失败，也不会把一直未应用的结果放过。
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        while (!applied()) { Pump(window); await model.RefreshAsync(); await Task.Delay(10, timeout.Token); }
     }
     [Theory]
     [InlineData("sse")]
