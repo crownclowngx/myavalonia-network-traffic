@@ -3,6 +3,7 @@
 > 配套：[产品方案](../roadmap/network-traffic-product-plan.md)、[M0–M6 路线图](../roadmap/network-traffic-capability-roadmap.md)。
 > 编写日期：2026-09-28。状态：分阶段验证设计；M0 自动结果见 V2 实施记录，其余阶段和真实 Host/人工验收待执行。
 > 2026-09-29 补充：[V2 / M0 专用验证矩阵](network-traffic-v2-m0-verification-plan.md)细化单元测试、协议探针、资源测量、门禁自测与证据；[执行计划](../roadmap/network-traffic-v2-m0-technical-baseline-plan.md)规定 V2-01～10 的实施顺序，M0 已实现，结果见[当日记录](../archive/2026-09-29-v2-m0-implementation.md)。
+> 同日补充：[V3 / M1 专用验证矩阵](network-traffic-v3-m1-verification-plan.md)定义 53 项业务场景、SOLID/中文注释审查、生产 UI、资源/存档故障、8 组门禁自测和 4 项人工验证；[V3 执行计划](../roadmap/network-traffic-v3-m1-capture-plan.md)已编写，业务及 M1 门禁尚未实现。
 
 ## 1. 验证层次与结果表达
 
@@ -68,6 +69,8 @@
 T01/T13 等协议项在 M0 先验证最小链路，在 M3 用真实规则执行链重新验证。所有阶段都回归相应的停止、资源、原始记录和来源语义，不能用探针通过替代产品功能通过。
 
 M0 的 T00～T03、T12/T13 改写前置及 T07/T24 所有权前置，按 [V2 专用矩阵](network-traffic-v2-m0-verification-plan.md)第 12 节细化；它不改变 M1/M3/M6 的完成状态。V2 仅执行本地开发门禁，不使用 AIFLOW、Windows CI 或发布门禁。HTTP/2 调查必须执行，明确不支持/回退可成为范围结论，不能记作完整 h2 兼容。
+
+M1 的 T00/T01、T02～T07 及 T22/T24 前置，按 [V3 专用矩阵](network-traffic-v3-m1-verification-plan.md)细化，要求继承同轮 M0 回归。V3 以 SOLID 为首要规定，包含详细中文注释与设计说明，不使用 AIFLOW、Windows CI 或发布门禁；仅文档完成不计为这些场景通过。现行脚本仍支持 Docs/M0，M1 分支是后续实施项。
 
 产品场景到交付与验证的对应关系：
 

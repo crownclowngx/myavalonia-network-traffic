@@ -1,6 +1,6 @@
 # NetWorkTrafficPlugin 文档导航与开发快速开始
 
-> 更新日期：2026-09-29。V2 / M0 已实现；当前行为、自动结果及人工未验项见以下专用文档。
+> 更新日期：2026-09-29。V2 / M0 已实现；V3 / M1 执行文档已编写、业务未开始。当前行为、自动结果及人工未验项见以下专用文档。
 
 ## 产品规划与当前状态
 
@@ -14,10 +14,13 @@
 | V2-01～10 任务、实施顺序、文件交付与完成条件 | [V2 / M0 技术基线执行计划](roadmap/network-traffic-v2-m0-technical-baseline-plan.md) |
 | SOLID、代理适配、TLS、流式预算、目标映射与寿命 | [V2 / M0 专项技术设计](design/network-traffic-v2-m0-technical-design.md) |
 | 单元测试、真实协议探针、故障注入及开发门禁 | [V2 / M0 专用验证矩阵](maintenance/network-traffic-v2-m0-verification-plan.md) |
+| V3-01～14 任务、依赖、交付文件与完成条件 | [V3 / M1 可用抓包执行计划](roadmap/network-traffic-v3-m1-capture-plan.md) |
+| M1 SOLID、双向捕获、流式预览、预算及保存回看 | [V3 / M1 专项技术设计](design/network-traffic-v3-m1-capture-design.md) |
+| M1 的 53 项业务场景、单测、UI、故障注入与开发门禁 | [V3 / M1 专用验证矩阵](maintenance/network-traffic-v3-m1-verification-plan.md) |
 | 协议、规则、资源、UI、Host 的分阶段验证 | [专用验证计划](maintenance/network-traffic-verification-plan.md) |
 
-当前源码包含 Titanium 7.0.13 生产适配、共享协调器、有限记录、最小 Document/Tool、受控测试和本地门禁。M1–M6 仍未开始。
-正式工程及插件身份保持不变，候选显示名称为 `HttpLab / HTTP 工作台`。V1 是产品方案，V2 是 M0 执行方案，均不是包版本；本轮完成 M0 实施与开发验证，真实 Host、真实客户端和人工验收独立登记。
+当前源码包含 Titanium 7.0.13 生产适配、共享协调器、有限记录、最小 Document/Tool、受控测试和本地门禁。M1 已补充 V3 执行文档，业务实现未开始；M2–M6 仍为后续规划。
+正式工程及插件身份保持不变，候选显示名称为 `HttpLab / HTTP 工作台`，V3 计划采用“HTTP 工作台”。V1 是产品方案，V2 是 M0 执行方案，V3 是 M1 执行方案，均不是包版本。M0 已完成实现与开发验证，真实 Host、真实客户端和人工验收独立登记；本轮仅交付 V3 文档。
 
 规划放入 `roadmap`，专项设计放入 `design`，可复用验证方法放入 `maintenance`。已新增当前行为 `reference`、使用步骤
 `quick-start` 和带日期的实施记录；现有模板开发文档暂保留当前位置。实现、自动验证、真实 Host、人工验收和发布分别记录。
@@ -25,6 +28,8 @@
 ## 开发快速开始
 
 V2 / M0 首要满足 SOLID，设计模式朴素使用，关键实现与测试写详细中文注释。不使用 AIFLOW；只运行本地 Debug 开发检查，不新增或运行 Windows CI、发布门禁。现行完整入口为 pwsh -NoProfile -File tools/verify-development.ps1 -Mode M0，包含十分钟持续流；Docs 模式只检查文档。以下是现有模板开发流程，后文发布说明仅在正式发布阶段适用。
+
+V3 / M1 同样以 SOLID 为首要规定，并要求单元测试、生产 UI、资源测量及门禁正反例齐全。计划中的 `-Mode M1` 尚未接入，默认值仍为 M0；本次文档验证使用 `pwsh -NoProfile -File tools/verify-development.ps1 -Mode Docs`，不代表 M1 业务通过。
 
 本解决方案用于开发 `myavalonia.plugin.network.traffic` Managed Plugin。它把真实插件、独立 Avalonia 开发窗口和
 自动化测试放在同一个解决方案中，使界面与业务代码既能快速预览，也能由 MyAvaloniaManagement Host
