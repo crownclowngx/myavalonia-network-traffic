@@ -22,8 +22,8 @@ public sealed class NetWorkTrafficPluginModule : IPluginModule
         registration.AddDocument<MainDocument, MainView>(
             new DocumentDescriptor(
                 PluginIds.MainDocument,
-                "HTTP 流量工作台",
-                "M0 代理技术基线与最小诊断",
+                "HTTP 工作台",
+                "实时抓包、内容查看和保存回看",
                 "NetWorkTrafficPlugin", iconPath: icon));
         registration.AddTool<ProxyStatusTool, ProxyStatusView>(new ToolDescriptor(
             PluginIds.ProxyStatus, "代理状态", "查看共享运行状态并停止代理", ToolDockSide.Right, ToolCloseBehavior.Hide, iconPath: icon));

@@ -45,15 +45,20 @@ public sealed class ControlledOrigin : IAsyncDisposable
         _certificate = X509CertificateLoader.LoadPkcs12(keyed.Export(X509ContentType.Pfx), null, X509KeyStorageFlags.DefaultKeySet);
         var builder = WebApplication.CreateSlimBuilder();
         builder.Logging.ClearProviders();
-        builder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0, listen =>
+        builder.WebHost.ConfigureKestrel(options =>
         {
+            // 受控大上传超过 Kestrel 默认 30MB 限制；测试自身仍由调用方截止和固定大小约束。
+            options.Limits.MaxRequestBodySize = null;
+            options.Listen(IPAddress.Loopback, 0, listen =>
+            {
             listen.Protocols = https ? HttpProtocols.Http1AndHttp2 : HttpProtocols.Http1;
             if (https) listen.UseHttps(tls => tls.ServerCertificateSelector = (connection, name) =>
             {
                 if (connection is not null) _sni[connection.ConnectionId] = name ?? "";
                 return _certificate;
             });
-        }));
+            });
+        });
         _app = builder.Build();
         _app.Run(async context =>
         {
@@ -114,16 +119,25 @@ public sealed class ControlledOrigin : IAsyncDisposable
             }
             else if (path == "/redirect") { context.Response.StatusCode = 302; context.Response.Headers.Location = "/echo"; }
             else if (path == "/head") context.Response.ContentLength = 123;
-            else if (path == "/gzip")
+            else if (path is "/gzip" or "/br")
             {
                 using var compressed = new MemoryStream();
-                using (var gzip = new System.IO.Compression.GZipStream(compressed, System.IO.Compression.CompressionLevel.Fastest, true))
-                    gzip.Write(System.Text.Encoding.UTF8.GetBytes("压缩响应正文"));
-                context.Response.Headers.ContentEncoding = "gzip";
+                using (Stream encoder = path == "/br" ? new System.IO.Compression.BrotliStream(compressed, System.IO.Compression.CompressionLevel.Fastest, true) : new System.IO.Compression.GZipStream(compressed, System.IO.Compression.CompressionLevel.Fastest, true))
+                    encoder.Write(System.Text.Encoding.UTF8.GetBytes("压缩响应正文"));
+                context.Response.ContentType = "text/plain; charset=utf-8";
+                context.Response.Headers.ContentEncoding = path == "/br" ? "br" : "gzip";
                 context.Response.ContentLength = compressed.Length;
                 await context.Response.Body.WriteAsync(compressed.ToArray(), context.RequestAborted);
             }
             else if (path == "/empty") context.Response.StatusCode = 204;
+            else if (path == "/not-modified") context.Response.StatusCode = 304;
+            else if (path == "/range")
+            {
+                context.Response.StatusCode = 206; context.Response.ContentType = "video/mp4";
+                context.Response.Headers.ContentRange = "bytes 0-3/1000";
+                context.Response.Headers.Append("Set-Cookie", new Microsoft.Extensions.Primitives.StringValues(["a=1; Expires=Wed, 21 Oct 2030 07:28:00 GMT", "b=2"]));
+                await context.Response.Body.WriteAsync("part"u8.ToArray(), context.RequestAborted);
+            }
             else await context.Response.WriteAsJsonAsync(receipt, context.RequestAborted);
         });
     }

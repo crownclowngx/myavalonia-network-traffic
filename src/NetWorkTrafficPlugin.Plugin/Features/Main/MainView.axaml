@@ -1,5 +1,15 @@
 <UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
- xmlns:vm="using:NetWorkTrafficPlugin.Features.Main" xmlns:proxy="using:NetWorkTrafficPlugin.Features.ProxyStatus"
+ xmlns:vm="using:NetWorkTrafficPlugin.Features.Main" xmlns:proxy="using:NetWorkTrafficPlugin.Features.ProxyStatus" xmlns:capture="using:NetWorkTrafficPlugin.Features.Capture"
  x:Class="NetWorkTrafficPlugin.Features.Main.MainView" x:DataType="vm:MainDocument">
- <proxy:ProxyPanelView DataContext="{Binding Proxy}" />
+ <Grid RowDefinitions="Auto,*">
+  <StackPanel Margin="12,10,12,0" Spacing="6">
+   <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+    <StackPanel><TextBlock Text="HTTP 工作台" FontSize="21" FontWeight="SemiBold" /><TextBlock Text="{Binding Proxy.Address}" Opacity="0.7" /></StackPanel>
+    <Button x:Name="StartProxyButton" Grid.Column="1" Content="启动代理" Command="{Binding Proxy.StartCommand}" VerticalAlignment="Center" />
+    <Button x:Name="StopProxyButton" Grid.Column="2" Content="停止代理" Command="{Binding Proxy.StopCommand}" VerticalAlignment="Center" />
+   </Grid>
+   <Expander Header="代理配置与 HTTPS 接入诊断"><proxy:ProxyPanelView DataContext="{Binding Proxy}" MaxHeight="280" /></Expander>
+  </StackPanel>
+  <capture:CaptureView Grid.Row="1" DataContext="{Binding Capture}" />
+ </Grid>
 </UserControl>

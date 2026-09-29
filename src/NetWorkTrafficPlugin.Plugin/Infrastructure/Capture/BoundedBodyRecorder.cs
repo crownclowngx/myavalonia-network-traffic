@@ -24,6 +24,7 @@ public sealed class BoundedBodyRecorder : IAsyncDisposable
     private readonly object _sync = new();
     private readonly CaptureLimits _limits;
     private readonly IBodyRecordSink _sink;
+    private readonly CaptureDiskBudget? _disk;
     private readonly string? _directory;
     // 字节上限以外再限制块数，避免大量单字节块的对象开销突破实际内存预算。
     private readonly Channel<Item> _queue = Channel.CreateBounded<Item>(new BoundedChannelOptions(256) { SingleReader = true });
@@ -35,19 +36,21 @@ public sealed class BoundedBodyRecorder : IAsyncDisposable
     private Task? _dispose;
     private readonly List<Task> _completionWrites = [];
 
-    public BoundedBodyRecorder(CaptureLimits limits, IBodyRecordSink sink, string? directory = null)
+    public BoundedBodyRecorder(CaptureLimits limits, IBodyRecordSink sink, string? directory = null, CaptureDiskBudget? disk = null)
     {
         limits.Validate();
         (_limits, _sink, _directory) = (limits, sink, directory);
+        _disk = disk;
         _writer = Task.Run(WriteLoopAsync);
     }
     public Entry Begin(Guid id, long? expected, CaptureMode mode)
     {
         lock (_sync)
         {
-            var admitted = mode == CaptureMode.BoundedBody && _pendingEntries < _limits.MaxActiveRequests && _dispose is null;
+            var recordsBody = mode is CaptureMode.BoundedBody or CaptureMode.Disk;
+            var admitted = recordsBody && _pendingEntries < _limits.MaxActiveRequests * (_limits.Profile == CaptureProfile.M1 ? 2 : 1) && _dispose is null;
             var entry = new Entry(id, expected, mode, admitted && _directory is not null ? Path.Combine(_directory, id.ToString("N") + ".body") : null)
-            { Admitted = admitted, Truncated = mode == CaptureMode.BoundedBody && !admitted };
+            { Admitted = admitted, Truncated = recordsBody && !admitted };
             if (admitted) _pendingEntries++;
             else if (entry.Truncated) entry.Reason = "后台记录数量达到上限，仅保留元信息。";
             return entry;
@@ -63,9 +66,10 @@ public sealed class BoundedBodyRecorder : IAsyncDisposable
             if (entry.Finished || _dispose is not null) return;
             entry.Observed += bytes.Length;
             _observed += bytes.Length;
-            if (bytes.IsEmpty || entry.Mode != CaptureMode.BoundedBody || entry.Truncated || entry.Failed) return;
+            if (bytes.IsEmpty || entry.Mode is not (CaptureMode.BoundedBody or CaptureMode.Disk) || entry.Truncated || entry.Failed) return;
             var allowed = (int)Math.Min(bytes.Length, Math.Min(_limits.BodyBytes - entry.Scheduled, _limits.DiskBytes - _reserved));
             if (allowed > _limits.QueueBytes - _queuedBytes) allowed = 0;
+            if (allowed > 0 && _disk is not null) allowed = _disk.Reserve(allowed);
             if (allowed > 0)
             {
                 // 内存所有权转移给队列；从第三方借来的块绝不跨回调保存。
@@ -76,7 +80,7 @@ public sealed class BoundedBodyRecorder : IAsyncDisposable
                     _reserved += allowed;
                     entry.Scheduled += allowed;
                 }
-                else allowed = 0;
+                else { _disk?.ReleaseReservation(allowed); allowed = 0; }
             }
             if (allowed < bytes.Length)
             {
@@ -118,7 +122,7 @@ public sealed class BoundedBodyRecorder : IAsyncDisposable
     {
         lock (_sync)
         {
-            var capture = entry.Mode != CaptureMode.BoundedBody ? CaptureState.MetadataOnly :
+            var capture = entry.Mode is not (CaptureMode.BoundedBody or CaptureMode.Disk) ? CaptureState.MetadataOnly :
                 entry.Failed ? CaptureState.Failed : entry.Closed && entry.Transport == TransportState.Completed &&
                 !entry.Truncated && entry.Stored == entry.Observed ? CaptureState.Complete : CaptureState.Partial;
             return new(entry.Observed, entry.Stored, entry.Expected, capture, entry.Transport, entry.Reason, entry.File);

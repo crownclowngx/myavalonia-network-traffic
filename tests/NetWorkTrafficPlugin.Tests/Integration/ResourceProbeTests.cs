@@ -40,7 +40,8 @@ public sealed class ResourceProbeTests
         Assert.Equal(expected[profile.Sizes[0]], directDigest.Hash);
         var directMilliseconds = directTime.Elapsed.TotalMilliseconds;
 
-        foreach (var mode in Enum.GetValues<CaptureMode>())
+        // M0 固定三种原始模式，新增 M1 Disk 不能悄悄改变旧 profile 的适用集合。
+        foreach (var mode in new[] { CaptureMode.None, CaptureMode.MetadataOnly, CaptureMode.BoundedBody })
         {
             var directory = Path.Combine(Path.GetTempPath(), "network-m0-" + Guid.NewGuid().ToString("N"));
             await using var process = new ProbeProcess();

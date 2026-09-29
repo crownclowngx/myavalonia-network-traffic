@@ -2,6 +2,12 @@ namespace NetWorkTrafficPlugin.Tests.Fixtures;
 
 public static class TemporaryArtifacts
 {
+    public static string Create()
+    {
+        var path = Path.Combine(Path.GetTempPath(), "network-m0-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(path);
+        return path;
+    }
     /// <summary>递归清理前核对绝对路径与 GUID 名称，仅接收本夹具创建的临时目录。</summary>
     public static void Delete(string directory)
     {

@@ -1,0 +1,1473 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {
+      "id": "V3-B01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1ResourceProbeTests.三策略双方向两种大小各三次独立测量保持前缀和资源预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-B02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.慢盘队列满后不阻塞且后续块不拼接为完整正文",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.实际落盘失败时仍完整转发并明确记录失败",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.高频小块与待关闭记录的数量也受限",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-B03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.根目录历史占用参与并发预留且不能将导出藏入工作目录",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.元信息到顶仍继续观察正文并披露保存范围",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-B04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.正文查看流式资源配额和图片使用生产渲染且释放租约",
+          "rows": [
+            "(kind: \"image\")",
+            "(kind: \"quota\")",
+            "(kind: \"resource\")",
+            "(kind: \"sse\")"
+          ],
+          "results": 4
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.PNG在像素分配前拒绝超预算尺寸",
+          "rows": [
+            "(width: -1, height: 12, valid: False)",
+            "(width: 10000, height: 1, valid: False)",
+            "(width: 4000, height: 4000, valid: False)",
+            "(width: 512, height: 512, valid: True)"
+          ],
+          "results": 4
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.压缩膨胀和未知编码降级且已解码实体不再解压",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-B05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-D01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.混合记录保存重开保持重复头身份完整性并可导出",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.实际按钮选择筛选暂停保存和重开不触发代理",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-D02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.保存冻结水位不包含冻结后的追加且不等待流结束",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-D03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.各保存阶段失败不会发布半成品或残留租约",
+          "rows": [
+            "(point: \"body\")",
+            "(point: \"commit\")",
+            "(point: \"manifest\")",
+            "(point: \"records\")",
+            "(point: \"snapshot\")"
+          ],
+          "results": 5
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.各保存阶段取消不发布目标且释放读取租约",
+          "rows": [
+            "(point: \"body\")",
+            "(point: \"commit\")",
+            "(point: \"manifest\")",
+            "(point: \"records\")",
+            "(point: \"snapshot\")"
+          ],
+          "results": 5
+        }
+      ]
+    },
+    {
+      "id": "V3-D04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.通过哈希的恶意元信息仍拒绝加载",
+          "rows": [
+            "(mutation: \"bad-direction\")",
+            "(mutation: \"duplicate-id\")",
+            "(mutation: \"false-complete\")",
+            "(mutation: \"negative-size\")",
+            "(mutation: \"null-body\")",
+            "(mutation: \"null-header\")",
+            "(mutation: \"unfinished-line\")"
+          ],
+          "results": 7
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.缺失正文降级未来版本和伪造完整性拒绝",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-D05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.通过哈希的恶意元信息仍拒绝加载",
+          "rows": [
+            "(mutation: \"bad-direction\")",
+            "(mutation: \"duplicate-id\")",
+            "(mutation: \"false-complete\")",
+            "(mutation: \"negative-size\")",
+            "(mutation: \"null-body\")",
+            "(mutation: \"null-header\")",
+            "(mutation: \"unfinished-line\")"
+          ],
+          "results": 7
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.存档路径不能越过所选根目录",
+          "rows": [
+            "(path: \"../escape\")",
+            "(path: \"//server/share\")",
+            "(path: \"C:/escape\")",
+            "(path: \"bodies/../escape\")"
+          ],
+          "results": 4
+        }
+      ]
+    },
+    {
+      "id": "V3-D06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.工作日志恢复保持接收中语义且有租约时拒绝删除",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.读取租约重复释放安全且磁盘删除失败不冒充回收",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.混合记录保存重开保持重复头身份完整性并可导出",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-L01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.多页面和工具共享运行且两种容器释放路径回收监听",
+          "rows": [
+            "(asynchronous: False)",
+            "(asynchronous: True)"
+          ],
+          "results": 2
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.二十轮页面读取释放归还内容预算且不停止共享捕获",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-L02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProcessExitTests.隔离进程并发响应退出后释放句柄",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.启动不响应取消时停止有截止且迟到结果不能复活运行",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-L03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.二十轮启停更换公开CA并释放目录和端口",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.二十轮页面读取释放归还内容预算且不停止共享捕获",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.A迟到不覆盖B且关闭后的结果不复活预览",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-L04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.工作日志恢复保持接收中语义且有租约时拒绝删除",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.读取租约重复释放安全且磁盘删除失败不冒充回收",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.各保存阶段取消不发布目标且释放读取租约",
+          "rows": [
+            "(point: \"body\")",
+            "(point: \"commit\")",
+            "(point: \"manifest\")",
+            "(point: \"records\")",
+            "(point: \"snapshot\")"
+          ],
+          "results": 5
+        }
+      ]
+    },
+    {
+      "id": "V3-P01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.双向增量捕获保存编码实体字节且解码不重复",
+          "rows": [
+            "(http2: False, encoding: \"br\")",
+            "(http2: False, encoding: \"gzip\")",
+            "(http2: True, encoding: \"br\")",
+            "(http2: True, encoding: \"gzip\")"
+          ],
+          "results": 4
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.上传首块在结束前捕获且取消不会伪造完整",
+          "rows": [
+            "(knownLength: False, cancel: False)",
+            "(knownLength: False, cancel: True)",
+            "(knownLength: True, cancel: False)",
+            "(knownLength: True, cancel: True)"
+          ],
+          "results": 4
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1ResourceProbeTests.三策略双方向两种大小各三次独立测量保持前缀和资源预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-P02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.双向增量捕获保存编码实体字节且解码不重复",
+          "rows": [
+            "(http2: False, encoding: \"br\")",
+            "(http2: False, encoding: \"gzip\")",
+            "(http2: True, encoding: \"br\")",
+            "(http2: True, encoding: \"gzip\")"
+          ],
+          "results": 4
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.无正文重定向与分段响应保持原始传输语义",
+          "rows": [
+            "(path: \"/empty\", method: \"GET\", status: 204, bytes: 0)",
+            "(path: \"/head\", method: \"HEAD\", status: 200, bytes: 0)",
+            "(path: \"/not-modified\", method: \"GET\", status: 304, bytes: 0)",
+            "(path: \"/range\", method: \"GET\", status: 206, bytes: 4)",
+            "(path: \"/redirect\", method: \"GET\", status: 302, bytes: 0)"
+          ],
+          "results": 5
+        }
+      ]
+    },
+    {
+      "id": "V3-P03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.端口冲突回滚且不会停止别人的监听",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.无效端口只更新页面错误且关闭页面不再刷新",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.上游未知根和过期证书都被拒绝",
+          "rows": [
+            "(expired: False)",
+            "(expired: True)"
+          ],
+          "results": 2
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.B失败不会回退A或自动重发POST",
+          "rows": [
+            "(failure: \"certificate\")",
+            "(failure: \"refused\")",
+            "(failure: \"timeout\")"
+          ],
+          "results": 3
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.双端严格证书验证拒绝错误名称和不信任根",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-P04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.二十轮启停更换公开CA并释放目录和端口",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.SystemSettingsTests.代理起停不改变系统信任代理或hosts",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-P05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.双向增量捕获保存编码实体字节且解码不重复",
+          "rows": [
+            "(http2: False, encoding: \"br\")",
+            "(http2: False, encoding: \"gzip\")",
+            "(http2: True, encoding: \"br\")",
+            "(http2: True, encoding: \"gzip\")"
+          ],
+          "results": 4
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTP2记录两端实际协议并独立取消一个流",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-P06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.HTTP2空闲能力缺口明确披露且客户端单流取消不影响持续捕获",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.响应空闲超时只结束沉默响应而不截断活跃流",
+          "rows": [
+            "(silent: False)",
+            "(silent: True)"
+          ],
+          "results": 2
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-Q01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.一万记录淘汰不合并重复请求且活动记录与完整搜索字段保留",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.组合筛选时间半开区间及清空游标不排除正在接收",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-Q02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.双页面筛选和清空独立且每次批量不超过两百行",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.A迟到不覆盖B且关闭后的结果不复活预览",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-Q03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.双页面筛选和清空独立且每次批量不超过两百行",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-Q04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.键盘选择关键词输入和Esc返回列表保持请求身份",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-R01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ResourceProbeTests.独立进程三模式大文件三次对照和十分钟持续流满足冻结预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.未知长度与短读真实传输不会被有限记录截断",
+          "rows": [
+            "(mode: BoundedBody)",
+            "(mode: MetadataOnly)",
+            "(mode: None)"
+          ],
+          "results": 3
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.活动请求达到上限时拒绝新增且停止取消持续流",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.磁盘失败与全局配额不会丢失观察字节",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.慢盘队列满后不阻塞且后续块不拼接为完整正文",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.实际落盘失败时仍完整转发并明确记录失败",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProcessExitTests.隔离进程并发响应退出后释放句柄",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.多页面和工具共享运行且两种容器释放路径回收监听",
+          "rows": [
+            "(asynchronous: False)",
+            "(asynchronous: True)"
+          ],
+          "results": 2
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.页面取消只退出等待不取消共享启动",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.停止使迟到的启动失效并清理旧实例",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.启动不响应取消时停止有截止且迟到结果不能复活运行",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.清理失败不宣称停止也不允许新运行",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.初始化时采用Host提供的标题",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.工作台命令只修改当前实例并定向通知状态变化",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.工作台命令拒绝未知身份并观察取消",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.工作台命令并发进入时只有一次能够修改实例状态",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.普通请求真实经过代理且内容不变",
+          "rows": [
+            "(https: False)",
+            "(https: True)"
+          ],
+          "results": 2
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.双端严格证书验证拒绝错误名称和不信任根",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.上游未知根和过期证书都被拒绝",
+          "rows": [
+            "(expired: False)",
+            "(expired: True)"
+          ],
+          "results": 2
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.端口冲突回滚且不会停止别人的监听",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.预取消无副作用且启动失败回滚后可以重试",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.B失败不会回退A或自动重发POST",
+          "rows": [
+            "(failure: \"certificate\")",
+            "(failure: \"refused\")",
+            "(failure: \"timeout\")"
+          ],
+          "results": 3
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTP2记录两端实际协议并独立取消一个流",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.HTTPS映射实际到B并保留SNI与未命中请求",
+          "rows": [
+            "(h2: False)",
+            "(h2: True)"
+          ],
+          "results": 2
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.KeepAlive压缩无正文与重定向保持传输语义",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.精确域名大小写与条件映射保留原始编码和版本",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.非法目标与自代理在发送前拒绝",
+          "rows": [
+            "(target: \"ftp://host/\")",
+            "(target: \"http://127.0.0.1:8888/\")",
+            "(target: \"http://localhost:8888/\")",
+            "(target: \"https://host/#fragment\")",
+            "(target: \"https://user:pass@host/\")"
+          ],
+          "results": 5
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.并发决策不共享目标且旧修订不受新配置影响",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.并发同配置仅启动一次且重复停止和释放幂等",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.映射后的SSE与大文件保持增量和完整哈希",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.SSE在端点结束之前收到首事件且跨块字符完整",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.SSE逐字节解析保持Unicode多行空行心跳与尾部状态",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyFailureTests.响应空闲超时只结束沉默响应而不截断活跃流",
+          "rows": [
+            "(silent: False)",
+            "(silent: True)"
+          ],
+          "results": 2
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.部分和未知长度不会伪装完整",
+          "rows": [
+            "(state: Cancelled)",
+            "(state: Completed)",
+            "(state: Failed)"
+          ],
+          "results": 3
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.正文限额精确边界且记录保持连续前缀",
+          "rows": [
+            "(sent: 0, stored: 0, state: Complete)",
+            "(sent: 4, stored: 4, state: Complete)",
+            "(sent: 5, stored: 4, state: Partial)"
+          ],
+          "results": 3
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.高频小块与待关闭记录的数量也受限",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.无效端口只更新页面错误且关闭页面不再刷新",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.两个容器不共享运行且同步释放也会完成收口",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-R02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.初始化时采用Host提供的标题",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.工作台命令只修改当前实例并定向通知状态变化",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.工作台命令拒绝未知身份并观察取消",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.MainDocumentTests.工作台命令并发进入时只有一次能够修改实例状态",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.CompositionTests.多页面和工具共享运行且两种容器释放路径回收监听",
+          "rows": [
+            "(asynchronous: False)",
+            "(asynchronous: True)"
+          ],
+          "results": 2
+        }
+      ]
+    },
+    {
+      "id": "V3-S01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.SSE所有字节切分位置保留UTF8和事件字段",
+          "rows": [
+            "(newline: \"\\n\")",
+            "(newline: \"\\r\")",
+            "(newline: \"\\r\\n\")"
+          ],
+          "results": 3
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.SSE半事件不派发空data合法且超长事件不会假装完整",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-S02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.事件环有数量和字节双上限且丢字节停止连续解析",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.正文额度耗尽仍观察流事件且预览丢块明确标缺口",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-S03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.NDJSON坏行保留且末行根据终态区别处理",
+          "rows": [
+            "(normal: False, expected: 2)",
+            "(normal: True, expected: 3)"
+          ],
+          "results": 2
+        }
+      ]
+    },
+    {
+      "id": "V3-S04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.正文查看流式资源配额和图片使用生产渲染且释放租约",
+          "rows": [
+            "(kind: \"image\")",
+            "(kind: \"quota\")",
+            "(kind: \"resource\")",
+            "(kind: \"sse\")"
+          ],
+          "results": 4
+        }
+      ]
+    },
+    {
+      "id": "V3-U01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.一万记录淘汰不合并重复请求且活动记录与完整搜索字段保留",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.RouteTargetResolverTests.精确域名大小写与条件映射保留原始编码和版本",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.正文限额精确边界且记录保持连续前缀",
+          "rows": [
+            "(sent: 0, stored: 0, state: Complete)",
+            "(sent: 4, stored: 4, state: Complete)",
+            "(sent: 5, stored: 4, state: Partial)"
+          ],
+          "results": 3
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.部分和未知长度不会伪装完整",
+          "rows": [
+            "(state: Cancelled)",
+            "(state: Completed)",
+            "(state: Failed)"
+          ],
+          "results": 3
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.磁盘失败与全局配额不会丢失观察字节",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.无正文重定向与分段响应保持原始传输语义",
+          "rows": [
+            "(path: \"/empty\", method: \"GET\", status: 204, bytes: 0)",
+            "(path: \"/head\", method: \"HEAD\", status: 200, bytes: 0)",
+            "(path: \"/not-modified\", method: \"GET\", status: 304, bytes: 0)",
+            "(path: \"/range\", method: \"GET\", status: 206, bytes: 4)",
+            "(path: \"/redirect\", method: \"GET\", status: 302, bytes: 0)"
+          ],
+          "results": 5
+        }
+      ]
+    },
+    {
+      "id": "V3-U03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.组合筛选时间半开区间及清空游标不排除正在接收",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.查询保留重复空值加号及错误转义",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.一万记录淘汰不合并重复请求且活动记录与完整搜索字段保留",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.多值头和SetCookie日期不会被错误拆分且复制默认脱敏",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.文本编码与JSON预算不改变保存状态",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.SSE所有字节切分位置保留UTF8和事件字段",
+          "rows": [
+            "(newline: \"\\n\")",
+            "(newline: \"\\r\")",
+            "(newline: \"\\r\\n\")"
+          ],
+          "results": 3
+        }
+      ]
+    },
+    {
+      "id": "V3-U07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.PNG在像素分配前拒绝超预算尺寸",
+          "rows": [
+            "(width: -1, height: 12, valid: False)",
+            "(width: 10000, height: 1, valid: False)",
+            "(width: 4000, height: 4000, valid: False)",
+            "(width: 512, height: 512, valid: True)"
+          ],
+          "results": 4
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.正文查看流式资源配额和图片使用生产渲染且释放租约",
+          "rows": [
+            "(kind: \"image\")",
+            "(kind: \"quota\")",
+            "(kind: \"resource\")",
+            "(kind: \"sse\")"
+          ],
+          "results": 4
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.全局内容额度并发竞争及归还不出现负数或超额",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.A迟到不覆盖B且关闭后的结果不复活预览",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U09",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.并发同配置仅启动一次且重复停止和释放幂等",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.停止使迟到的启动失效并清理旧实例",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.页面取消只退出等待不取消共享启动",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.预取消无副作用且启动失败回滚后可以重试",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.清理失败不宣称停止也不允许新运行",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U10",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.慢盘队列满后不阻塞且后续块不拼接为完整正文",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.BodyCaptureTests.高频小块与待关闭记录的数量也受限",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.根目录历史占用参与并发预留且不能将导出藏入工作目录",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U11",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.正文额度耗尽仍观察流事件且预览丢块明确标缺口",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.元信息到顶仍继续观察正文并披露保存范围",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U12",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.一万记录淘汰不合并重复请求且活动记录与完整搜索字段保留",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.读取租约重复释放安全且磁盘删除失败不冒充回收",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U13",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.压缩膨胀和未知编码降级且已解码实体不再解压",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M1CaptureProtocolTests.双向增量捕获保存编码实体字节且解码不重复",
+          "rows": [
+            "(http2: False, encoding: \"br\")",
+            "(http2: False, encoding: \"gzip\")",
+            "(http2: True, encoding: \"br\")",
+            "(http2: True, encoding: \"gzip\")"
+          ],
+          "results": 4
+        }
+      ]
+    },
+    {
+      "id": "V3-U14",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.保存冻结水位不包含冻结后的追加且不等待流结束",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U15",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.存档路径不能越过所选根目录",
+          "rows": [
+            "(path: \"../escape\")",
+            "(path: \"//server/share\")",
+            "(path: \"C:/escape\")",
+            "(path: \"bodies/../escape\")"
+          ],
+          "results": 4
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.通过哈希的恶意元信息仍拒绝加载",
+          "rows": [
+            "(mutation: \"bad-direction\")",
+            "(mutation: \"duplicate-id\")",
+            "(mutation: \"false-complete\")",
+            "(mutation: \"negative-size\")",
+            "(mutation: \"null-body\")",
+            "(mutation: \"null-header\")",
+            "(mutation: \"unfinished-line\")"
+          ],
+          "results": 7
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.缺失正文降级未来版本和伪造完整性拒绝",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-U16",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.多值头和SetCookie日期不会被错误拆分且复制默认脱敏",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.正文查看流式资源配额和图片使用生产渲染且释放租约",
+          "rows": [
+            "(kind: \"image\")",
+            "(kind: \"quota\")",
+            "(kind: \"resource\")",
+            "(kind: \"sse\")"
+          ],
+          "results": 4
+        }
+      ]
+    },
+    {
+      "id": "V3-UI01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.生产控件启动停止端口错误和公开证书入口可操作",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-UI02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.键盘选择关键词输入和Esc返回列表保持请求身份",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.双页面筛选和清空独立且每次批量不超过两百行",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-UI03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.正文查看流式资源配额和图片使用生产渲染且释放租约",
+          "rows": [
+            "(kind: \"image\")",
+            "(kind: \"quota\")",
+            "(kind: \"resource\")",
+            "(kind: \"sse\")"
+          ],
+          "results": 4
+        }
+      ]
+    },
+    {
+      "id": "V3-UI04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.实际按钮选择筛选暂停保存和重开不触发代理",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V3-UI05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.实际按钮选择筛选暂停保存和重开不触发代理",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.各保存阶段取消不发布目标且释放读取租约",
+          "rows": [
+            "(point: \"body\")",
+            "(point: \"commit\")",
+            "(point: \"manifest\")",
+            "(point: \"records\")",
+            "(point: \"snapshot\")"
+          ],
+          "results": 5
+        }
+      ]
+    },
+    {
+      "id": "V3-UI06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.生产Document和Tool两主题主要尺寸关键入口可达",
+          "rows": [
+            "(width: 1200, height: 720, dark: False, tool: False)",
+            "(width: 1200, height: 720, dark: True, tool: False)",
+            "(width: 280, height: 420, dark: False, tool: True)",
+            "(width: 280, height: 420, dark: True, tool: True)",
+            "(width: 420, height: 600, dark: False, tool: True)",
+            "(width: 420, height: 600, dark: True, tool: True)",
+            "(width: 520, height: 420, dark: False, tool: False)",
+            "(width: 520, height: 420, dark: True, tool: False)",
+            "(width: 800, height: 600, dark: False, tool: False)",
+            "(width: 800, height: 600, dark: True, tool: False)"
+          ],
+          "results": 10
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.键盘选择关键词输入和Esc返回列表保持请求身份",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    }
+  ]
+}

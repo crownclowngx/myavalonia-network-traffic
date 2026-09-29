@@ -21,12 +21,17 @@ public sealed partial class ProxyPanelModel : ObservableObject, IDisposable
     [ObservableProperty] private string _recentText = "尚无请求";
     [ObservableProperty] private string _certificatePem = "";
     [ObservableProperty] private string _protocolPolicy = "启动后显示实际协议范围";
+    [ObservableProperty] private string _recordDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NetWorkTrafficPlugin", "Captures");
+    [ObservableProperty] private int _captureModeIndex = 1;
+    [ObservableProperty] private string _certificateInfo = "客户端信任状态未知。";
+    public string[] CaptureModes { get; } = ["仅元信息", "有限内容（每方向 1 MiB）", "受配额落盘（每方向 1 GiB）"];
+    public string IdlePolicy => ProxyProtocolCapabilities.Http2IdleNotice;
 
     public ProxyPanelModel(ProxySessionCoordinator owner)
     {
         _owner = owner;
-        StartCommand = new AsyncRelayCommand(StartAsync);
-        StopCommand = new AsyncRelayCommand(StopAsync);
+        StartCommand = new AsyncRelayCommand(StartAsync, () => !_disposed && _owner.Status.State is ProxyState.Stopped or ProxyState.Faulted);
+        StopCommand = new AsyncRelayCommand(StopAsync, () => !_disposed && _owner.Status.State is ProxyState.Starting or ProxyState.Running or ProxyState.Faulted);
         Refresh();
     }
     public IAsyncRelayCommand StartCommand { get; }
@@ -38,7 +43,8 @@ public sealed partial class ProxyPanelModel : ObservableObject, IDisposable
         if (!int.TryParse(Port, out var port) || port is < 0 or > 65535) { Message = "端口应为 0～65535；0 表示分配可用端口。"; return; }
         try
         {
-            await _owner.StartAsync(new(Port: port), _closing.Token);
+            var mode = CaptureModeIndex switch { 0 => CaptureMode.MetadataOnly, 1 => CaptureMode.BoundedBody, 2 => CaptureMode.Disk, _ => throw new ArgumentException("记录策略无效。") };
+            await _owner.StartAsync(new(Port: port, Capture: mode, RecordDirectory: RecordDirectory, Limits: CaptureLimits.M1(mode)), _closing.Token);
             if (!_disposed) Message = "代理已运行。关闭页面会继续捕获；停止按钮或应用退出才结束运行。";
         }
         catch (OperationCanceledException) { }
@@ -58,6 +64,7 @@ public sealed partial class ProxyPanelModel : ObservableObject, IDisposable
     {
         if (_disposed) return;
         var status = _owner.Status;
+        StartCommand.NotifyCanExecuteChanged(); StopCommand.NotifyCanExecuteChanged();
         StatusText = status.State switch
         {
             ProxyState.Stopped => "已停止", ProxyState.Starting => "正在启动", ProxyState.Running => "运行中",
@@ -66,6 +73,11 @@ public sealed partial class ProxyPanelModel : ObservableObject, IDisposable
         Address = status.Runtime is { } info ? $"127.0.0.1:{info.Port}" : "尚未监听";
         ProtocolPolicy = status.Runtime?.ProtocolPolicy ?? "启动后显示实际协议范围";
         CertificatePem = status.Runtime is { } active ? System.Security.Cryptography.PemEncoding.WriteString("CERTIFICATE", Convert.FromBase64String(active.PublicRootCertificate)) : "";
+        if (status.Runtime is { } certificate)
+        {
+            using var publicRoot = System.Security.Cryptography.X509Certificates.X509CertificateLoader.LoadCertificate(Convert.FromBase64String(certificate.PublicRootCertificate));
+            CertificateInfo = $"运行代次 {status.Generation} · SHA-256 {publicRoot.GetCertHashString(System.Security.Cryptography.HashAlgorithmName.SHA256)}\n有效至 {publicRoot.NotAfter:yyyy-MM-dd HH:mm}；客户端是否信任仍需按实际连接确认。";
+        }
         var metrics = _owner.Metrics;
         MetricsText = $"活动 {metrics.ActiveRequests} · 已观察 {metrics.ReceivedBytes:N0} 字节 · 已保存 {metrics.StoredBytes:N0} 字节 · 拒绝 {metrics.RejectedRequests} · 已淘汰 {metrics.EvictedObservations}";
         // 诊断页仅显示最近 8 条元信息；不是 M1 的完整列表或正文查看器。

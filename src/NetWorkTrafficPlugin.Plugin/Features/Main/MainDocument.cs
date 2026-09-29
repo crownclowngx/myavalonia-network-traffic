@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using NetWorkTrafficPlugin.Constants;
 using MyAvaloniaManagement.PluginSdk;
 using NetWorkTrafficPlugin.Features.ProxyStatus;
+using NetWorkTrafficPlugin.Features.Capture;
 
 namespace NetWorkTrafficPlugin.Features.Main;
 
@@ -10,10 +11,11 @@ public sealed partial class MainDocument :
     IPluginDocument,
     IWorkbenchDocumentCommandTarget, IDisposable
 {
-    public MainDocument(ProxyPanelModel proxy) => Proxy = proxy;
+    public MainDocument(ProxyPanelModel proxy, CaptureWorkspace? capture = null) { Proxy = proxy; Capture = capture; }
     public ProxyPanelModel Proxy { get; }
-    public void Dispose() => Proxy.Dispose();
-    private DocumentPresentationState _presentation = new("示例文档");
+    public CaptureWorkspace? Capture { get; }
+    public void Dispose() { Capture?.Dispose(); Proxy.Dispose(); }
+    private DocumentPresentationState _presentation = new("HTTP 工作台");
     private int _workbenchMessageApplied;
 
     [ObservableProperty]

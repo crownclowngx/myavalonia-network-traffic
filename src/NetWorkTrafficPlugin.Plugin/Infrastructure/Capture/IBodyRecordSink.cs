@@ -8,7 +8,7 @@ public interface IBodyRecordSink : IAsyncDisposable
 }
 
 /// <summary>每次运行独立目录，只创建本次请求 GUID 文件；不截断或清理已有用户文件。</summary>
-public sealed class FileBodyRecordSink(string directory) : IBodyRecordSink
+public sealed class FileBodyRecordSink(string directory, bool publishWrites = false) : IBodyRecordSink
 {
     private readonly Dictionary<Guid, FileStream> _files = [];
     public async ValueTask WriteAsync(Guid id, ReadOnlyMemory<byte> bytes, CancellationToken cancellationToken)
@@ -21,6 +21,9 @@ public sealed class FileBodyRecordSink(string directory) : IBodyRecordSink
             _files.Add(id, file);
         }
         await file.WriteAsync(bytes, cancellationToken).ConfigureAwait(false);
+        // M1 的 CommittedBytes 用作实时读取与存档快照水位，必须先把 FileStream 缓冲交给文件。
+        // M0 保持原路径；本操作不要求每块强制物理落盘，存档提交时另执行耐久 flush。
+        if (publishWrites) await file.FlushAsync(cancellationToken).ConfigureAwait(false);
     }
     public async ValueTask CompleteAsync(Guid id)
     {

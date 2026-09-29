@@ -1,0 +1,98 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:vm="using:NetWorkTrafficPlugin.Features.Capture" xmlns:model="using:NetWorkTrafficPlugin.Application.Capture"
+ xmlns:content="using:NetWorkTrafficPlugin.Application.Content"
+ x:Class="NetWorkTrafficPlugin.Features.Capture.CaptureView" x:DataType="vm:CaptureWorkspace">
+ <UserControl.Styles><Style Selector="TabItem"><Setter Property="FontSize" Value="13" /><Setter Property="Padding" Value="7,4" /><Setter Property="MinHeight" Value="28" /></Style></UserControl.Styles>
+ <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12" RowSpacing="8">
+  <StackPanel Spacing="6">
+   <WrapPanel>
+    <TextBox x:Name="FilterBox" Text="{Binding Keyword}" PlaceholderText="域名 / 路径关键字" Width="180" Margin="0,0,6,4" />
+    <Button x:Name="FollowButton" Content="{Binding FollowLabel}" Command="{Binding ToggleFollowCommand}" />
+   </WrapPanel>
+   <Expander Header="更多筛选与保存 / 打开记录">
+    <ScrollViewer MaxHeight="180"><StackPanel Spacing="6">
+     <WrapPanel>
+      <ComboBox ItemsSource="{Binding MethodChoices}" SelectedIndex="{Binding MethodIndex}" Width="110" Margin="0,0,6,4" />
+      <ComboBox ItemsSource="{Binding StatusChoices}" SelectedIndex="{Binding StatusIndex}" Width="110" Margin="0,0,6,4" />
+      <CheckBox Content="接收中" IsChecked="{Binding OnlyReceiving}" Margin="0,0,8,0" />
+      <CheckBox Content="失败" IsChecked="{Binding OnlyFailed}" Margin="0,0,8,0" />
+      <Button Content="清除筛选" Command="{Binding ClearFilterCommand}" Margin="0,0,6,4" />
+      <Button Content="清空本页" Command="{Binding ClearViewCommand}" Margin="0,0,6,4" />
+     </WrapPanel>
+     <WrapPanel><TextBox Text="{Binding MethodFilter}" PlaceholderText="方法集合，如 GET,POST" Width="210" Margin="0,0,6,4" /><TextBox Text="{Binding StatusCodeFilter}" PlaceholderText="精确状态码" Width="110" /><TextBlock Text="来源：Captured" VerticalAlignment="Center" Margin="8,0,0,0" /></WrapPanel>
+     <WrapPanel><TextBox Text="{Binding FromText}" PlaceholderText="开始时间（含）" Width="210" Margin="0,0,6,0" /><TextBox Text="{Binding ToText}" PlaceholderText="结束时间（不含）" Width="210" /></WrapPanel>
+     <TextBox x:Name="ArchivePathBox" Text="{Binding ArchivePath}" PlaceholderText="存档目录；保存使用新目录名" />
+     <WrapPanel>
+      <Button x:Name="SaveButton" Content="保存快照" Command="{Binding SaveCommand}" Margin="0,0,6,0" />
+      <Button Content="取消保存" Command="{Binding CancelSaveCommand}" IsEnabled="{Binding Saving}" Margin="0,0,6,0" />
+      <Button x:Name="OpenButton" Content="打开存档" Command="{Binding OpenCommand}" Margin="0,0,6,0" />
+      <Button Content="恢复工作日志" Command="{Binding RecoverCommand}" Margin="0,0,6,0" />
+      <Button Content="返回实时" Command="{Binding LiveCommand}" />
+     </WrapPanel>
+     <TextBlock Text="保存已提交正文与元信息，包含真实请求内容；达到限额的部分不会补下载。" TextWrapping="Wrap" Opacity="0.7" />
+    </StackPanel></ScrollViewer>
+   </Expander>
+  </StackPanel>
+  <TextBlock Grid.Row="1" Text="{Binding Status}" TextWrapping="Wrap" />
+  <Grid x:Name="MainGrid" Grid.Row="2" ColumnDefinitions="*,8,1.2*">
+   <Border x:Name="ListPane" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" CornerRadius="6">
+    <Grid RowDefinitions="Auto,*">
+     <TextBlock Text="方法 / 地址 · 状态 · 观察 / 保存" Margin="10" FontWeight="SemiBold" />
+     <ListBox x:Name="TrafficList" Grid.Row="1" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}">
+      <ListBox.ItemsPanel><ItemsPanelTemplate><VirtualizingStackPanel /></ItemsPanelTemplate></ListBox.ItemsPanel>
+      <ListBox.ItemTemplate><DataTemplate x:DataType="model:TrafficSummary">
+       <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,58" Margin="2,4">
+        <TextBlock Text="{Binding Method}" FontWeight="SemiBold" />
+        <TextBlock Grid.Column="1" Text="{Binding StatusText}" HorizontalAlignment="Right" />
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Host}" TextTrimming="CharacterEllipsis" />
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Path}" TextTrimming="CharacterEllipsis" Opacity="0.7" />
+        <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding SizeText}" FontSize="11" TextTrimming="CharacterEllipsis" />
+        <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding StateText}" FontSize="11" TextTrimming="CharacterEllipsis" />
+        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding TimingText}" FontSize="11" TextTrimming="CharacterEllipsis" />
+       </Grid>
+      </DataTemplate></ListBox.ItemTemplate>
+     </ListBox>
+    </Grid>
+   </Border>
+   <Border x:Name="DetailsPane" Grid.Column="2" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" CornerRadius="6" Padding="8">
+    <Grid RowDefinitions="Auto,*" RowSpacing="6">
+     <WrapPanel>
+      <Button Content="返回列表" Command="{Binding BackCommand}" IsVisible="{Binding IsCompact}" Margin="0,0,8,0" />
+      <CheckBox Content="显示原值" IsChecked="{Binding RevealSensitive}" />
+     </WrapPanel>
+     <TabControl Grid.Row="1" x:Name="DetailsTabs">
+      <TabControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></TabControl.ItemsPanel>
+      <TabItem Header="正文">
+       <ScrollViewer x:Name="BodyScroll"><StackPanel Spacing="6">
+        <CheckBox Content="查看请求正文（否则为响应）" IsChecked="{Binding RequestSelected}" />
+        <TextBlock Text="{Binding BodyStatus}" TextWrapping="Wrap" Opacity="0.8" />
+         <StackPanel Spacing="6">
+          <Image Source="{Binding ImageSource}" IsVisible="{Binding HasImage}" MaxHeight="512" Stretch="Uniform" />
+          <TreeView ItemsSource="{Binding JsonNodes}" IsVisible="{Binding HasJson}">
+           <TreeView.ItemTemplate><TreeDataTemplate x:DataType="vm:JsonPreviewNode" ItemsSource="{Binding Children}"><TextBlock Text="{Binding Label}" TextWrapping="Wrap" /></TreeDataTemplate></TreeView.ItemTemplate>
+          </TreeView>
+          <TextBox x:Name="BodyTextBox" Text="{Binding BodyText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="80" />
+          <TextBlock Text="{Binding StreamStatus}" IsVisible="{Binding HasStream}" TextWrapping="Wrap" />
+          <ItemsControl ItemsSource="{Binding Events}" IsVisible="{Binding HasStream}">
+           <ItemsControl.ItemTemplate><DataTemplate x:DataType="content:StreamEvent">
+            <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" Padding="4">
+             <StackPanel><TextBlock Text="{Binding Type}" FontWeight="SemiBold" /><TextBlock Text="{Binding Data}" TextWrapping="Wrap" /><TextBlock Text="{Binding Error}" TextWrapping="Wrap" /></StackPanel>
+            </Border>
+           </DataTemplate></ItemsControl.ItemTemplate>
+          </ItemsControl>
+         </StackPanel>
+       </StackPanel></ScrollViewer>
+      </TabItem>
+      <TabItem Header="概览"><TextBox Text="{Binding Overview, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
+      <TabItem Header="Query"><TextBox Text="{Binding QueryText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
+      <TabItem Header="请求头"><TextBox Text="{Binding RequestHeadersText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
+      <TabItem Header="响应头"><TextBox Text="{Binding ResponseHeadersText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
+      <TabItem Header="Cookie"><TextBox Text="{Binding CookiesText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
+      <TabItem Header="导出"><StackPanel Spacing="8"><TextBox Text="{Binding ExportPath}" PlaceholderText="导出到新文件" /><Button Content="导出已保存正文" Command="{Binding ExportCommand}" /><TextBlock Text="只复制当前方向已经保存的字节；部分内容仍为部分，不会重新下载。" TextWrapping="Wrap" /></StackPanel></TabItem>
+     </TabControl>
+    </Grid>
+   </Border>
+  </Grid>
+  <TextBlock Grid.Row="3" Text="{Binding Message}" TextWrapping="Wrap" MaxHeight="60" />
+ </Grid>
+</UserControl>

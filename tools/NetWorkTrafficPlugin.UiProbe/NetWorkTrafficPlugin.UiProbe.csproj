@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" />
+    <!-- 测量工具复用受控端点；生产插件没有反向引用测试或探针。 -->
+    <ProjectReference Include="../../tests/NetWorkTrafficPlugin.Tests/NetWorkTrafficPlugin.Tests.csproj" />
+  </ItemGroup>
+</Project>

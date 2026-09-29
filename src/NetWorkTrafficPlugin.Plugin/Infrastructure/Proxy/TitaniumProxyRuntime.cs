@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
 using NetWorkTrafficPlugin.Application.Proxy;
 using NetWorkTrafficPlugin.Infrastructure.Capture;
+using NetWorkTrafficPlugin.Application.Capture;
 using Titanium.Web.Proxy;
 using Titanium.Web.Proxy.EventArguments;
 using Titanium.Web.Proxy.Models;
@@ -14,7 +15,7 @@ namespace NetWorkTrafficPlugin.Infrastructure.Proxy;
 /// 唯一接触 Titanium 的适配器。每次运行创建独立库实例、证书及记录器；请求携带不可变路由，
 /// 不修改全局上游目的地。所有回调只做有界内存工作，磁盘由记录器后台完成。
 /// </summary>
-public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : IProxyRuntime
+public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null, CaptureSessionStore? captures = null) : IProxyRuntime
 {
     private sealed class Observation(Guid id, string method, RouteDecision route, string protocol, long connection, BoundedBodyRecorder.Entry entry)
     {
@@ -30,7 +31,7 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
         public long OriginConnection;
         public SessionEventArgs? Session;
         public long LastBodyActivity;
-        public bool ResponseStarted, IdleExpired;
+        public bool ResponseStarted, IdleExpired, IdleUnsupportedReported;
     }
     private readonly object _sync = new();
     private readonly Dictionary<Guid, Observation> _active = [];
@@ -45,6 +46,9 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
     private Task? _stop, _dispose;
     private readonly CancellationTokenSource _idleCancellation = new();
     private Task? _idleTask;
+    private LiveCaptureSession? _capture;
+    private FileStream? _rootLease;
+    public LiveCaptureSession? Capture => _capture;
 
     public Task<ProxyRuntimeInfo> StartAsync(ProxyOptions options, CancellationToken cancellationToken)
     {
@@ -56,7 +60,25 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
         if (options.UpstreamTestRoot is not null)
             _upstreamRoot = X509CertificateLoader.LoadCertificate(Convert.FromBase64String(options.UpstreamTestRoot));
         var directory = options.RecordDirectory is null ? null : Path.Combine(Path.GetFullPath(options.RecordDirectory), Guid.NewGuid().ToString("N"));
-        _recorder = new(options.EffectiveLimits, new FileBodyRecordSink(directory ?? Path.GetTempPath()), directory);
+        CaptureDiskBudget? disk = null;
+        if (options.EffectiveLimits.Profile == CaptureProfile.M1)
+        {
+            var root = Path.GetFullPath(options.RecordDirectory ?? throw new ArgumentException("M1 需要独立的会话目录。"));
+            Directory.CreateDirectory(root);
+            CaptureDiskBudget.EnsureRegular(root);
+            CaptureDiskBudget.EnsureRegular(Path.Combine(root, ".capture.lock"));
+            var marker = Path.Combine(root, ".network-traffic-root"); CaptureDiskBudget.EnsureRegular(marker);
+            _rootLease = new FileStream(Path.Combine(root, ".capture.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+            if (File.Exists(marker) && (new FileInfo(marker).Length > 16 || File.ReadAllText(marker) != "V3/M1")) throw new IOException("工作根所有权标记冲突。");
+            if (!File.Exists(marker)) File.WriteAllText(marker, "V3/M1");
+            disk = new(root, options.EffectiveLimits.DiskBytes);
+        }
+        _recorder = new(options.EffectiveLimits, new FileBodyRecordSink(directory ?? Path.GetTempPath(), disk is not null), directory, disk);
+        if (disk is not null)
+        {
+            _capture = new(directory!, options.EffectiveLimits, _recorder, disk, captures?.ContentBudget);
+            captures?.Publish(_capture);
+        }
         // 库构造器默认允许安装用户根，这里必须显式关闭。根直接赋值，Start 不再读取或生成持久 PFX。
         var server = _server = new ProxyServer(null, null, userTrustRootCertificate: false, machineTrustRootCertificate: false)
         {
@@ -83,6 +105,7 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
         server.CertificateManager.DisableWildCardCertificates = true;
         server.BeforeRequest += BeforeRequest;
         server.BeforeResponse += BeforeResponse;
+        server.OnRequestBodyWrite += OnRequestBody;
         server.OnResponseBodyWrite += OnBody;
         server.AfterResponse += AfterResponse;
         if (_upstreamRoot is not null) server.ServerCertificateValidationCallback += ValidateOrigin;
@@ -134,6 +157,9 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
             observation.Session = args;
             args.UserData = observation;
             _active.Add(id, observation);
+            _capture?.Begin(id, request.Method, route, request.HttpVersion.ToString(),
+                request.Headers.GetAllHeaders().Select(h => new HeaderField(h.Name, h.Value)).ToArray(),
+                !request.HasBody ? 0 : request.ContentLength >= 0 ? request.ContentLength : null, _options.Capture, entry);
         }
         return Task.CompletedTask;
     }
@@ -154,6 +180,8 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
                 observation.ResponseStarted = true;
                 observation.LastBodyActivity = System.Diagnostics.Stopwatch.GetTimestamp();
             }
+            _capture?.Response(observation.Id, response.StatusCode, response.HttpVersion.ToString(),
+                response.Headers.GetAllHeaders().Select(h => new HeaderField(h.Name, h.Value)).ToArray());
         }
         return Task.CompletedTask;
     }
@@ -164,7 +192,14 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
         {
             lock (_sync) observation.LastBodyActivity = System.Diagnostics.Stopwatch.GetTimestamp();
             _recorder!.Observe(observation.Entry, args.BodyBytes);
+            _capture?.ResponseBytes(observation.Id, args.BodyBytes);
         }
+        return Task.CompletedTask;
+    }
+
+    private Task OnRequestBody(object sender, BeforeBodyWriteEventArgs args)
+    {
+        if (args.Session.UserData is Observation observation) _capture?.RequestBytes(observation.Id, args.BodyBytes);
         return Task.CompletedTask;
     }
 
@@ -181,6 +216,7 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
                 observation.Failure = observation.IdleExpired ? "响应读取空闲超时。" :
                     args.Exception is null ? null : $"传输失败（{args.Exception.GetType().Name}）。";
                 observation.Session = null; // 最近记录不能继续持有库会话/连接对象。
+                _capture?.Complete(observation.Id, _recorder.Snapshot(observation.Entry).TransportState, observation.Failure);
                 Retain(observation);
                 // 固定库版本在 h1 短读后仍可能保留客户端连接。显式结束这个会话，
                 // 让客户端立即看到不完整响应，不能一直等待声明长度。h2 不终止整条多流连接。
@@ -196,7 +232,8 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
     {
         if (_options.Capture == CaptureMode.None) return;
         _recent.Enqueue(observation);
-        while (_recent.Count > _options.EffectiveLimits.RetainedRequests) { _recent.Dequeue(); _evicted++; }
+        var keep = _capture is null ? _options.EffectiveLimits.RetainedRequests : 8;
+        while (_recent.Count > keep) { _recent.Dequeue(); _evicted++; }
     }
 
     /// <summary>单个运行一个检查任务；只检查已经开始响应的会话，活跃长流不会被总时长终止。</summary>
@@ -211,15 +248,26 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
                 lock (_sync)
                 {
                     foreach (var observation in _active.Values)
-                        if (observation.ResponseStarted && !observation.IdleExpired && observation.Session is { } session &&
+                        if (observation.ResponseStarted && !observation.IdleExpired && !observation.IdleUnsupportedReported && observation.Session is { } session &&
                             System.Diagnostics.Stopwatch.GetElapsedTime(observation.LastBodyActivity).TotalSeconds >= _options.ResponseIdleSeconds)
                         {
+                            // 固定 7.0.13 的 TerminateSession 取消源属于连接，而非 h2 stream，且可能已经释放。
+                            // 不能为结束一条沉默流破坏同连接其他请求。能力不足必须披露，不能把仍在传输的流伪装成 Failed。
+                            if (observation.ClientProtocol == "2.0")
+                            {
+                                observation.IdleUnsupportedReported = true;
+                                observation.Failure = ProxyProtocolCapabilities.Http2IdleNotice;
+                                _capture?.ReportIssue(observation.Id, new("IdleRead", "UnsupportedH2Cancellation", observation.Failure));
+                                continue;
+                            }
                             observation.IdleExpired = true;
                             expired.Add(session);
                         }
                 }
                 // 取消可能同步触发库回调，必须离开状态锁后调用。
-                foreach (var session in expired) session.TerminateSession();
+                foreach (var session in expired)
+                    try { session.TerminateSession(); }
+                    catch (ObjectDisposedException) { /* 检查与正常完成竞争：库已经释放的会话无需再次取消。 */ }
             }
         }
         catch (OperationCanceledException) when (_idleCancellation.IsCancellationRequested) { }
@@ -259,11 +307,16 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
                     _recorder!.Complete(observation.Entry, TransportState.Cancelled);
                     observation.Completed = DateTimeOffset.UtcNow;
                     observation.Session = null;
+                    _capture?.Complete(observation.Id, TransportState.Cancelled, "代理停止时仍在接收。");
                     Retain(observation);
                 }
                 _active.Clear();
             }
-            try { if (_recorder is not null) await _recorder.DisposeAsync().ConfigureAwait(false); }
+            try
+            {
+                if (_recorder is not null) await _recorder.DisposeAsync().ConfigureAwait(false);
+                if (_capture is not null) await _capture.DisposeAsync().ConfigureAwait(false);
+            }
             finally { await CloseServerConnectionsAsync().ConfigureAwait(false); }
         }
         if (_server is { ClientConnectionCount: > 0 }) throw new InvalidOperationException("代理仍有客户端连接未释放。");
@@ -294,12 +347,14 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null) : I
                     _server.BeforeRequest -= BeforeRequest;
                     _server.BeforeResponse -= BeforeResponse;
                     _server.OnResponseBodyWrite -= OnBody;
+                    _server.OnRequestBodyWrite -= OnRequestBody;
                     _server.AfterResponse -= AfterResponse;
                     _server.ServerCertificateValidationCallback -= ValidateOrigin;
                 }
                 _root?.Dispose();
                 _upstreamRoot?.Dispose();
                 _idleCancellation.Dispose();
+                _rootLease?.Dispose();
             }
         }));
     }

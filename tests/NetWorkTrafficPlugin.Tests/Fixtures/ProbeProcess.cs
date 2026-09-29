@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using NetWorkTrafficPlugin.Application.Proxy;
 using NetWorkTrafficPlugin.Infrastructure.Proxy;
+using NetWorkTrafficPlugin.Application.Capture;
 
 namespace NetWorkTrafficPlugin.Tests.Fixtures;
 
@@ -61,6 +62,7 @@ public sealed class ProbeProcess : IAsyncDisposable
         return new(phase, DateTimeOffset.UtcNow, _process.PrivateMemorySize64, _process.WorkingSet64,
             snapshot.ManagedBytes, _process.HandleCount, snapshot.Metrics.ActiveRequests, snapshot.Metrics.QueueBytes, snapshot.Metrics.StoredBytes);
     }
+    public Task<TrafficRecord[]> CaptureAsync() => CommandAsync<TrafficRecord[]>("capture");
     public async Task<(ProxyMetrics Metrics, double Milliseconds, int ExitCode, int Handles)> StopAsync()
     {
         var elapsed = Stopwatch.StartNew();

@@ -5,6 +5,7 @@ using NetWorkTrafficPlugin.Application.Proxy;
 using NetWorkTrafficPlugin.Features.Main;
 using NetWorkTrafficPlugin.Features.ProxyStatus;
 using NetWorkTrafficPlugin.Plugin;
+using NetWorkTrafficPlugin.Tests.Fixtures;
 using Xunit;
 
 namespace NetWorkTrafficPlugin.Tests.Integration;
@@ -22,6 +23,8 @@ public sealed class CompositionTests
         Assert.Equal(ProxyState.Stopped, owner.Status.State);
         using var first = services.GetRequiredService<MainDocument>();
         using var second = services.GetRequiredService<MainDocument>();
+        var directory = TemporaryArtifacts.Create();
+        first.Proxy.RecordDirectory = directory;
         Assert.NotSame(first.Proxy, second.Proxy);
         await first.Proxy.StartCommand.ExecuteAsync(null);
         var port = owner.Status.Runtime!.Port;
@@ -47,6 +50,7 @@ public sealed class CompositionTests
         Assert.Equal(ProxyState.Disposed, owner.Status.State);
         using var listener = new TcpListener(IPAddress.Loopback, port);
         listener.Start();
+        TemporaryArtifacts.Delete(directory);
     }
 
     [Fact]
