@@ -17,7 +17,7 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
         public TrafficRecord Record = record;
         public readonly BoundedBodyRecorder.Entry Request = request, Response = response;
         public readonly long Started = Stopwatch.GetTimestamp();
-        public bool Finished;
+        public bool Finished, RequiresRequestTerminator, RequestTerminatorObserved;
         public long Cost;
     }
     private readonly object _sync = new();
@@ -46,7 +46,7 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
         _journal = new(directory, budget);
     }
     public Guid Begin(Guid id, string method, RouteDecision route, string protocol, HeaderField[] headers, long? expected,
-        CaptureMode mode, BoundedBodyRecorder.Entry response)
+        CaptureMode mode, BoundedBodyRecorder.Entry response, bool requiresRequestTerminator = false)
     {
         lock (_sync)
         {
@@ -58,7 +58,7 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
                 bounded, [], BodyDescriptor.Empty(requestId, BodyDirection.Request) with
                 { ContentType = Header(bounded, "Content-Type"), ContentEncoding = Header(bounded, "Content-Encoding") },
                 BodyDescriptor.Empty(id, BodyDirection.Response), partial, null);
-            var entry = new Entry(record, request, response) { Cost = 512 + 2L * (route.OriginalUri.Length + route.EffectiveUri.Length) };
+            var entry = new Entry(record, request, response) { Cost = 512 + 2L * (route.OriginalUri.Length + route.EffectiveUri.Length), RequiresRequestTerminator = requiresRequestTerminator };
             _entries.Add(id, entry); _summaryBytes += entry.Cost;
             if (!_journal.TryAppend(Current(entry))) entry.Record = record with { MetadataPartial = true };
             return requestId;
@@ -88,10 +88,14 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
                 _recorder.Complete(e.Request, TransportState.Completed);
         }
     }
-    public void RequestBytes(Guid id, ReadOnlySpan<byte> bytes)
+    public void RequestBytes(Guid id, ReadOnlySpan<byte> bytes, bool isLastChunk = false)
     {
         BoundedBodyRecorder.Entry? request;
-        lock (_sync) request = _entries.TryGetValue(id, out var e) && !e.Finished ? e.Request : null;
+        lock (_sync)
+        {
+            request = _entries.TryGetValue(id, out var e) && !e.Finished ? e.Request : null;
+            if (request is not null && isLastChunk) e!.RequestTerminatorObserved = true;
+        }
         if (request is not null) _recorder.Observe(request, bytes);
     }
     public void ResponseBytes(Guid id, ReadOnlySpan<byte> bytes)
@@ -108,10 +112,18 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
         lock (_sync)
         {
             if (!_entries.TryGetValue(id, out var e) || e.Finished) return;
-            e.Finished = true; _recorder.Complete(e.Request, state);
+            // 固定库在 h1 chunked 的块边界遇到客户端 EOF 时可能向上游补写结束块，
+            // 即使客户端没有发送 0 块也产生成功响应。上游成功不能证明原始上传完整；
+            // 只采信公开 BodyWrite 回调观测到的真实末块，不伪造预期长度或修改请求内容。
+            var missingTerminator = e.RequiresRequestTerminator && !e.RequestTerminatorObserved;
+            const string framingReason = "未观察到 chunked 请求结束块，仅保留已收到的前缀；客户端可能提前断开。";
+            e.Finished = true;
+            _recorder.Complete(e.Request, missingTerminator && state == TransportState.Completed ? TransportState.Failed : state,
+                missingTerminator ? framingReason : null);
             _streams.Complete(id, state == TransportState.Completed);
             e.Record = e.Record with { CompletedUtc = DateTimeOffset.UtcNow, ElapsedMilliseconds = Stopwatch.GetElapsedTime(e.Started).TotalMilliseconds,
-                Failure = failure is null ? null : new("Transport", state.ToString(), failure), Revision = ++_revision };
+                Failure = missingTerminator ? new("RequestBody", "IncompleteFraming", framingReason) :
+                    failure is null ? null : new("Transport", state.ToString(), failure), Revision = ++_revision };
             _finished.Enqueue(id); CacheAndJournal(e); Evict();
         }
     }

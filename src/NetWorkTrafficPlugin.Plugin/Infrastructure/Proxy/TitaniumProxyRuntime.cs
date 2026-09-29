@@ -159,7 +159,8 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null, Cap
             _active.Add(id, observation);
             _capture?.Begin(id, request.Method, route, request.HttpVersion.ToString(),
                 request.Headers.GetAllHeaders().Select(h => new HeaderField(h.Name, h.Value)).ToArray(),
-                !request.HasBody ? 0 : request.ContentLength >= 0 ? request.ContentLength : null, _options.Capture, entry);
+                !request.HasBody ? 0 : request.ContentLength >= 0 ? request.ContentLength : null, _options.Capture, entry,
+                requiresRequestTerminator: request.HttpVersion == HttpVersion.Version11 && request.IsChunked);
         }
         return Task.CompletedTask;
     }
@@ -199,7 +200,7 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null, Cap
 
     private Task OnRequestBody(object sender, BeforeBodyWriteEventArgs args)
     {
-        if (args.Session.UserData is Observation observation) _capture?.RequestBytes(observation.Id, args.BodyBytes);
+        if (args.Session.UserData is Observation observation) _capture?.RequestBytes(observation.Id, args.BodyBytes, args.IsLastChunk);
         return Task.CompletedTask;
     }
 

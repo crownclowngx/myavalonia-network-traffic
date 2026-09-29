@@ -90,13 +90,14 @@ public sealed class BoundedBodyRecorder : IAsyncDisposable
         }
     }
 
-    public void Complete(Entry entry, TransportState state)
+    public void Complete(Entry entry, TransportState state, string? reason = null)
     {
         lock (_sync)
         {
             if (entry.Finished) return;
             entry.Finished = true;
             entry.Transport = state;
+            entry.Reason ??= reason;
             if (state == TransportState.Completed && entry.Expected is { } length && length != entry.Observed)
             {
                 entry.Transport = TransportState.Failed;

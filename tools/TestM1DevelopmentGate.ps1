@@ -21,7 +21,9 @@ foreach ($h2 in @($false,$true)) { foreach ($encoding in @('gzip','br')) {
     $capture["encoded-$h2-$encoding"] = @{ RecordId = [guid]::NewGuid(); ClientProtocol = $version; OriginProtocol = $version; representation = 'EncodedEntity'; requestObserved = 8; requestStored = 8; responseObserved = 9; responseStored = 9; requestHash = $hash; responseHash = $hash; receipts = 1 }
 } }
 foreach ($known in @($false,$true)) { foreach ($cancel in @($false,$true)) {
-    $capture["upload-$known-$cancel"] = @{ knownLength = $known; cancel = $cancel; observedBeforeEnd = 65536; observed = $(if ($cancel) {65536} else {2097152}); state = 'Partial'; transport = $(if ($cancel) {'Failed'} else {'Completed'}); receipts = $(if ($cancel) {0} else {1}) }
+    $receiptHashes = if ($cancel -and $known) { @() } elseif ($cancel) { @('B' * 64) } else { @($hash) }
+    $capture["upload-$known-$cancel"] = @{ knownLength = $known; cancel = $cancel; observedBeforeEnd = 65536; observed = $(if ($cancel) {65536} else {2097152}); state = 'Partial'; transport = $(if ($cancel) {'Failed'} else {'Completed'}); receipts = @($receiptHashes).Count;
+        receiptHashes = @($receiptHashes); expectedCompleteHash = $hash; expectedObservedHash = $(if ($cancel) {'B' * 64} else {$hash}); stateBeforeStop = 'Partial' }
 } }
 foreach ($pair in @(@(200,'HEAD',0),@(204,'GET',0),@(304,'GET',0),@(302,'GET',0),@(206,'GET',4))) {
     $capture["response-$($pair[0])-$($pair[1])"] = @{ status = $pair[0]; method = $pair[1]; bytes = $pair[2]; observed = $pair[2]; receipts = 1 }
@@ -96,6 +98,9 @@ BrokenEvidence 'm1-capture' { param($d) $d.profileHash = 'changed' }
 BrokenEvidence 'm1-capture' { param($d) $d.recordedUtc = $since.AddDays(-1) }
 BrokenEvidence 'm1-capture' { param($d) $d.scenarios['encoded-True-br'].receipts = '1' }
 BrokenEvidence 'm1-capture' { param($d) $d.scenarios['upload-True-True'].cancel = 'true' }
+BrokenEvidence 'm1-capture' { param($d) $d.scenarios['upload-False-True'].receiptHashes = @($d.scenarios['upload-False-True'].expectedCompleteHash) }
+BrokenEvidence 'm1-capture' { param($d) $d.scenarios['upload-False-True'].stateBeforeStop = 'Complete' }
+BrokenEvidence 'm1-capture' { param($d) $d.scenarios['upload-False-True'].transport = 'Completed' }
 BrokenEvidence 'm1-storage' { param($d) $d.scenarios['snapshot-watermark'].copied = 6 }
 BrokenEvidence 'm1-storage' { param($d) $d.scenarios['snapshot-watermark'].state = 'Completed' }
 BrokenEvidence 'm1-storage' { param($d) $d.scenarios.roundtrip.reopenedRunning = $true }

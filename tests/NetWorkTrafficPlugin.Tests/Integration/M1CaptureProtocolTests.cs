@@ -106,10 +106,29 @@ public sealed class M1CaptureProtocolTests
             var observedBeforeEnd = receiving.RequestBody.ObservedBytes;
             if (cancel) { cancellation.Cancel(); await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => { using var ignored = await sending; }); }
             else { release.SetResult(); using var response = await sending; response.EnsureSuccessStatusCode(); Assert.Equal(TransferDigest.Expected(2 << 20), Assert.Single(origin.Receipts).BodyHash); }
+            // 客户端取消不等于上游从未收到字节。尤其未知长度请求，上游可能完成一个短前缀；
+            // 用实际摘要证明没有交付计划中的完整体，并在 Stop 前观察真实终态，避免 Stop 掩盖错误。
+            using (var finishing = new CancellationTokenSource(TimeSpan.FromSeconds(20)))
+                while (proxy.Runtime.GetMetrics().ActiveRequests != 0) await Task.Delay(10, finishing.Token);
+            var beforeStop = (await session.ReadAsync(id, default))!;
+            Assert.NotEqual(CaptureState.Complete, beforeStop.RequestBody.Capture);
+            if (cancel) Assert.NotEqual(TransportState.Completed, beforeStop.RequestBody.Transport);
+            else Assert.Equal(TransportState.Completed, beforeStop.RequestBody.Transport);
             await proxy.Runtime.StopAsync(); var ended = (await session.ReadAsync(id, default))!;
             Assert.NotEqual(CaptureState.Complete, ended.RequestBody.Capture);
             Assert.Equal(knownLength ? 2L << 20 : null, ended.RequestBody.ExpectedBytes);
-            ProbeEvidence.Write("m1-capture", $"upload-{knownLength}-{cancel}", new { knownLength, cancel, observedBeforeEnd, observed = ended.RequestBody.ObservedBytes, state = ended.RequestBody.Capture.ToString(), transport = ended.RequestBody.Transport.ToString(), receipts = origin.Receipts.Count });
+            var receiptHashes = origin.Receipts.Select(r => r.BodyHash).ToArray();
+            var expectedCompleteHash = TransferDigest.Expected(2 << 20);
+            var expectedObservedHash = TransferDigest.Expected(ended.RequestBody.ObservedBytes);
+            if (cancel)
+            {
+                Assert.True(ended.RequestBody.ObservedBytes < 2 << 20); Assert.True(receiptHashes.Length <= 1);
+                Assert.DoesNotContain(expectedCompleteHash, receiptHashes);
+                Assert.All(receiptHashes, hash => Assert.Equal(expectedObservedHash, hash));
+            }
+            ProbeEvidence.Write("m1-capture", $"upload-{knownLength}-{cancel}", new { knownLength, cancel, observedBeforeEnd, observed = ended.RequestBody.ObservedBytes,
+                state = ended.RequestBody.Capture.ToString(), transport = ended.RequestBody.Transport.ToString(), receipts = origin.Receipts.Count,
+                receiptHashes, expectedCompleteHash, expectedObservedHash, stateBeforeStop = beforeStop.RequestBody.Capture.ToString() });
         }
         finally { TemporaryArtifacts.Delete(directory); }
     }

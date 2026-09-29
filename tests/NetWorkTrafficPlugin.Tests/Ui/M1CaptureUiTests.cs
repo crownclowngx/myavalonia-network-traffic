@@ -112,6 +112,12 @@ public sealed class M1CaptureUiTests
                 Click(window, view.FindControl<Button>("OpenButton")!);
                 if (model.OpenCommand.ExecutionTask is { } opening) await opening;
                 Assert.True(model.IsReadOnly); Assert.True(fixture.Session.Snapshot().IsRunning);
+                // 打开改变数据源后等待生产刷新，截图必须显示只读记录，不能截到上一帧实时投影。
+                using (var refreshed = new CancellationTokenSource(TimeSpan.FromSeconds(5)))
+                    while (!model.Status.Contains("只读", StringComparison.Ordinal))
+                    { await Task.Delay(10, refreshed.Token); await model.RefreshAsync(); Pump(window); }
+                list.SelectedIndex = 0; await model.DetailTask; Pump(window);
+                Assert.Contains("只读", model.Status); Assert.Single(model.Rows); Assert.Contains("Partial", model.BodyStatus);
                 Save(window, "m1-readonly-partial.png");
                 ProbeEvidence.Write("m1-ui", "interaction", new { saved = true, readOnly = model.IsReadOnly,
                     liveStillRunning = fixture.Session.Snapshot().IsRunning, follow = model.Follow, realHost = false });

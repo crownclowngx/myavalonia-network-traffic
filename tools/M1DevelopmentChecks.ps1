@@ -61,11 +61,18 @@ function Test-M1CaptureEvidence($Capture, $Storage, $Lifetime, $Query) {
     }
     foreach ($known in @('False','True')) { foreach ($cancel in @('False','True')) {
         $item = $Capture["upload-$known-$cancel"]
-        Require-M1Fields $item @('knownLength','cancel','observedBeforeEnd','observed','state','transport','receipts')
+        Require-M1Fields $item @('knownLength','cancel','observedBeforeEnd','observed','state','transport','receipts','receiptHashes','expectedCompleteHash','expectedObservedHash','stateBeforeStop')
         Require-M1Boolean $item 'knownLength' ($known -eq 'True'); Require-M1Boolean $item 'cancel' ($cancel -eq 'True')
         Assert-Check ($item.observedBeforeEnd -ge 65536 -and $item.observed -ge $item.observedBeforeEnd -and $item.state -ne 'Complete') '增量/取消上传被误判完整。'
-        if ($cancel -eq 'True') { Assert-Check ($item.receipts -eq 0) '取消上传却产生完整上游回执。' }
-        else { Assert-Check ($item.observed -eq 2097152 -and $item.receipts -eq 1) '完整上传长度/回执不一致。' }
+        Assert-Check ($item.expectedCompleteHash -cmatch '^[A-F0-9]{64}$' -and $item.expectedObservedHash -cmatch '^[A-F0-9]{64}$' -and
+            @($item.receiptHashes).Count -eq $item.receipts -and $item.stateBeforeStop -ceq 'Partial') '上传回执摘要或停止前完整性证据缺失。'
+        if ($cancel -eq 'True') {
+            # 网络取消不能撤销上游已经收到的前缀；零回执和一个真实部分回执都可成立。
+            # 不能仅看“有回执”就当完整上传，必须核对生成体/已观察前缀/端点实际摘要。
+            Assert-Check ($item.observed -lt 2097152 -and $item.receipts -in @(0,1) -and $item.expectedObservedHash -cne $item.expectedCompleteHash -and $item.transport -cin @('Failed','Cancelled')) '取消后错误观察到完整上传。'
+            foreach ($hash in $item.receiptHashes) { Assert-Check ($hash -ceq $item.expectedObservedHash -and $hash -cne $item.expectedCompleteHash) '取消上传的回执不属于已观察前缀。' }
+        }
+        else { Assert-Check ($item.observed -eq 2097152 -and $item.receipts -eq 1 -and $item.receiptHashes[0] -ceq $item.expectedCompleteHash -and $item.expectedObservedHash -ceq $item.expectedCompleteHash -and $item.transport -ceq 'Completed') '完整上传长度/回执不一致。' }
     } }
     foreach ($pair in @(@(200,'HEAD',0),@(204,'GET',0),@(304,'GET',0),@(302,'GET',0),@(206,'GET',4))) {
         $item = $Capture["response-$($pair[0])-$($pair[1])"]
