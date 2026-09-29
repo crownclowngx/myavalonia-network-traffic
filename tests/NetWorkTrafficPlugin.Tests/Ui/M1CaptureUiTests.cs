@@ -76,6 +76,13 @@ public sealed class M1CaptureUiTests
                     Assert.NotNull(model.Selected); Assert.Equal(width < 720, model.IsCompact);
                     AssertInside(capture.FindControl<TabControl>("DetailsTabs")!, window);
                     AssertInside(capture.FindControl<ScrollViewer>("BodyScroll")!, window);
+                    if (model.IsCompact)
+                    {
+                        Assert.False(capture.FindControl<TextBox>("FilterBox")!.IsEffectivelyVisible);
+                        Assert.True(capture.FindControl<ScrollViewer>("BodyScroll")!.Bounds.Height >= 100, "窄屏正文必须有可阅读空间。");
+                        model.BackCommand.Execute(null); Pump(window); Assert.True(capture.FindControl<TextBox>("FilterBox")!.IsEffectivelyVisible);
+                        model.ShowDetails = true; Pump(window);
+                    }
                 }
                 var name = $"m1-{(tool ? "tool" : "document")}-{(dark ? "dark" : "light")}-{width}.png";
                 Save(window, name);

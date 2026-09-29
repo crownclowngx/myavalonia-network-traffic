@@ -4,7 +4,7 @@
  x:Class="NetWorkTrafficPlugin.Features.Capture.CaptureView" x:DataType="vm:CaptureWorkspace">
  <UserControl.Styles><Style Selector="TabItem"><Setter Property="FontSize" Value="13" /><Setter Property="Padding" Value="7,4" /><Setter Property="MinHeight" Value="28" /></Style></UserControl.Styles>
  <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12" RowSpacing="8">
-  <StackPanel Spacing="6">
+  <StackPanel Spacing="6" IsVisible="{Binding ShowFilters}">
    <WrapPanel>
     <TextBox x:Name="FilterBox" Text="{Binding Keyword}" PlaceholderText="域名 / 路径关键字" Width="180" Margin="0,0,6,4" />
     <Button x:Name="FollowButton" Content="{Binding FollowLabel}" Command="{Binding ToggleFollowCommand}" />

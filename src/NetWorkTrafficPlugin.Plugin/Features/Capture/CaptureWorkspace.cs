@@ -41,7 +41,7 @@ public sealed partial class CaptureWorkspace : ObservableObject, IDisposable
     [ObservableProperty] private bool _onlyReceiving, _onlyFailed, _follow = true, _revealSensitive;
     [ObservableProperty] private TrafficSummary? _selected;
     [ObservableProperty] private bool _requestSelected;
-    [ObservableProperty] private bool _isCompact, _showDetails;
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(ShowFilters))] private bool _isCompact, _showDetails;
     [ObservableProperty] private string _status = "手动启动代理后，请求会出现在这里。";
     [ObservableProperty] private string _message = "";
     [ObservableProperty] private string _overview = "选择一条请求查看详情。";
@@ -66,6 +66,8 @@ public sealed partial class CaptureWorkspace : ObservableObject, IDisposable
     public ICaptureSession? Session => _opened ?? _store.Current;
     public Task DetailTask { get; private set; } = Task.CompletedTask;
     public string FollowLabel => Follow ? "暂停跟随" : "继续跟随";
+    // 窄屏详情让出筛选栏的空间；返回列表即恢复筛选，启停始终由外层常驻工具栏提供。
+    public bool ShowFilters => !IsCompact || !ShowDetails;
     public CaptureWorkspace(CaptureSessionStore store, ICaptureArchive archive, BoundedImageDecoder images)
     {
         (_store, _archive, _images) = (store, archive, images);
