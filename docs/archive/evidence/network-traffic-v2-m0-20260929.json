@@ -1,0 +1,1234 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260929T044418Z-cfb57f9e",
+  "sourceHash": "A35887CA2755405CFE6063B9560E0C22404A6448102514D5A2B3B7A0AFB3A4C1",
+  "startedUtc": "2026-09-29T04:44:18.3273963+00:00",
+  "finishedUtc": "2026-09-29T04:55:31.7540994+00:00",
+  "environment": {
+    "os": "Microsoft Windows 10.0.26200",
+    "architecture": "X64",
+    "sdk": "10.0.303",
+    "runtime": "10.0.11"
+  },
+  "automaticPassed": true,
+  "ordinaryTests": 55,
+  "resourceTests": 1,
+  "gateNegativeCases": 33,
+  "automatedScenarios": 50,
+  "scope": {
+    "realClientVerified": false,
+    "hostVerified": false,
+    "manualAccepted": false,
+    "deployed": false,
+    "windowsCiExecuted": false,
+    "releaseGateExecuted": false
+  },
+  "profile": {
+    "schemaVersion": 1,
+    "warmupBytes": 16777216,
+    "warmupConcurrency": 20,
+    "sizes": [
+      134217728,
+      1073741824
+    ],
+    "repetitions": 3,
+    "streamSeconds": 600,
+    "sampleMilliseconds": 250,
+    "maxPrivateDeltaBytes": 268435456,
+    "maxMedianGrowthBytes": 67108864,
+    "maxQueueBytes": 4194304,
+    "maxBodyCacheBytes": 33554432,
+    "maxDiskBytes": 67108864,
+    "maxActiveRequests": 20,
+    "maxStopMilliseconds": 10000,
+    "maxHandleGrowthAfterStop": 32
+  },
+  "sampleCount": 2362,
+  "sustainedSampleCount": 2261,
+  "direct": {
+    "milliseconds": 194.068,
+    "digest": {
+      "Bytes": 134217728,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C"
+    }
+  },
+  "transfers": [
+    {
+      "Mode": "None",
+      "Size": 134217728,
+      "Iteration": 0,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+      "Milliseconds": 237.2896,
+      "PeakDelta": 905216,
+      "Samples": 3
+    },
+    {
+      "Mode": "None",
+      "Size": 134217728,
+      "Iteration": 1,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+      "Milliseconds": 194.6255,
+      "PeakDelta": 905216,
+      "Samples": 3
+    },
+    {
+      "Mode": "None",
+      "Size": 134217728,
+      "Iteration": 2,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+      "Milliseconds": 182.8661,
+      "PeakDelta": 909312,
+      "Samples": 3
+    },
+    {
+      "Mode": "None",
+      "Size": 1073741824,
+      "Iteration": 0,
+      "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+      "Milliseconds": 1359.1083,
+      "PeakDelta": 917504,
+      "Samples": 7
+    },
+    {
+      "Mode": "None",
+      "Size": 1073741824,
+      "Iteration": 1,
+      "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+      "Milliseconds": 1400.1006,
+      "PeakDelta": 917504,
+      "Samples": 7
+    },
+    {
+      "Mode": "None",
+      "Size": 1073741824,
+      "Iteration": 2,
+      "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+      "Milliseconds": 1390.7069,
+      "PeakDelta": 921600,
+      "Samples": 8
+    },
+    {
+      "Mode": "MetadataOnly",
+      "Size": 134217728,
+      "Iteration": 0,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+      "Milliseconds": 219.3822,
+      "PeakDelta": 860160,
+      "Samples": 3
+    },
+    {
+      "Mode": "MetadataOnly",
+      "Size": 134217728,
+      "Iteration": 1,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+      "Milliseconds": 183.2086,
+      "PeakDelta": 860160,
+      "Samples": 3
+    },
+    {
+      "Mode": "MetadataOnly",
+      "Size": 134217728,
+      "Iteration": 2,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+      "Milliseconds": 197.455,
+      "PeakDelta": 876544,
+      "Samples": 3
+    },
+    {
+      "Mode": "MetadataOnly",
+      "Size": 1073741824,
+      "Iteration": 0,
+      "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+      "Milliseconds": 1394.9671,
+      "PeakDelta": 888832,
+      "Samples": 7
+    },
+    {
+      "Mode": "MetadataOnly",
+      "Size": 1073741824,
+      "Iteration": 1,
+      "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+      "Milliseconds": 1446.6094,
+      "PeakDelta": 892928,
+      "Samples": 8
+    },
+    {
+      "Mode": "MetadataOnly",
+      "Size": 1073741824,
+      "Iteration": 2,
+      "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+      "Milliseconds": 1438.7612,
+      "PeakDelta": 897024,
+      "Samples": 7
+    },
+    {
+      "Mode": "BoundedBody",
+      "Size": 134217728,
+      "Iteration": 0,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+      "Milliseconds": 225.3499,
+      "PeakDelta": 880640,
+      "Samples": 3
+    },
+    {
+      "Mode": "BoundedBody",
+      "Size": 134217728,
+      "Iteration": 1,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+      "Milliseconds": 171.3371,
+      "PeakDelta": 880640,
+      "Samples": 3
+    },
+    {
+      "Mode": "BoundedBody",
+      "Size": 134217728,
+      "Iteration": 2,
+      "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+      "Milliseconds": 171.7328,
+      "PeakDelta": 892928,
+      "Samples": 3
+    },
+    {
+      "Mode": "BoundedBody",
+      "Size": 1073741824,
+      "Iteration": 0,
+      "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+      "Milliseconds": 1371.7954,
+      "PeakDelta": 905216,
+      "Samples": 7
+    },
+    {
+      "Mode": "BoundedBody",
+      "Size": 1073741824,
+      "Iteration": 1,
+      "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+      "Milliseconds": 1413.8417,
+      "PeakDelta": 909312,
+      "Samples": 7
+    },
+    {
+      "Mode": "BoundedBody",
+      "Size": 1073741824,
+      "Iteration": 2,
+      "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+      "Milliseconds": 1389.2801,
+      "PeakDelta": 909312,
+      "Samples": 8
+    }
+  ],
+  "modes": [
+    {
+      "mode": "None",
+      "cold": {
+        "Phase": "None-cold",
+        "Utc": "2026-09-29T04:45:09.7795219+00:00",
+        "PrivateBytes": 11218944,
+        "WorkingSet": 42950656,
+        "ManagedBytes": 1244368,
+        "Handles": 339,
+        "ActiveRequests": 0,
+        "QueueBytes": 0,
+        "StoredBytes": 0
+      },
+      "baseline": {
+        "Phase": "None-warm",
+        "Utc": "2026-09-29T04:45:10.1963068+00:00",
+        "PrivateBytes": 32710656,
+        "WorkingSet": 68870144,
+        "ManagedBytes": 3871288,
+        "Handles": 566,
+        "ActiveRequests": 0,
+        "QueueBytes": 0,
+        "StoredBytes": 0
+      },
+      "peakPrivateBytes": 33632256,
+      "peakDeltaBytes": 921600,
+      "medianGrowthBytes": 12288,
+      "peakQueueBytes": 0,
+      "stopMilliseconds": 1160.0844,
+      "handlesAfterStop": 552,
+      "fileBytes": 0,
+      "observedBytes": 3976200192,
+      "storedBytes": 0,
+      "activeAfterStop": 0,
+      "queueAfterStop": 0,
+      "portReleased": true,
+      "filesClosed": true,
+      "streamSeconds": 0,
+      "unknownLengthDigest": {
+        "Bytes": 16777216,
+        "Hash": "4E95DC3C24E3D83F0224D95C4D2BFFE8797BB6B35009F483F592055584936939"
+      },
+      "exitCode": 0
+    },
+    {
+      "mode": "MetadataOnly",
+      "cold": {
+        "Phase": "MetadataOnly-cold",
+        "Utc": "2026-09-29T04:45:16.5339376+00:00",
+        "PrivateBytes": 11071488,
+        "WorkingSet": 42909696,
+        "ManagedBytes": 1254072,
+        "Handles": 339,
+        "ActiveRequests": 0,
+        "QueueBytes": 0,
+        "StoredBytes": 0
+      },
+      "baseline": {
+        "Phase": "MetadataOnly-warm",
+        "Utc": "2026-09-29T04:45:16.963655+00:00",
+        "PrivateBytes": 32452608,
+        "WorkingSet": 68354048,
+        "ManagedBytes": 8851608,
+        "Handles": 565,
+        "ActiveRequests": 0,
+        "QueueBytes": 0,
+        "StoredBytes": 0
+      },
+      "peakPrivateBytes": 33349632,
+      "peakDeltaBytes": 897024,
+      "medianGrowthBytes": 32768,
+      "peakQueueBytes": 0,
+      "stopMilliseconds": 1179.4263,
+      "handlesAfterStop": 551,
+      "fileBytes": 0,
+      "observedBytes": 3976200192,
+      "storedBytes": 0,
+      "activeAfterStop": 0,
+      "queueAfterStop": 0,
+      "portReleased": true,
+      "filesClosed": true,
+      "streamSeconds": 0,
+      "unknownLengthDigest": {
+        "Bytes": 16777216,
+        "Hash": "4E95DC3C24E3D83F0224D95C4D2BFFE8797BB6B35009F483F592055584936939"
+      },
+      "exitCode": 0
+    },
+    {
+      "mode": "BoundedBody",
+      "cold": {
+        "Phase": "BoundedBody-cold",
+        "Utc": "2026-09-29T04:45:23.4555388+00:00",
+        "PrivateBytes": 10903552,
+        "WorkingSet": 42774528,
+        "ManagedBytes": 1294280,
+        "Handles": 339,
+        "ActiveRequests": 0,
+        "QueueBytes": 0,
+        "StoredBytes": 0
+      },
+      "baseline": {
+        "Phase": "BoundedBody-warm",
+        "Utc": "2026-09-29T04:45:23.9351529+00:00",
+        "PrivateBytes": 36278272,
+        "WorkingSet": 72458240,
+        "ManagedBytes": 8643984,
+        "Handles": 566,
+        "ActiveRequests": 0,
+        "QueueBytes": 0,
+        "StoredBytes": 2046749
+      },
+      "peakPrivateBytes": 42844160,
+      "peakDeltaBytes": 6565888,
+      "medianGrowthBytes": 28672,
+      "peakQueueBytes": 630743,
+      "stopMilliseconds": 1155.6833,
+      "handlesAfterStop": 423,
+      "fileBytes": 20134637,
+      "observedBytes": 4144742352,
+      "storedBytes": 20134637,
+      "activeAfterStop": 0,
+      "queueAfterStop": 0,
+      "portReleased": true,
+      "filesClosed": true,
+      "streamSeconds": 600.0025719,
+      "unknownLengthDigest": {
+        "Bytes": 16777216,
+        "Hash": "4E95DC3C24E3D83F0224D95C4D2BFFE8797BB6B35009F483F592055584936939"
+      },
+      "exitCode": 0
+    }
+  ],
+  "protocol": {
+    "D03": {
+      "platform": "Windows",
+      "settingsUnchanged": true
+    },
+    "P01": {
+      "https": false,
+      "requested": "1.1",
+      "clientProtocol": "1.1",
+      "receipt": {
+        "Target": "A",
+        "Method": "POST",
+        "Path": "/a%2Fb?q=1&q=%E4%B8%AD",
+        "Host": "localhost:57419",
+        "Protocol": "HTTP/1.1",
+        "Sni": null,
+        "BodyHash": "9148B5E61A398B3AAC3A5B2DAF5F4D556461A797E8CBE823FDF3F5CE48D788E3",
+        "Headers": {
+          "Host": [
+            "localhost:57419"
+          ],
+          "Content-Type": [
+            "text/plain; charset=utf-8"
+          ],
+          "Via": [
+            "1.1 titanium-web-proxy"
+          ],
+          "Content-Length": [
+            "12"
+          ]
+        }
+      },
+      "getReceipt": {
+        "Target": "A",
+        "Method": "GET",
+        "Path": "/echo?empty=&q=2&q=3",
+        "Host": "localhost:57419",
+        "Protocol": "HTTP/1.1",
+        "Sni": null,
+        "BodyHash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "Headers": {
+          "Host": [
+            "localhost:57419"
+          ],
+          "Via": [
+            "1.1 titanium-web-proxy"
+          ],
+          "X-M0-Multi": [
+            "alpha, beta"
+          ]
+        }
+      }
+    },
+    "P02": {
+      "https": true,
+      "requested": "1.1",
+      "clientProtocol": "1.1",
+      "receipt": {
+        "Target": "A",
+        "Method": "POST",
+        "Path": "/a%2Fb?q=1&q=%E4%B8%AD",
+        "Host": "localhost:57516",
+        "Protocol": "HTTP/1.1",
+        "Sni": "localhost",
+        "BodyHash": "9148B5E61A398B3AAC3A5B2DAF5F4D556461A797E8CBE823FDF3F5CE48D788E3",
+        "Headers": {
+          "Host": [
+            "localhost:57516"
+          ],
+          "Content-Type": [
+            "text/plain; charset=utf-8"
+          ],
+          "Via": [
+            "1.1 titanium-web-proxy"
+          ],
+          "Content-Length": [
+            "12"
+          ]
+        }
+      },
+      "getReceipt": {
+        "Target": "A",
+        "Method": "GET",
+        "Path": "/echo?empty=&q=2&q=3",
+        "Host": "localhost:57516",
+        "Protocol": "HTTP/1.1",
+        "Sni": "localhost",
+        "BodyHash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "Headers": {
+          "Host": [
+            "localhost:57516"
+          ],
+          "Via": [
+            "1.1 titanium-web-proxy"
+          ],
+          "X-M0-Multi": [
+            "alpha, beta"
+          ]
+        }
+      }
+    },
+    "R01-R04-P08-fallback": {
+      "assessmentPassed": true,
+      "supported": false,
+      "requested": "2.0-or-lower",
+      "observed": "1.1",
+      "exactHttp2Rejected": true,
+      "mappingHttp2Supported": false,
+      "aReceipts": [
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=3&q=%2F",
+          "Host": "127.0.0.1:57534",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "9FEE02F723EBC56133D9AE11FC44DF22514EEA89495D34A865FFA18B0129086F",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57534"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=11&q=%2F",
+          "Host": "127.0.0.1:57534",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "76F66D1F38772BCF3EE315449AE7690C807329B9F916E6DF6E1AE840AF398DE3",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57534"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "7"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=1&q=%2F",
+          "Host": "127.0.0.1:57534",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "85E08F281BF3D004784E18D04A1A8D0B8FA37AB50D6EA39C3F4B43145375762F",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57534"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=5&q=%2F",
+          "Host": "127.0.0.1:57534",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "AEDF80DD7F5B2FBB55F509FF7201CC4AB1815623474BB9A3CC0EB57A0ADD3C94",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57534"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=7&q=%2F",
+          "Host": "127.0.0.1:57534",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "44911ED2B0354262CCE8E59BB7016BB4CF51DD7A2E1BAE4D46BBCE6D0902AC8E",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57534"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=9&q=%2F",
+          "Host": "127.0.0.1:57534",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "71D75CE1D101A4C6E0D82D7079C2E4126FCEFA289A9A6F4CB2A84543BC44FD9C",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57534"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        }
+      ],
+      "bReceipts": [
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=0&q=%2F",
+          "Host": "localhost:57536",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "081A89A5B26FF53AF2F0802778B75DCABE068FE6650AD66E680EEF0450E9A008",
+          "Headers": {
+            "Host": [
+              "localhost:57536"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=4&q=%2F",
+          "Host": "localhost:57536",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "2EC78DDA541C81E8C96DD7B31E7AC2F446A0C6B33157313C815F48BF1954AC6E",
+          "Headers": {
+            "Host": [
+              "localhost:57536"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=2&q=%2F",
+          "Host": "localhost:57536",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "135A39640E0B3EEEF9088C33AF7079679AD5C5197511A501992E45F49A1B51B0",
+          "Headers": {
+            "Host": [
+              "localhost:57536"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=10&q=%2F",
+          "Host": "localhost:57536",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "0945A16EAEB947EAEB5E84DFAE685CA7DF2B30A7FF60943B4CB87967B40FA26F",
+          "Headers": {
+            "Host": [
+              "localhost:57536"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "7"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=6&q=%2F",
+          "Host": "localhost:57536",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "E529A43607084E27F0E02A5E63ACBA9F72BBCBE8E16E1C4D8DBC27623364618B",
+          "Headers": {
+            "Host": [
+              "localhost:57536"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=8&q=%2F",
+          "Host": "localhost:57536",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "5ADC5C79E80CC8EAB92CBE101A4B41B17BA4A0BB554C06C04CC7AD1058CF0049",
+          "Headers": {
+            "Host": [
+              "localhost:57536"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        }
+      ],
+      "ProtocolPolicy": "目标映射仅支持 HTTP/1.1；exact HTTP/2 请求会被拒绝。"
+    },
+    "R01-R04-h1": {
+      "assessmentPassed": true,
+      "supported": true,
+      "requested": "1.1",
+      "observed": "1.1",
+      "exactHttp2Rejected": true,
+      "mappingHttp2Supported": false,
+      "aReceipts": [
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=1&q=%2F",
+          "Host": "127.0.0.1:57574",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "85E08F281BF3D004784E18D04A1A8D0B8FA37AB50D6EA39C3F4B43145375762F",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57574"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=9&q=%2F",
+          "Host": "127.0.0.1:57574",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "71D75CE1D101A4C6E0D82D7079C2E4126FCEFA289A9A6F4CB2A84543BC44FD9C",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57574"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=3&q=%2F",
+          "Host": "127.0.0.1:57574",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "9FEE02F723EBC56133D9AE11FC44DF22514EEA89495D34A865FFA18B0129086F",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57574"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=5&q=%2F",
+          "Host": "127.0.0.1:57574",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "AEDF80DD7F5B2FBB55F509FF7201CC4AB1815623474BB9A3CC0EB57A0ADD3C94",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57574"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=7&q=%2F",
+          "Host": "127.0.0.1:57574",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "44911ED2B0354262CCE8E59BB7016BB4CF51DD7A2E1BAE4D46BBCE6D0902AC8E",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57574"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "POST",
+          "Path": "/echo?q=11&q=%2F",
+          "Host": "127.0.0.1:57574",
+          "Protocol": "HTTP/1.1",
+          "Sni": "",
+          "BodyHash": "76F66D1F38772BCF3EE315449AE7690C807329B9F916E6DF6E1AE840AF398DE3",
+          "Headers": {
+            "Host": [
+              "127.0.0.1:57574"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "7"
+            ]
+          }
+        }
+      ],
+      "bReceipts": [
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=0&q=%2F",
+          "Host": "localhost:57575",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "081A89A5B26FF53AF2F0802778B75DCABE068FE6650AD66E680EEF0450E9A008",
+          "Headers": {
+            "Host": [
+              "localhost:57575"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=2&q=%2F",
+          "Host": "localhost:57575",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "135A39640E0B3EEEF9088C33AF7079679AD5C5197511A501992E45F49A1B51B0",
+          "Headers": {
+            "Host": [
+              "localhost:57575"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=8&q=%2F",
+          "Host": "localhost:57575",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "5ADC5C79E80CC8EAB92CBE101A4B41B17BA4A0BB554C06C04CC7AD1058CF0049",
+          "Headers": {
+            "Host": [
+              "localhost:57575"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=10&q=%2F",
+          "Host": "localhost:57575",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "0945A16EAEB947EAEB5E84DFAE685CA7DF2B30A7FF60943B4CB87967B40FA26F",
+          "Headers": {
+            "Host": [
+              "localhost:57575"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "7"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=6&q=%2F",
+          "Host": "localhost:57575",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "E529A43607084E27F0E02A5E63ACBA9F72BBCBE8E16E1C4D8DBC27623364618B",
+          "Headers": {
+            "Host": [
+              "localhost:57575"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "POST",
+          "Path": "/echo?q=4&q=%2F",
+          "Host": "localhost:57575",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "2EC78DDA541C81E8C96DD7B31E7AC2F446A0C6B33157313C815F48BF1954AC6E",
+          "Headers": {
+            "Host": [
+              "localhost:57575"
+            ],
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ],
+            "Content-Length": [
+              "6"
+            ],
+            "X-M0-Route": [
+              "B"
+            ]
+          }
+        }
+      ],
+      "ProtocolPolicy": "目标映射仅支持 HTTP/1.1；exact HTTP/2 请求会被拒绝。"
+    },
+    "R07": {
+      "digest": {
+        "Bytes": 134217728,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C"
+      },
+      "incremental": true,
+      "aReceipts": [],
+      "bReceipts": [
+        {
+          "Target": "B",
+          "Method": "GET",
+          "Path": "/sse",
+          "Host": "localhost:57647",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "Headers": {
+            "Host": [
+              "localhost:57647"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ]
+          }
+        },
+        {
+          "Target": "B",
+          "Method": "GET",
+          "Path": "/binary?size=134217728",
+          "Host": "localhost:57647",
+          "Protocol": "HTTP/1.1",
+          "Sni": "localhost",
+          "BodyHash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "Headers": {
+            "Host": [
+              "localhost:57647"
+            ],
+            "Via": [
+              "1.1 titanium-web-proxy"
+            ]
+          }
+        }
+      ],
+      "observed": "1.1"
+    },
+    "P07-P09": {
+      "assessmentPassed": true,
+      "supported": true,
+      "requested": "2.0-exact",
+      "clientProtocol": "2.0",
+      "originProtocol": "2.0",
+      "isolatedCancellation": true,
+      "receipts": [
+        {
+          "Target": "A",
+          "Method": "GET",
+          "Path": "/echo",
+          "Host": "localhost:57653",
+          "Protocol": "HTTP/2",
+          "Sni": "localhost",
+          "BodyHash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "Headers": {
+            "Host": [
+              "localhost:57653"
+            ],
+            "Via": [
+              "2.0 titanium-web-proxy"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "GET",
+          "Path": "/delay",
+          "Host": "localhost:57653",
+          "Protocol": "HTTP/2",
+          "Sni": "localhost",
+          "BodyHash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "Headers": {
+            "Host": [
+              "localhost:57653"
+            ],
+            "Via": [
+              "2.0 titanium-web-proxy"
+            ]
+          }
+        },
+        {
+          "Target": "A",
+          "Method": "GET",
+          "Path": "/echo",
+          "Host": "localhost:57653",
+          "Protocol": "HTTP/2",
+          "Sni": "localhost",
+          "BodyHash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "Headers": {
+            "Host": [
+              "localhost:57653"
+            ],
+            "Via": [
+              "2.0 titanium-web-proxy"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "stream": {
+    "S01-S02": {
+      "clientFirstUtc": "2026-09-29T04:44:39.1214215+00:00",
+      "recorderObservedUtc": "2026-09-29T04:44:39.1214865+00:00",
+      "completedUtc": "2026-09-29T04:44:39.1231389+00:00",
+      "first": "data: 中文😀",
+      "incrementalBeforeCompletion": true,
+      "observedBytes": 34
+    }
+  },
+  "commands": [
+    {
+      "file": "pwsh",
+      "exitCode": 0,
+      "timedOut": false,
+      "startedUtc": "2026-09-29T04:44:18.8517331+00:00",
+      "finishedUtc": "2026-09-29T04:44:25.4402511+00:00"
+    },
+    {
+      "file": "dotnet",
+      "exitCode": 0,
+      "timedOut": false,
+      "startedUtc": "2026-09-29T04:44:25.4465939+00:00",
+      "finishedUtc": "2026-09-29T04:44:26.2597555+00:00"
+    },
+    {
+      "file": "dotnet",
+      "exitCode": 0,
+      "timedOut": false,
+      "startedUtc": "2026-09-29T04:44:26.2611211+00:00",
+      "finishedUtc": "2026-09-29T04:44:29.0355712+00:00"
+    },
+    {
+      "file": "dotnet",
+      "exitCode": 0,
+      "timedOut": false,
+      "startedUtc": "2026-09-29T04:44:29.0382776+00:00",
+      "finishedUtc": "2026-09-29T04:45:07.5046844+00:00"
+    },
+    {
+      "file": "dotnet",
+      "exitCode": 0,
+      "timedOut": false,
+      "startedUtc": "2026-09-29T04:45:07.6355793+00:00",
+      "finishedUtc": "2026-09-29T04:55:31.2387651+00:00"
+    }
+  ],
+  "rawDirectory": "TestResults/NetworkTrafficM0/20260929T044418Z-cfb57f9e",
+  "rawSha256": {
+    "verification.json": "01c33a4b46f4ea4f2b3ac76e4f9e52ed3cd71432609b379747ad9dace460c65b",
+    "ordinary.trx": "9770f1128df312c679a14251102700dc38f3652a64d1f83bab30d19fc3922a99",
+    "resource.trx": "0bd4a21410f36a455083737eb0049ed7848a97254fd7dcde13570275f80bc7b7",
+    "protocol-probes.json": "2d5a41a67c1a0c6fff2a2c9c4907536526abc46033d174c551c6e1232c5e7eb6",
+    "stream-probes.json": "7997c8bef057b6d3b7ddc365ae554b28350b3192af12d8f9d5c7f6b77df95f6b",
+    "resource-probes.json": "9eb3c286164bf0ee0b6c2e52e12eea149d9e10a01dc48b71baeba978935b2299",
+    "resource-samples.csv": "fff4034c425fa25dfd35fd702c82358aac960a46422948c49e7b4981bd7e24dd",
+    "resource-profile.json": "122993c354ef6abe3258a2246a6f72bc061bbfd53defdc4de3a01983c40e510c",
+    "scenario-coverage.json": "8e5157a5324310535cb7de8e0cb31c54aadc371a535727f4b9bcb13ce3726043"
+  }
+}

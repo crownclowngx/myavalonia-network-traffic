@@ -1,10 +1,13 @@
 # NetWorkTrafficPlugin
 
 HTTP/HTTPS 流量工作台插件，规划强化 DSL 字段提取与分组、调用时间线、请求改写、手工请求和编辑重发。
-当前仍为模板基线，尚未接入 Titanium 或实现抓包业务；`HttpLab / HTTP 工作台` 为候选显示名称。
+当前已实现 V2 / M0 代理技术基线，真实 Host 与人工验收待执行；`HttpLab / HTTP 工作台` 为候选显示名称。
 
 | 阅读目的 | 文档 |
 | --- | --- |
+| 当前代理行为与限制 | [M0 运行说明](docs/reference/network-traffic-m0-runtime.md) |
+| 本地门禁与最小诊断操作 | [M0 开发快速开始](docs/quick-start/network-traffic-m0.md) |
+| V2 实施结果与待验事项 | [2026-09-29 实施记录](docs/archive/2026-09-29-v2-m0-implementation.md) |
 | 了解产品定位、业务场景和 DSL 方向 | [产品与规划方案](docs/roadmap/network-traffic-product-plan.md) |
 | 查看每阶段实现什么、依赖和完成条件 | [M0–M6 能力路线图](docs/roadmap/network-traffic-capability-roadmap.md) |
 | 按 V2-01～10 执行 M0 技术基线 | [V2 / M0 执行计划](docs/roadmap/network-traffic-v2-m0-technical-baseline-plan.md) |
@@ -16,9 +19,9 @@ HTTP/HTTPS 流量工作台插件，规划强化 DSL 字段提取与分组、调�
 这是由 `myavalonia-plugin` 创建的 Managed Plugin 解决方案。真实交付物是
 `src/NetWorkTrafficPlugin.Plugin`；`Standalone` 只负责快速预览同一份 View、ViewModel 与业务代码。
 
-V2 / M0 执行文档已编写，业务实现与专用门禁尚未开始。M0 以 SOLID 为首要规定，采用朴素设计和详细中文注释；仅安排本地开发验证，不使用 AIFLOW、Windows CI 或发布门禁。下方打包/部署命令保留为通用工程参考，不属于本次文档工作或 M0 开发门禁。
+V2 / M0 生产代理、最小诊断、单元/协议测试和本地开发门禁已实现，完整本地开发门禁已通过，结果见实施记录。M0 以 SOLID 为首要规定，采用朴素设计和详细中文注释；仅安排本地开发验证，不使用 AIFLOW、Windows CI 或发布门禁。下方打包/部署命令保留为通用工程参考，不属于本轮实施或 M0 开发门禁。
 
-> 第一次开始开发前，请先阅读 [项目文档与快速开始](docs/README.md)。其中说明了三个子项目和
+> 第一次开始开发前，请先阅读 [项目文档与快速开始](docs/README.md)。其中说明了插件、Standalone、测试与技术探针宿主和
 > Standalone 窗口的职责、接入真实 Host 的边界，以及临时部署和正式 ZIP 发布流程。
 
 ```powershell

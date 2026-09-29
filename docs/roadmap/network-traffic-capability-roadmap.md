@@ -1,9 +1,9 @@
 # HTTP 流量工作台能力路线图与里程碑
 
 > 对象：`myavalonia-network-traffic` / `myavalonia.plugin.network.traffic`。更新日期：2026-09-29。
-> 状态：M0–M6 均为计划，尚未开始业务实施。现有模板工程不计作抓包里程碑完成。
+> 状态：M0 实现与本地开发自动验收已通过；真实 Host/客户端与人工验收待执行。M1–M6 仍为计划。
 > 产品范围见[产品方案](network-traffic-product-plan.md)，验收场景见[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
-> M0 详细任务已补充为 [V2 执行计划](network-traffic-v2-m0-technical-baseline-plan.md)，配套[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)与[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)；文档完成不改变业务未开始状态。
+> M0 详细任务已补充为 [V2 执行计划](network-traffic-v2-m0-technical-baseline-plan.md)，配套[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)与[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)；实际结果见[当日实施记录](../archive/2026-09-29-v2-m0-implementation.md)。
 
 ## 1. 分期原则与总览
 
@@ -13,7 +13,7 @@ M 表示用户可使用的能力阶段，V 表示方案序号，包版本与交�
 
 | 阶段 | 用户价值/交付目标 | 依赖 | 规模判断 | 当前状态 |
 | --- | --- | --- | --- | --- |
-| M0 技术基线 | 确认代理、HTTPS、流式、大文件与域名改写可以走通 | 现有模板 | 中，存在选型风险 | 业务未开始；V2 执行文档已编写 |
+| M0 技术基线 | 确认代理、HTTPS、流式、大文件与域名改写可以走通 | 现有模板 | 中，存在选型风险 | 已实现；自动结果见 V2 实施记录，人工未验 |
 | M1 可用抓包 | 稳定查看真实流量，支持流式和大资源记录 | M0 | 大 | 未开始 |
 | M2 DSL 分组 | 用自定义字段分析一段时间内的调用过程 | M1 | 大 | 未开始 |
 | M3 DSL 改写 | 可追踪地切换目标环境和修改请求 | M2，复用 M0 改写验证 | 中到大 | 未开始 |
@@ -27,7 +27,7 @@ M 表示用户可使用的能力阶段，V 表示方案序号，包版本与交�
 
 **目标：** 用受控端点验证本项目的真实代理链路，为后续设计选择提供证据。
 
-执行入口为 [V2-01～V2-10](network-traffic-v2-m0-technical-baseline-plan.md)。本阶段以 SOLID 为首要规定，使用朴素设计和详细中文注释，同步单元测试与本地开发门禁；不使用 AIFLOW、Windows CI 或发布门禁。V2 暂定显式代理与进程内证书信任作为自动探针模式，实际选型和结果仍需实施验证。
+执行入口为 [V2-01～V2-10](network-traffic-v2-m0-technical-baseline-plan.md)。本阶段以 SOLID 为首要规定，使用朴素设计和详细中文注释，同步单元测试与本地开发门禁；不使用 AIFLOW、Windows CI 或发布门禁。V2 已采用 Titanium 7.0.13、显式代理和进程内测试信任；普通 h2 已覆盖，目标映射限定 h1，当前范围见[运行说明](../reference/network-traffic-m0-runtime.md)。
 
 | 工作项 | 范围与交付物 |
 | --- | --- |

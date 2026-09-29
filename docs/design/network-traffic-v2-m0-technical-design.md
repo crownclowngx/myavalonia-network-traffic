@@ -1,6 +1,6 @@
 # V2 · M0 代理、流式资源与生命周期专项设计
 
-> 编写日期：2026-09-29。状态：**待实现设计，不代表现行行为**。
+> 编写日期：2026-09-29。状态：**原设计与实施决策；当前行为及差异见下方说明**。
 > 配套：[执行计划](../roadmap/network-traffic-v2-m0-technical-baseline-plan.md)、[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)。
 
 ## 1. SOLID 如何落实
@@ -17,7 +17,7 @@
 
 ## 2. 代码位置、依赖方向与所有权
 
-以下名称和目录为实施建议；保留现有三个项目的职责，为隔离测量只新增一个开发探针宿主，不拆业务程序集。
+以下保留最初分层建议，实际文件以[当前运行说明](../reference/network-traffic-m0-runtime.md)为准；保留现有三个项目的职责，为隔离测量只新增一个开发探针宿主，不拆业务程序集。
 
 ```text
 src/NetWorkTrafficPlugin.Plugin/
@@ -57,7 +57,7 @@ tools/NetWorkTrafficPlugin.TechnicalProbe/
 | 状态 Tool | 按公开 SDK Tool 生命周期；读取同一状态，不拥有监听器 |
 | 端点、测试根证书、探针目录 | 每轮夹具拥有，finally 清理；不访问真实用户数据 |
 
-Standalone 必须通过 `AddNetWorkTrafficPluginServices` 解析对象；不保留当前手动构造 Document 后又另建代理的路径。真实 Host 是否等待异步释放在 V2-01 核定，最终接入写入当前行为文档。
+Standalone 必须通过 `AddNetWorkTrafficPluginServices` 解析对象；不保留当前手动构造 Document 后又另建代理的路径。SDK 已确认公开 ShutdownAsync 入口并接入；实际 Host 是否按契约调用仍需 H03 联调。
 
 ## 3. 最小契约与状态机
 
@@ -214,3 +214,13 @@ public Task StopAsync(CancellationToken cancellationToken);
 可复用：运行契约、代理适配、原始/有效目标、来源身份、有限记录语义、生命周期和受控测试。需要在 M1 正式实现：捕获列表与详情、存储索引、图片/文本查看、可配置预算、用户证书引导、真实客户端使用流程。
 
 测试端点、特殊证书、合成规则、生成器和资源 profile 留在测试/开发工具边界，不随正式插件运行。M0 探针成功只证明列出的协议与配置，M3 仍须用真实规则执行链重新验证改写。
+
+## 10. V2 实施差异与已核定范围
+
+生产实现遵循以上 SOLID 边界；实际契约集中于 ProxyContracts.cs，证书实现为 ProxyCertificates.cs，资源测试在 Integration/ResourceProbeTests.cs。页面由 UI Timer 轮询快照，不引入网络事件订阅。
+
+Titanium 固定 7.0.13：普通 HTTP/2 已测试；配置映射时整次运行协商 HTTP/1.1，exact h2 失败。回环 IP/localhost 与不同 SAN 代替私有 DNS 注入。库 IdleRead 在响应复制期间是一次性截止，现由适配器按最后数据活动判断空闲；h1 短读主动结束会话。
+
+错误使用阶段中文摘要/异常类型；预览、256 条事件历史和完整 UI 留到 M1；SSE 增量解析器已有独立测试。资源曲线从 20 请求各 16 MiB 的固定并发预热后采集；另记录启动就绪快照，冷启动过程峰值未测。更紧的 4 MiB 队列限制当前插件正文缓存，完整进程峰值另行采样。
+
+现行行为详见[运行说明](../reference/network-traffic-m0-runtime.md)，测量与设计审查见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)。其余段落中的建议字段和扩展不构成已实现声明。

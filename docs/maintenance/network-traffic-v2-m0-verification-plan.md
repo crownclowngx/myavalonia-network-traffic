@@ -1,6 +1,6 @@
 # V2 · M0 专用验证矩阵与本地开发门禁
 
-> 编写日期：2026-09-29。状态：**验证设计，以下业务场景和专用门禁均未实现、未执行**。
+> 编写日期：2026-09-29。状态：**已实现专用测试和本地门禁；实际结果与人工未验项见当日实施记录**。
 > 配套：[V2 执行计划](../roadmap/network-traffic-v2-m0-technical-baseline-plan.md)、[技术设计](../design/network-traffic-v2-m0-technical-design.md)、[总验证计划](network-traffic-verification-plan.md)。
 
 本文件规定 M0 要证明什么及如何防止假通过。场景 ID 不是测试数量，也不表示已有自动覆盖。实施后必须映射到实际测试方法及本轮产物；门禁只面向本地开发，不包含 Windows CI、发布 Smoke、ZIP、签名或发布门禁，不使用 AIFLOW。
@@ -16,7 +16,7 @@
 | D/A 审查与依赖检查 | 资产、公开 API、依赖图、实际代码与中文契约 | 选型/设计理由；不以字符串匹配测试代替审查 |
 | H 人工开发验证 | 最小诊断入口、真实客户端/Host、停止退出 | 当次环境结论；独立于正式发布 |
 
-自动测试使用合成域名、身份和正文，不访问公司服务，不导入系统根、不修改系统代理或 hosts。每轮唯一临时目录和证书，仅清理自身资产。真实传输测试必须证明经过代理；关闭本地绕过，A/B 收件记录与 RequestId 对应。
+自动测试使用回环 IP/localhost、合成身份和正文，不访问公司服务，不导入系统根、不修改系统代理或 hosts。每轮唯一临时目录和证书，仅清理自身资产。真实传输测试必须证明经过代理；关闭本地绕过，A/B 收件记录与 RequestId 对应。
 
 普通场景与资源场景分进程执行。纯逻辑测试可并行；共享代理/证书/端点的同一夹具序列化；独立夹具有独立端口与文件。计时用单调时钟，UTC 仅做证据关联。使用显式握手与屏障控制时序，不用长 Sleep 碰运气。
 
@@ -52,7 +52,7 @@ D01/D02/D04 由构建检查、组合测试和人工审查共同支撑，不凭�
 | U13 | 命中/不命中交错、规则快照 | 一请求一次决策；在途修改配置不改变已接纳请求，无共享目标污染 |
 | U14 | 非法 scheme、userinfo、自代理循环 | 在发送前拒绝；无静默回退、无无限路由；失败类型可解释 |
 
-单元测试拟放在 `Proxy/ProxySessionCoordinatorTests.cs`、`BodyCaptureTests.cs`、`RouteTargetResolverTests.cs` 等文件。名称为计划；实施时用真实完全限定方法名建立映射，不提前声称文件已存在。
+单元测试位于 `Proxy/ProxyCoordinatorTests.cs`、`BodyCaptureTests.cs`、`RouteTargetResolverTests.cs` 等文件。真实完全限定方法名和理论行已登记到 m0-test-map.json。
 
 ## 4. P：真实 HTTP、HTTPS 与协议
 
@@ -96,7 +96,7 @@ S01/S02 要先直接验证夹具会按预期分块/等待，再通过真实代�
 | B06 | 20 并发中混合流式和大响应 | 队列、缓存、活动数均受限；超额接纳行为明确；停止所有请求有界 |
 | B07 | 三次大小对照、释放和残留 | 每次曲线/峰值均保留；按设计 profile 比较两种大小；监听/任务/文件/句柄有释放证据 |
 
-资源配置以[技术设计](../design/network-traffic-v2-m0-technical-design.md)第 7 节为唯一数值来源，不在脚本复制另一份阈值。实施后 profile 文件包含相同字段并记录变更理由。B01/B07 在独立代理进程测量，生成器/客户端另进程，门禁编排负责收集全部结果及退出码。
+冻结资源配置以 tools/m0-resource-profile.json 为可执行来源，对应[技术设计](../design/network-traffic-v2-m0-technical-design.md)第 7 节。脚本和测试读取同一份阈值，实施记录说明预热方法调整，不提高阈值。B01/B07 在独立代理进程测量，生成器/客户端另进程，门禁编排负责收集全部结果及退出码。
 
 ## 7. R：域名改写与并发
 
@@ -136,26 +136,26 @@ L 主要是服务/Document 行为测试；最小按钮和状态绑定按实际�
 
 ## 10. G：本地开发门禁设计
 
-### 10.1 计划入口与运行顺序
+### 10.1 现行入口与运行顺序
 
-V2-09 将建立 `tools/verify-development.ps1`，拟提供 `-Mode Docs` 和 `-Mode M0`；辅助文件为 `DevelopmentChecks.ps1`、`test-development-gate.ps1`、`m0-test-map.json`，资源 profile 的最终位置随实现登记。**当前这些文件尚不存在，下列为实施后的命令设计，不能当作现行已可执行入口。**
+V2-09 已建立 tools/verify-development.ps1，提供 -Mode Docs 和 -Mode M0；辅助检查、门禁自测、场景映射和冻结 profile 均已落地。以下是现行本地开发入口。
 
 ```powershell
-# 实施后：仅文档变化，不生成 M0 业务通过结论。
+# 当前：仅文档变化，不生成 M0 业务通过结论。
 pwsh -NoProfile -File tools/verify-development.ps1 -Mode Docs
 
-# 实施后：全量 M0 开发检查，包含模板回归、协议与资源探针。
+# 当前：全量 M0 开发检查，包含模板回归、协议与资源探针。
 pwsh -NoProfile -File tools/verify-development.ps1 -Mode M0
 ```
 
 完整入口依次做：环境/源码身份快照 → 门禁失败自测 → locked restore → Debug 零警告构建 → 普通全量测试 → 独立资源探针 → TRX/场景/证据校验 → 文档/空白检查 → 源码身份复核 → 写本轮结果。失败立即使本轮失败，但 finally 仍清理自己启动的进程和临时资源。
 
-核心标准命令基于现有工程；资源测试的分类和拆分由 V2-09 落地，不在这里伪造不存在的入口：
+核心标准命令及资源分类已落地；脚本为每轮传入独立结果目录和证据身份：
 
 ```powershell
 dotnet restore NetWorkTrafficPlugin.slnx --locked-mode
 dotnet build NetWorkTrafficPlugin.slnx -c Debug --no-restore -warnaserror
-# 以下 Category 约定及资源用例待实现；脚本还须指定本轮独立结果目录。
+# 资源批次包含十分钟持续流；完整门禁自动分开执行并记录本轮身份。
 dotnet test tests/NetWorkTrafficPlugin.Tests/NetWorkTrafficPlugin.Tests.csproj -c Debug --no-build --no-restore --filter "Category!=ResourceProbe" --logger "trx;LogFileName=ordinary.trx"
 dotnet test tests/NetWorkTrafficPlugin.Tests/NetWorkTrafficPlugin.Tests.csproj -c Debug --no-build --no-restore --filter "Category=ResourceProbe" --logger "trx;LogFileName=resource.trx"
 git diff --check
@@ -165,7 +165,7 @@ git diff --check
 
 新增依赖时先普通 restore 审查 lock，再进入 locked 检查，不通过删除 lock 消除错误。仅文档修改无需执行这些构建/业务测试；文档检查要包含未跟踪的 Markdown，不能只看 `git diff`。
 
-默认开发超时拟为自测 60 秒、restore/build 各 300 秒、普通测试 300 秒、资源探针 1,200 秒、整轮 1,800 秒。资源批次含 10 分钟持续流，不能沿用普通单测短超时；每个场景另设上界。超时必须失败并终止本轮拥有的进程树，保留诊断，不能按进程名杀其他开发进程。用户可中断，不能因此写通过结果。
+默认开发超时为自测 60 秒、restore/build 各 300 秒、普通测试 300 秒、资源探针 1,200 秒、整轮 1,800 秒。资源批次含 10 分钟持续流，不能沿用普通单测短超时；每个场景另设上界。超时必须失败并终止本轮拥有的进程树，保留诊断，不能按进程名杀其他开发进程。用户可中断，不能因此写通过结果。
 
 ### 10.2 判定矩阵
 
@@ -180,7 +180,7 @@ git diff --check
 | G07 | 文档与范围 | 本仓链接/锚点失败、状态矛盾、V2/M0 映射漏项；文档入口误宣称业务通过；引入发布步骤 |
 | G08 | 结果记录 | 缺命令/环境/时间/实际统计/未验项，未区分自动与人工，检查未完成却生成整体成功 |
 
-场景映射拟为 ID → 测试类/方法/参数组合 → 必需证据名。一个方法覆盖多个场景时，每项都需对应断言；“场景全部映射”不等于人工审查通过。模板回归也包含在实际 TRX 中。审查 A/D 与人工 H 使用独立状态，不计入自动测试通过数。
+场景映射为 ID → 测试类/方法/参数组合 → 必需证据名。一个方法覆盖多个场景时，每项都需对应断言；“场景全部映射”不等于人工审查通过。模板回归也包含在实际 TRX 中。审查 A/D 与人工 H 使用独立状态，不计入自动测试通过数。
 
 ### 10.3 门禁失败自测清单
 
@@ -190,7 +190,7 @@ git diff --check
 
 ### 10.4 证据组织
 
-计划输出到 `TestResults/NetworkTrafficM0/<UTC时间-随机ID>/`，每轮新目录，不覆盖历史。V2-09 同步忽略此生成目录；当前文件尚未生成。大文件只生成/传输，不入 Git；私钥临时文件运行结束即清理，不归档。
+计划输出到 `TestResults/NetworkTrafficM0/<UTC时间-随机ID>/`，每轮新目录，不覆盖历史。V2-09 同步忽略此生成目录；实施阶段已生成，每次完整门禁独立产生。大文件只生成/传输，不入 Git；私钥临时文件运行结束即清理，不归档。
 
 | 产物 | 必需内容 |
 | --- | --- |
@@ -231,4 +231,12 @@ git diff --check
 
 M0 必要链路、资源和停止项失败则不能收口；HTTP/2 限制必须经过专项调查与范围确认。开发完成还需 D/A 审查结论，M0 人工验收需 H 记录；模板测试通过、文档完整或某一个 HTTPS 探针成功均不足以替代。
 
-本次只编写文档。检查两级导航、Markdown 链接/锚点、V2 任务/场景 ID 及总矩阵映射、工作区差异与 `git diff --check`；不运行应用构建、单测、抓包、证书安装、部署、Windows CI 或发布门禁。后续实施时更新本节实际状态，不预填测试数、性能结果或通过结论。
+已实现本地开发门禁及 50 个 U/P/S/B/R/L 自动场景映射。实际测试结果见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)，[运行说明](../reference/network-traffic-m0-runtime.md)明确实现范围；D/A 审查、G 门禁失败注入与 H 人工状态分别登记。
+
+## 13. 当前执行入口与覆盖说明
+
+使用 [verify-development.ps1](../../tools/verify-development.ps1) 的 Docs/M0 模式；辅助解析在 [DevelopmentChecks.ps1](../../tools/DevelopmentChecks.ps1)，失败注入在 [test-development-gate.ps1](../../tools/test-development-gate.ps1)。实际方法/理论行清单为 [m0-test-map.json](../../tools/m0-test-map.json)，冻结预算为 [resource profile](../../tools/m0-resource-profile.json)。
+
+U10 通过无网络订阅的页面轮询、关闭后刷新无效及旧启动迟到测试实现；P06 的网络失败、请求取消、记录回调失败与退出分别测试，不开放任意外部网络回调。L04 的生产退出入口由容器/协调器测试覆盖，真实窗口事件与 Host 视觉观察仍列 H 未执行。S05 的慢盘通过可控 sink 测试；实际文件路径冲突另验证记录失败不影响完整转发。B07 使用预热后峰值，另记录启动就绪快照；冷启动过程峰值未测；H 不映射成自动 Passed。
+
+上述范围修订保留原场景 ID，不删除必测项；更丰富的错误模型、事件 UI、真实客户端/Host 及任意 h2 组合由后续阶段补验。

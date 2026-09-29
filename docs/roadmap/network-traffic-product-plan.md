@@ -1,9 +1,9 @@
 # HTTP 流量工作台：产品与规划方案
 
 > 对象：`myavalonia-network-traffic` / `myavalonia.plugin.network.traffic`。
-> 编写日期：2026-09-28。方案编号：V1；状态：规划草案，业务能力尚未实施。
+> 编写日期：2026-09-28。方案编号：V1；状态：V1 产品规划；V2/M0 已实施，M1–M6 待实施。
 > 配套：[能力路线图与里程碑](network-traffic-capability-roadmap.md)、[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
-> 2026-09-29 补充：[V2 / M0 技术基线执行计划](network-traffic-v2-m0-technical-baseline-plan.md)、[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)及[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)已编写；业务仍未实施，本产品方案保持 V1 编号。
+> 2026-09-29 补充：[V2 / M0 技术基线执行计划](network-traffic-v2-m0-technical-baseline-plan.md)、[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)及[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)已实施；当前行为及结论见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)，本产品方案保持 V1 编号。
 
 V1 表示产品方案序号，M0–M6 表示能力里程碑，均不是插件包版本或交付日期。本文件整理本次产品讨论，并补充分阶段设计建议；编写规划不代表已开始实现、已通过验收或已发布。
 
@@ -19,11 +19,11 @@ V1 表示产品方案序号，M0–M6 表示能力里程碑，均不是插件包
 | 工程名称 | `NetWorkTrafficPlugin`，本次不更名 |
 | 稳定插件身份 | `myavalonia.plugin.network.traffic`，沿用现有工程配置 |
 | 候选显示名称 | `HttpLab / HTTP 工作台`；尚未正式确定，不改变插件身份 |
-| 当前实现 | 示例 Document、示例 Workbench Command、空业务服务注册入口及模板测试 |
-| 当前依赖 | .NET 10 / C# 14、Avalonia 12.1.2、Plugin SDK 3.4.1；尚未引入 Titanium |
+| 当前实现 | M0 代理、共享运行协调器、有限记录、Document/Tool、专用测试与本地门禁；保留模板命令回归 |
+| 当前依赖 | .NET 10 / C# 14、Avalonia 12.1.2、Plugin SDK 3.4.1；Titanium.Web.Proxy 7.0.13 |
 | 交付形态 | 现有 Plugin 为正式交付项目，Standalone 为复用生产界面的开发入口，Tests 为验证项目 |
 | 平台基线 | 沿用当前 Windows x64 目标；独立成品与跨平台适配没有纳入首版 |
-| 代理方向 | 拟使用 Titanium.Web.Proxy；具体版本、能力覆盖和依赖兼容性在 M0 核定 |
+| 代理方向 | 使用 Titanium.Web.Proxy 7.0.13；普通 h2，目标映射只协商 h1；真实 Host 加载仍待联调 |
 
 事实依据：[Plugin 项目](../../src/NetWorkTrafficPlugin.Plugin/NetWorkTrafficPlugin.Plugin.csproj)、[集中依赖](../../Directory.Packages.props)、[模块注册](../../src/NetWorkTrafficPlugin.Plugin/Plugin/NetWorkTrafficPluginModule.cs)、[服务注册](../../src/NetWorkTrafficPlugin.Plugin/Plugin/NetWorkTrafficPluginServices.cs)、[项目职责](../project-and-window-responsibilities.md)。本次源码核对基线为 `3b162f4`；没有执行业务运行验证。
 
@@ -202,8 +202,8 @@ Host 提供生命周期、Document/Tool 和公开交互端口；插件负责业�
 | --- | --- | --- |
 | 产品显示名 | HttpLab / HTTP 工作台，保留工程及插件身份 | M1 |
 | 首批客户端与接入范围 | 先手工指定代理的浏览器/程序，系统代理管理按实际需求细化 | M0 |
-| Titanium 版本和 HTTP/2 覆盖 | 用本项目真实链路测量、锁定；记录不支持情况 | M0 |
-| 后台抓包与最后页面关闭行为 | 插件级服务、明确停止、状态持续可见；退出和异常恢复要可验证 | M0 |
+| Titanium 版本和 HTTP/2 覆盖 | 已锁定 7.0.13；普通 h2 通过受控验证，映射运行 h1，见 M0 实施记录 | M0 |
+| 后台抓包与最后页面关闭行为 | 已实现容器级服务，最后页关闭继续；Tool 显式停止，容器退出有界；真实 Host 待验 | M0 |
 | 默认记录/预览预算 | 用受控大文件、流式与并发负载测量后确定 | M1 |
 | DSL 文法、值状态和重复字段语义 | 先有限表达式、可诊断和可预览 | M2 |
 | 重发客户端与环境凭据组织 | 单执行入口、变量解析、明确规则应用方式 | M4 |
@@ -216,4 +216,4 @@ Host 提供生命周期、Document/Tool 和公开交互端口；插件负责业�
 
 技术核对入口：[Titanium 官方仓库](https://github.com/justcoding121/titanium-web-proxy)、[协议与流式支持矩阵](https://github.com/justcoding121/titanium-web-proxy/wiki/Protocol-Support)、[OpenAPI 官方规范](https://spec.openapis.org/oas/latest.html)。上游文档会变化，具体版本与实际能力由 M0/M5 的验证记录确认。
 
-尚未实施的设计保留在 `roadmap`；重复使用的验证方法放入 `maintenance`；实施后才新增当前行为 `reference` 与可执行步骤 `quick-start`。阶段证据另建带日期记录，分别说明代码、自动验证、真实 Host、人工使用和发布状态。
+尚未实施的设计保留在 `roadmap`；重复使用的验证方法放入 `maintenance`；M0 已新增当前行为 `reference` 与可执行步骤 `quick-start`。阶段证据另建带日期记录，分别说明代码、自动验证、真实 Host、人工使用和发布状态。

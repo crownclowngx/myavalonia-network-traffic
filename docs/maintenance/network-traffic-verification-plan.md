@@ -1,8 +1,8 @@
 # HTTP 流量工作台分阶段验证计划
 
 > 配套：[产品方案](../roadmap/network-traffic-product-plan.md)、[M0–M6 路线图](../roadmap/network-traffic-capability-roadmap.md)。
-> 编写日期：2026-09-28。状态：验证设计，以下业务场景均未执行；不存在抓包业务通过结论。
-> 2026-09-29 补充：[V2 / M0 专用验证矩阵](network-traffic-v2-m0-verification-plan.md)细化单元测试、协议探针、资源测量、门禁自测与证据；[执行计划](../roadmap/network-traffic-v2-m0-technical-baseline-plan.md)规定 V2-01～10 的实施顺序，当前均待实现。
+> 编写日期：2026-09-28。状态：分阶段验证设计；M0 自动结果见 V2 实施记录，其余阶段和真实 Host/人工验收待执行。
+> 2026-09-29 补充：[V2 / M0 专用验证矩阵](network-traffic-v2-m0-verification-plan.md)细化单元测试、协议探针、资源测量、门禁自测与证据；[执行计划](../roadmap/network-traffic-v2-m0-technical-baseline-plan.md)规定 V2-01～10 的实施顺序，M0 已实现，结果见[当日记录](../archive/2026-09-29-v2-m0-implementation.md)。
 
 ## 1. 验证层次与结果表达
 
@@ -67,7 +67,7 @@
 
 T01/T13 等协议项在 M0 先验证最小链路，在 M3 用真实规则执行链重新验证。所有阶段都回归相应的停止、资源、原始记录和来源语义，不能用探针通过替代产品功能通过。
 
-M0 的 T00～T03、T12/T13 改写前置及 T07/T24 所有权前置，按 [V2 专用矩阵](network-traffic-v2-m0-verification-plan.md)第 12 节细化；它不改变 M1/M3/M6 的完成状态。V2 只设计本地开发门禁，不使用 AIFLOW、Windows CI 或发布门禁。HTTP/2 调查必须执行，明确不支持/回退可成为范围结论，不能记作完整 h2 兼容。
+M0 的 T00～T03、T12/T13 改写前置及 T07/T24 所有权前置，按 [V2 专用矩阵](network-traffic-v2-m0-verification-plan.md)第 12 节细化；它不改变 M1/M3/M6 的完成状态。V2 仅执行本地开发门禁，不使用 AIFLOW、Windows CI 或发布门禁。HTTP/2 调查必须执行，明确不支持/回退可成为范围结论，不能记作完整 h2 兼容。
 
 产品场景到交付与验证的对应关系：
 
@@ -97,6 +97,4 @@ M0 的 T00～T03、T12/T13 改写前置及 T07/T24 所有权前置，按 [V2 专
 
 每阶段记录实际代码基线、依赖版本、测试场景、真实结果、设备/负载、预算值、证据位置、已知限制和未执行项目。代码实现、本地自动检查、真实 Host、人工验收和正式发布分栏记录。模板 `dotnet test` 通过不能作为上述业务矩阵通过的证据。
 
-本轮仅编写 Markdown 文档；检查仓库内链接与锚点、导航可达、需求到里程碑/验证的映射，以及 `git diff --check`。当前没有专用抓包验证脚本；V2 专项文档中的脚本命令明确标为待实现设计，不作为现行可执行入口。实现阶段再建立自动入口并映射本矩阵编号。
-
-参考：[网易云验证分工](../../../myavalonia-music-netease/docs/maintenance/verification.md)、[网易云专用验证矩阵](../../../myavalonia-music-netease/docs/maintenance/netease-v8-m4-music-discovery-verification-plan.md)。只参考方法，不继承其通过数量、业务场景或发布状态。
+本轮已实现 M0 生产链路及本地开发入口。运行方式见[快速开始](../quick-start/network-traffic-m0.md)，自动场景映射见 [m0-test-map.json](../../tools/m0-test-map.json)，结果及人工未验项见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)。
