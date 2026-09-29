@@ -1,11 +1,14 @@
 # NetWorkTrafficPlugin 文档导航与开发快速开始
 
-> 更新日期：2026-09-29。V2 / M0 已实现；V3 / M1 执行文档已编写、业务未开始。当前行为、自动结果及人工未验项见以下专用文档。
+> 更新日期：2026-09-29。V2 / M0 与 V3 / M1 已实现；当前行为、实际自动结果及人工未验项见以下专用文档。
 
 ## 产品规划与当前状态
 
 | 阅读目的 | 入口 |
 | --- | --- |
+| M1 当前能力、记录预算和产品降级 | [M1 运行说明](reference/network-traffic-m1-runtime.md) |
+| M1 客户端接入、筛选、保存回看及开发门禁 | [M1 快速开始](quick-start/network-traffic-m1.md) |
+| V3 代码审查、实际结果与人工未验 | [V3 实施记录](archive/2026-09-29-v3-m1-implementation.md) |
 | 当前行为、依赖边界和协议限制 | [M0 运行说明](reference/network-traffic-m0-runtime.md) |
 | 本地门禁、诊断页和合成演示 | [M0 快速开始](quick-start/network-traffic-m0.md) |
 | 实施证据、设计审查与人工未验项 | [2026-09-29 实施记录](archive/2026-09-29-v2-m0-implementation.md) |
@@ -19,8 +22,8 @@
 | M1 的 53 项业务场景、单测、UI、故障注入与开发门禁 | [V3 / M1 专用验证矩阵](maintenance/network-traffic-v3-m1-verification-plan.md) |
 | 协议、规则、资源、UI、Host 的分阶段验证 | [专用验证计划](maintenance/network-traffic-verification-plan.md) |
 
-当前源码包含 Titanium 7.0.13 生产适配、共享协调器、有限记录、最小 Document/Tool、受控测试和本地门禁。M1 已补充 V3 执行文档，业务实现未开始；M2–M6 仍为后续规划。
-正式工程及插件身份保持不变，候选显示名称为 `HttpLab / HTTP 工作台`，V3 计划采用“HTTP 工作台”。V1 是产品方案，V2 是 M0 执行方案，V3 是 M1 执行方案，均不是包版本。M0 已完成实现与开发验证，真实 Host、真实客户端和人工验收独立登记；本轮仅交付 V3 文档。
+当前源码包含 Titanium 7.0.13 生产适配、共享协调器、双向有界捕获、生产 Document/Tool、内容预览、原生存档、受控协议/资源/UI 测试和本地门禁。HTTP/2 空闲流仅提示，不自动取消；M2–M6 仍为后续规划。
+正式工程及插件身份保持不变，V3 采用“HTTP 工作台”。V1 是产品方案，V2 是 M0 执行方案，V3 是 M1 执行方案，均不是包版本。实现与开发自动结果、真实 Host、真实客户端和人工验收分别登记。
 
 规划放入 `roadmap`，专项设计放入 `design`，可复用验证方法放入 `maintenance`。已新增当前行为 `reference`、使用步骤
 `quick-start` 和带日期的实施记录；现有模板开发文档暂保留当前位置。实现、自动验证、真实 Host、人工验收和发布分别记录。
@@ -29,7 +32,7 @@
 
 V2 / M0 首要满足 SOLID，设计模式朴素使用，关键实现与测试写详细中文注释。不使用 AIFLOW；只运行本地 Debug 开发检查，不新增或运行 Windows CI、发布门禁。现行完整入口为 pwsh -NoProfile -File tools/verify-development.ps1 -Mode M0，包含十分钟持续流；Docs 模式只检查文档。以下是现有模板开发流程，后文发布说明仅在正式发布阶段适用。
 
-V3 / M1 同样以 SOLID 为首要规定，并要求单元测试、生产 UI、资源测量及门禁正反例齐全。计划中的 `-Mode M1` 尚未接入，默认值仍为 M0；本次文档验证使用 `pwsh -NoProfile -File tools/verify-development.ps1 -Mode Docs`，不代表 M1 业务通过。
+V3 / M1 同样以 SOLID 为首要规定，单元测试、生产 UI、资源测量及门禁正反例随功能实现。完整入口为 `pwsh -NoProfile -File tools/verify-development.ps1 -Mode M1`，包含全部 M0 与专项测量，默认值仍为 M0；`-Mode Docs` 仅验证文档。
 
 本解决方案用于开发 `myavalonia.plugin.network.traffic` Managed Plugin。它把真实插件、独立 Avalonia 开发窗口和
 自动化测试放在同一个解决方案中，使界面与业务代码既能快速预览，也能由 MyAvaloniaManagement Host
@@ -58,7 +61,7 @@ ViewModel、服务或贡献清单。
 ```powershell
 dotnet restore
 dotnet build -c Debug -warnaserror
-dotnet test -c Debug --no-build --filter Category!=ResourceProbe
+dotnet test -c Debug --no-build --filter 'Category!=ResourceProbe&Category!=M1ResourceProbe&Category!=NativeUiProbe'
 dotnet run --project src/NetWorkTrafficPlugin.Standalone
 ```
 

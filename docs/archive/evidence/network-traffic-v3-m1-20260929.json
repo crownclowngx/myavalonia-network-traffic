@@ -1,0 +1,2755 @@
+{
+  "schemaVersion": 1,
+  "implementationCommit": "e2a2f83e852160b76f06d479db822b07bfbf4b2c",
+  "verification": {
+    "schemaVersion": 1,
+    "runId": "20260929T124759Z-03a0c75a",
+    "mode": "M1",
+    "sourceHash": "7949959527114B1636C77AB07DE12A566F3C59375A67FD0F8459A81A72E3B777",
+    "startedUtc": "2026-09-29T20:47:59.3023526+08:00",
+    "profileHash": "C20859D0E1292E0BD8F7AFAD39F8EFBD1E8D08E10A7B126A4D15D9CD85366F16",
+    "head": "e2a2f83e852160b76f06d479db822b07bfbf4b2c",
+    "dirty": true,
+    "os": "Microsoft Windows 10.0.26200",
+    "architecture": "X64",
+    "sdk": "10.0.303",
+    "automaticPassed": true,
+    "testCount": 140,
+    "commands": [
+      {
+        "file": "pwsh",
+        "arguments": [
+          "-NoProfile",
+          "-File",
+          "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\tools\\TestM1DevelopmentGate.ps1"
+        ],
+        "startedUtc": "2026-09-29T20:47:59.8387396+08:00",
+        "finishedUtc": "2026-09-29T20:48:17.0234277+08:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "log": "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a\\gate-self-test.log"
+      },
+      {
+        "file": "dotnet",
+        "arguments": [
+          "restore",
+          "NetWorkTrafficPlugin.slnx",
+          "--locked-mode"
+        ],
+        "startedUtc": "2026-09-29T20:48:17.0303846+08:00",
+        "finishedUtc": "2026-09-29T20:48:17.8636739+08:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "log": "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a\\restore-locked.log"
+      },
+      {
+        "file": "dotnet",
+        "arguments": [
+          "build",
+          "NetWorkTrafficPlugin.slnx",
+          "-c",
+          "Debug",
+          "--no-restore",
+          "-warnaserror"
+        ],
+        "startedUtc": "2026-09-29T20:48:17.8649778+08:00",
+        "finishedUtc": "2026-09-29T20:48:21.3920133+08:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "log": "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a\\build-debug.log"
+      },
+      {
+        "file": "dotnet",
+        "arguments": [
+          "test",
+          "tests/NetWorkTrafficPlugin.Tests",
+          "-c",
+          "Debug",
+          "--no-build",
+          "--no-restore",
+          "--filter",
+          "Category!=ResourceProbe&Category!=M1ResourceProbe&Category!=NativeUiProbe",
+          "--logger",
+          "trx;LogFileName=ordinary.trx",
+          "--results-directory",
+          "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a"
+        ],
+        "startedUtc": "2026-09-29T20:48:21.3958185+08:00",
+        "finishedUtc": "2026-09-29T20:49:03.3258627+08:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "log": "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a\\ordinary-tests.log"
+      },
+      {
+        "file": "dotnet",
+        "arguments": [
+          "test",
+          "tests/NetWorkTrafficPlugin.Tests",
+          "-c",
+          "Debug",
+          "--no-build",
+          "--no-restore",
+          "--filter",
+          "Category=ResourceProbe",
+          "--logger",
+          "trx;LogFileName=resource.trx",
+          "--results-directory",
+          "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a"
+        ],
+        "startedUtc": "2026-09-29T20:49:03.5767269+08:00",
+        "finishedUtc": "2026-09-29T20:59:26.121957+08:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "log": "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a\\resource-tests.log"
+      },
+      {
+        "file": "dotnet",
+        "arguments": [
+          "test",
+          "tests/NetWorkTrafficPlugin.Tests",
+          "-c",
+          "Debug",
+          "--no-build",
+          "--no-restore",
+          "--filter",
+          "Category=M1ResourceProbe",
+          "--logger",
+          "trx;LogFileName=m1-resource.trx",
+          "--results-directory",
+          "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a"
+        ],
+        "startedUtc": "2026-09-29T20:59:26.5392534+08:00",
+        "finishedUtc": "2026-09-29T21:01:30.0532755+08:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "log": "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a\\m1-resource-tests.log"
+      },
+      {
+        "file": "dotnet",
+        "arguments": [
+          "test",
+          "tests/NetWorkTrafficPlugin.Tests",
+          "-c",
+          "Debug",
+          "--no-build",
+          "--no-restore",
+          "--filter",
+          "Category=NativeUiProbe",
+          "--logger",
+          "trx;LogFileName=ui.trx",
+          "--results-directory",
+          "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a"
+        ],
+        "startedUtc": "2026-09-29T21:01:30.0567434+08:00",
+        "finishedUtc": "2026-09-29T21:11:38.5162929+08:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "log": "D:\\code\\local\\avalonia_dock_plug_test\\myavalonia-network-traffic\\TestResults\\NetworkTrafficM1\\20260929T124759Z-03a0c75a\\native-ui-tests.log"
+      }
+    ],
+    "realClientVerified": false,
+    "hostVerified": false,
+    "manualAccepted": false,
+    "deployed": false,
+    "windowsCiExecuted": false,
+    "releaseGateExecuted": false,
+    "productDowngrades": [
+      "HTTP/2 空闲流只提示，不自动终止；客户端单流取消与全局停止仍须验证。"
+    ],
+    "pending": [
+      "H01/H02 实际界面操作",
+      "H03 指定真实 Host",
+      "H04 指定真实客户端"
+    ],
+    "requiredM1Scenarios": 53,
+    "conclusion": "M1 本地开发自动门禁通过；人工、真实 Host、真实客户端及发布未验。",
+    "finishedUtc": "2026-09-29T21:11:39.7680504+08:00",
+    "endingSourceHash": "7949959527114B1636C77AB07DE12A566F3C59375A67FD0F8459A81A72E3B777"
+  },
+  "sourceReportSha256": "1991A97EA7CA8048F75BE389DDE848B2D49A190240C407A88C2208852560091F",
+  "artifacts": {
+    "schemaVersion": 1,
+    "files": [
+      {
+        "sha256": "0DAAF0F8EA7FC78DFA4CBE2EAABF9190BAB0B59CADB7F1255A012A738B567C91",
+        "length": 1031,
+        "name": "build-debug.log"
+      },
+      {
+        "sha256": "ACA23E3C2AA99936F76855FF0812BCDE3E295F2EB00715900EAE6B71B06C330C",
+        "length": 426,
+        "name": "gate-self-test.log"
+      },
+      {
+        "sha256": "2FFE489BF4B0CC538D3E83F5D55748F22FE778C90053EC174BCA5788A4ED1CC1",
+        "length": 5682,
+        "name": "m1-capture.json"
+      },
+      {
+        "sha256": "0699F2E3FE955E25CF02E9A5447E067F693C3318B846E3DE5E820328F58D4111",
+        "length": 33429,
+        "name": "m1-document-dark-1200.png"
+      },
+      {
+        "sha256": "9B9F95532F733550E386ECE51F9CB413F3EDBFD6DF8890231B4516AA1C7A8A6B",
+        "length": 17532,
+        "name": "m1-document-dark-520.png"
+      },
+      {
+        "sha256": "A644E341B7FA21AEE5CB9DAFCA1002DAA0E0F334DA739CDDE23D9A198A9918B4",
+        "length": 31039,
+        "name": "m1-document-dark-800.png"
+      },
+      {
+        "sha256": "D7337D5F4E486DE0399E491C7AF454AD96C78363826CCDEF644A4ADB190385F1",
+        "length": 33917,
+        "name": "m1-document-light-1200.png"
+      },
+      {
+        "sha256": "C22DE924C6D299B3E8B2EE8803C7B9D973097AFB7AEF77D17BC541A4F67D3C2A",
+        "length": 18111,
+        "name": "m1-document-light-520.png"
+      },
+      {
+        "sha256": "6C20502F93ACBCC79B29C424BD032993172F3385F6D43D64D8BC0D385F18546C",
+        "length": 31697,
+        "name": "m1-document-light-800.png"
+      },
+      {
+        "sha256": "3FE05B14330D33554D75E12F7CF59E5F3E95210B68B54287BD0DB0D2542794D2",
+        "length": 24239,
+        "name": "m1-image.png"
+      },
+      {
+        "sha256": "A3921F75EB377415AB38AD3D85232E791AB4A4597D20B4FDA1F019C0586D8C16",
+        "length": 533,
+        "name": "m1-lifetime.json"
+      },
+      {
+        "sha256": "21E7A8FCA90C8B47C2F68FDFBB18BA6B9F06C7DA51AF5DF8B28FB78C7CBCA19F",
+        "length": 470,
+        "name": "m1-query.json"
+      },
+      {
+        "sha256": "D3E5B274B245ECAB3560039C472FB8C29F81475C682E1B65338CA16D292012DF",
+        "length": 28853,
+        "name": "m1-quota.png"
+      },
+      {
+        "sha256": "122DF290E962E02D71F0815AAB14B86779BBE90789B417ACBADB7E183D06A588",
+        "length": 44339,
+        "name": "m1-readonly-partial.png"
+      },
+      {
+        "sha256": "D2C7BB124F0E9C3E490EE09A8FDFDB3810CCA7FBBAE34AFDBBF9487DCCD54B4D",
+        "length": 29217,
+        "name": "m1-resource-samples.csv"
+      },
+      {
+        "sha256": "1542A2C12E621B5EFAE4AFC6882F0A6403F05DDEF40507FED4D8C847BF887BCD",
+        "length": 543,
+        "name": "m1-resource-tests.log"
+      },
+      {
+        "sha256": "127C85C5859536052C2D28D04D08A59F3182354EFA0472F6D200DF4EECEFFFF8",
+        "length": 29116,
+        "name": "m1-resource.png"
+      },
+      {
+        "sha256": "421C6533AB363941E134DCEE5C41DD0980C09FD138ED3D39382021E5D09EF17C",
+        "length": 3230,
+        "name": "m1-resource.trx"
+      },
+      {
+        "sha256": "AC115F7FE858B793A3A3D18B405739426D7EE400EADAD7D5E4682AC84F4668AC",
+        "length": 45682,
+        "name": "m1-resources.json"
+      },
+      {
+        "sha256": "E13CB6198EA71C20CB5239003A261EBB4DC456905C6D2F2930850459B8D5A614",
+        "length": 29332,
+        "name": "m1-sse.png"
+      },
+      {
+        "sha256": "EFB02E2C207C9D004A4D35D233592BDD796B39A963F661E62D907C835FED8A44",
+        "length": 1407,
+        "name": "m1-storage.json"
+      },
+      {
+        "sha256": "E713D0D4535BA8496A76E30F8E0213A7B2459C026D70DCE9C3ECFFCE9B7436B0",
+        "length": 1037,
+        "name": "m1-stream.json"
+      },
+      {
+        "sha256": "C2FF637EF0DF32145AB1630BB22F4A445B59F7D45D63E28AC99415C8420BFDD1",
+        "length": 12248,
+        "name": "m1-tool-dark-280.png"
+      },
+      {
+        "sha256": "C189220B12D32CAE15294B3320BC0DB95B26ECE9751771A4682F8B37D3ED86E5",
+        "length": 24968,
+        "name": "m1-tool-dark-420.png"
+      },
+      {
+        "sha256": "1E7393D62ED4B9E6CCF98A610B089F58AF18C6C79C518C1FA2B52F8A3A5C3BCD",
+        "length": 13173,
+        "name": "m1-tool-light-280.png"
+      },
+      {
+        "sha256": "4B6EADF465763E5CCF2F9C7F888F17613FB8A66950BED805B1480C870D13D7DC",
+        "length": 26605,
+        "name": "m1-tool-light-420.png"
+      },
+      {
+        "sha256": "A5E04DEC617F98F67182AFE471F6CC345040C9F9CAF9E3DE95216ABA0AEFC517",
+        "length": 379562,
+        "name": "m1-ui-native-samples.json"
+      },
+      {
+        "sha256": "0438F110C25DB666F4CAAEBB713A724F5673208279B99B4A88D4E8F219496D4C",
+        "length": 37912,
+        "name": "m1-ui-native.json"
+      },
+      {
+        "sha256": "B941725B1255FCAA66F8FDDCAF68053FA7EAEE62322D3913F013407EFD1E142F",
+        "length": 30,
+        "name": "m1-ui-native.log"
+      },
+      {
+        "sha256": "ACED0E668FC69D2551E4953706261777AAB22E8DBAFE2B926062A8EE972F0DD1",
+        "length": 4497,
+        "name": "m1-ui-screenshots.json"
+      },
+      {
+        "sha256": "6B2480014B86A369FF154B8218367ACC9672CE9CD2DDE8CFD6810D1DE69AAF21",
+        "length": 4053,
+        "name": "m1-ui.json"
+      },
+      {
+        "sha256": "4924AB43C95635312642EE9AA6C6441F16047334A043A494215EA335412DE672",
+        "length": 535,
+        "name": "native-ui-tests.log"
+      },
+      {
+        "sha256": "9DF9090D2A0BB9AEF9BAA15FB65F505EB2A9C7DF4CDF85F8627FDD19CA203F48",
+        "length": 537,
+        "name": "ordinary-tests.log"
+      },
+      {
+        "sha256": "686D32095C7D9FA23D9DBD7E599A20AF1C470717437FC93416F35B86A52E8CD4",
+        "length": 213788,
+        "name": "ordinary.trx"
+      },
+      {
+        "sha256": "3C377D0B6CA8F396F233DF8207C0F7CF4AE1821F73D149B6F44A12B52B240DDE",
+        "length": 23295,
+        "name": "protocol-probes.json"
+      },
+      {
+        "sha256": "57E9B83E8BEE45CF6BA435CEB71356168B1FA9E42B65336A784BD2C0A2405068",
+        "length": 109226,
+        "name": "resource-probes.json"
+      },
+      {
+        "sha256": "13BAA150BB313313F31AC26386E15373BE0D22B3B0090C72BA2C08F43BDA9BEA",
+        "length": 460,
+        "name": "resource-profile.json"
+      },
+      {
+        "sha256": "F1587200B874CAE9DA3B4065D62779EE5753BDE43C2048A908543F182255B4BF",
+        "length": 17355,
+        "name": "resource-progress.json"
+      },
+      {
+        "sha256": "6B84E5BC159A9964BE39BD1E72C6344DD77C08B339D96DC6F817C4C041D83360",
+        "length": 227265,
+        "name": "resource-samples.csv"
+      },
+      {
+        "sha256": "CF6A0ADDBFABEC76EDEDB26A154D20E48D7A4FF243BD71BEDE20C544B182B0BF",
+        "length": 62141,
+        "name": "resource-stop.json"
+      },
+      {
+        "sha256": "74B37354FD2BE908263028F6718334DBA6D7F80E532C19495D98EC4DB62FE4D9",
+        "length": 542,
+        "name": "resource-tests.log"
+      },
+      {
+        "sha256": "5843C78B12D007B872E24684677FB78B0D7FF4371AEF82BAB173CE62F61CCF34",
+        "length": 3233,
+        "name": "resource.trx"
+      },
+      {
+        "sha256": "0A5293E62D3BB4D8819D8D749F51206D3AA424744E622337BEE96070823F245B",
+        "length": 86,
+        "name": "restore-locked.log"
+      },
+      {
+        "sha256": "D100DD62EFB4BA263353B51DFDD4473A0FCAF28A777E1BCE792D34FF3938C0E7",
+        "length": 73411,
+        "name": "scenario-coverage.json"
+      },
+      {
+        "sha256": "AE533B25709EE5FCB6413B6E8BD8B3F777353F4B5A886B242E7368A3153EFFE0",
+        "length": 651,
+        "name": "stream-probes.json"
+      },
+      {
+        "sha256": "CBBB624CD63654F2BD3BDA43C0F45DEF3D6B1CE36A823D9E92C4E0C5D313ED53",
+        "length": 3230,
+        "name": "ui.trx"
+      }
+    ],
+    "sourceHash": "7949959527114B1636C77AB07DE12A566F3C59375A67FD0F8459A81A72E3B777",
+    "runId": "20260929T124759Z-03a0c75a"
+  },
+  "coverage": [
+    {
+      "id": "B01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "B02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "B03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "B04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "B05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "B06",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "B07",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "L01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "L02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "L03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "L04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "L05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "L06",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P06",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P07",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P08",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P09",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "P10",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "R01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "R02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "R03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "R04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "R05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "R06",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "R07",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "S01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "S02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "S03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "S04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "S05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "S06",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U06",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U07",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U08",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U09",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U10",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U11",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U12",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U13",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "U14",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-B01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-B02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-B03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-B04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-B05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-D01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-D02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-D03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-D04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-D05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-D06",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-L01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-L02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-L03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-L04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-P01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-P02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-P03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-P04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-P05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-P06",
+      "scope": "HTTP/2 空闲仅提示；客户端单流取消与全局停止",
+      "status": "passed"
+    },
+    {
+      "id": "V3-Q01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-Q02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-Q03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-Q04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-R01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-R02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-S01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-S02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-S03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-S04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U06",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U07",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U08",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U09",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U10",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U11",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U12",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U13",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U14",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U15",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-U16",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-UI01",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-UI02",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-UI03",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-UI04",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-UI05",
+      "scope": null,
+      "status": "passed"
+    },
+    {
+      "id": "V3-UI06",
+      "scope": null,
+      "status": "passed"
+    }
+  ],
+  "m0": {
+    "modes": [
+      {
+        "portReleased": true,
+        "mode": "None",
+        "streamSeconds": 0,
+        "activeAfter": 0,
+        "baseline": {
+          "Phase": "None-warm",
+          "Utc": "2026-09-29T20:49:06.1819098+08:00",
+          "PrivateBytes": 33902592,
+          "WorkingSet": 69488640,
+          "ManagedBytes": 3706608,
+          "Handles": 564,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "handles": 550,
+        "fileBytes": 0,
+        "stopMilliseconds": 1170.9025,
+        "queueAfter": 0,
+        "exitCode": 0,
+        "filesClosed": true
+      },
+      {
+        "portReleased": true,
+        "mode": "MetadataOnly",
+        "streamSeconds": 0,
+        "activeAfter": 0,
+        "baseline": {
+          "Phase": "MetadataOnly-warm",
+          "Utc": "2026-09-29T20:49:12.7797424+08:00",
+          "PrivateBytes": 33243136,
+          "WorkingSet": 69005312,
+          "ManagedBytes": 4003032,
+          "Handles": 567,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "handles": 553,
+        "fileBytes": 0,
+        "stopMilliseconds": 1179.7495,
+        "queueAfter": 0,
+        "exitCode": 0,
+        "filesClosed": true
+      },
+      {
+        "portReleased": true,
+        "mode": "BoundedBody",
+        "streamSeconds": 600.0128146,
+        "activeAfter": 0,
+        "baseline": {
+          "Phase": "BoundedBody-warm",
+          "Utc": "2026-09-29T20:49:19.3401971+08:00",
+          "PrivateBytes": 36687872,
+          "WorkingSet": 72667136,
+          "ManagedBytes": 8070400,
+          "Handles": 562,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2127140
+        },
+        "handles": 529,
+        "fileBytes": 19018856,
+        "stopMilliseconds": 1157.0883,
+        "queueAfter": 0,
+        "exitCode": 0,
+        "filesClosed": true
+      }
+    ],
+    "sampleCount": 2361,
+    "sustainedSampleCount": 2263,
+    "transfers": [
+      {
+        "Mode": "None",
+        "Size": 134217728,
+        "Iteration": 0,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "Milliseconds": 206.9018,
+        "PeakDelta": 57344,
+        "Samples": 3
+      },
+      {
+        "Mode": "None",
+        "Size": 134217728,
+        "Iteration": 1,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "Milliseconds": 190.2218,
+        "PeakDelta": 61440,
+        "Samples": 3
+      },
+      {
+        "Mode": "None",
+        "Size": 134217728,
+        "Iteration": 2,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "Milliseconds": 194.1291,
+        "PeakDelta": 65536,
+        "Samples": 3
+      },
+      {
+        "Mode": "None",
+        "Size": 1073741824,
+        "Iteration": 0,
+        "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "Milliseconds": 1350.0105,
+        "PeakDelta": 65536,
+        "Samples": 7
+      },
+      {
+        "Mode": "None",
+        "Size": 1073741824,
+        "Iteration": 1,
+        "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "Milliseconds": 1346.4411,
+        "PeakDelta": 65536,
+        "Samples": 7
+      },
+      {
+        "Mode": "None",
+        "Size": 1073741824,
+        "Iteration": 2,
+        "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "Milliseconds": 1324.095,
+        "PeakDelta": 77824,
+        "Samples": 7
+      },
+      {
+        "Mode": "MetadataOnly",
+        "Size": 134217728,
+        "Iteration": 0,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "Milliseconds": 188.0416,
+        "PeakDelta": 385024,
+        "Samples": 3
+      },
+      {
+        "Mode": "MetadataOnly",
+        "Size": 134217728,
+        "Iteration": 1,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "Milliseconds": 167.255,
+        "PeakDelta": 385024,
+        "Samples": 3
+      },
+      {
+        "Mode": "MetadataOnly",
+        "Size": 134217728,
+        "Iteration": 2,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "Milliseconds": 175.0243,
+        "PeakDelta": 393216,
+        "Samples": 3
+      },
+      {
+        "Mode": "MetadataOnly",
+        "Size": 1073741824,
+        "Iteration": 0,
+        "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "Milliseconds": 1329.427,
+        "PeakDelta": 724992,
+        "Samples": 7
+      },
+      {
+        "Mode": "MetadataOnly",
+        "Size": 1073741824,
+        "Iteration": 1,
+        "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "Milliseconds": 1357.4034,
+        "PeakDelta": 753664,
+        "Samples": 7
+      },
+      {
+        "Mode": "MetadataOnly",
+        "Size": 1073741824,
+        "Iteration": 2,
+        "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "Milliseconds": 1330.0722,
+        "PeakDelta": 761856,
+        "Samples": 7
+      },
+      {
+        "Mode": "BoundedBody",
+        "Size": 134217728,
+        "Iteration": 0,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "Milliseconds": 189.7324,
+        "PeakDelta": 65536,
+        "Samples": 3
+      },
+      {
+        "Mode": "BoundedBody",
+        "Size": 134217728,
+        "Iteration": 1,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "Milliseconds": 185.6762,
+        "PeakDelta": 65536,
+        "Samples": 3
+      },
+      {
+        "Mode": "BoundedBody",
+        "Size": 134217728,
+        "Iteration": 2,
+        "Hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "Milliseconds": 185.2384,
+        "PeakDelta": 479232,
+        "Samples": 3
+      },
+      {
+        "Mode": "BoundedBody",
+        "Size": 1073741824,
+        "Iteration": 0,
+        "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "Milliseconds": 1349.7313,
+        "PeakDelta": 860160,
+        "Samples": 7
+      },
+      {
+        "Mode": "BoundedBody",
+        "Size": 1073741824,
+        "Iteration": 1,
+        "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "Milliseconds": 1378.2529,
+        "PeakDelta": 966656,
+        "Samples": 7
+      },
+      {
+        "Mode": "BoundedBody",
+        "Size": 1073741824,
+        "Iteration": 2,
+        "Hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "Milliseconds": 1346.9626,
+        "PeakDelta": 962560,
+        "Samples": 7
+      }
+    ]
+  },
+  "m1Resources": {
+    "transfers": [
+      {
+        "phase": "MetadataOnly-download-134217728-0",
+        "mode": "MetadataOnly",
+        "direction": "download",
+        "size": 134217728,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 134217728,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-download-134217728-0-baseline",
+          "Utc": "2026-09-29T20:59:28.9881873+08:00",
+          "PrivateBytes": 34091008,
+          "WorkingSet": 71401472,
+          "ManagedBytes": 5620096,
+          "Handles": 574,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 888832,
+        "sampleCount": 3,
+        "milliseconds": 1519.0122,
+        "stopMilliseconds": 1151.3381,
+        "stoppedHandles": 558,
+        "physical": 81174,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-download-134217728-1",
+        "mode": "MetadataOnly",
+        "direction": "download",
+        "size": 134217728,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 134217728,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-download-134217728-1-baseline",
+          "Utc": "2026-09-29T20:59:31.2167821+08:00",
+          "PrivateBytes": 34557952,
+          "WorkingSet": 70934528,
+          "ManagedBytes": 5326504,
+          "Handles": 583,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 65536,
+        "sampleCount": 3,
+        "milliseconds": 1588.4921,
+        "stopMilliseconds": 1141.3036,
+        "stoppedHandles": 564,
+        "physical": 81169,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-download-134217728-2",
+        "mode": "MetadataOnly",
+        "direction": "download",
+        "size": 134217728,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 134217728,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-download-134217728-2-baseline",
+          "Utc": "2026-09-29T20:59:33.5932181+08:00",
+          "PrivateBytes": 34533376,
+          "WorkingSet": 71073792,
+          "ManagedBytes": 4917520,
+          "Handles": 573,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 32768,
+        "sampleCount": 2,
+        "milliseconds": 1380.4525,
+        "stopMilliseconds": 1153.4186,
+        "stoppedHandles": 557,
+        "physical": 81175,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-download-1073741824-0",
+        "mode": "MetadataOnly",
+        "direction": "download",
+        "size": 1073741824,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 1073741824,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-download-1073741824-0-baseline",
+          "Utc": "2026-09-29T20:59:35.700226+08:00",
+          "PrivateBytes": 33894400,
+          "WorkingSet": 70914048,
+          "ManagedBytes": 5551936,
+          "Handles": 566,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 913408,
+        "sampleCount": 7,
+        "milliseconds": 2621.8342,
+        "stopMilliseconds": 1175.96,
+        "stoppedHandles": 550,
+        "physical": 81196,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-download-1073741824-1",
+        "mode": "MetadataOnly",
+        "direction": "download",
+        "size": 1073741824,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 1073741824,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-download-1073741824-1-baseline",
+          "Utc": "2026-09-29T20:59:39.0623945+08:00",
+          "PrivateBytes": 33538048,
+          "WorkingSet": 70705152,
+          "ManagedBytes": 6414096,
+          "Handles": 574,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 905216,
+        "sampleCount": 13,
+        "milliseconds": 4327.804,
+        "stopMilliseconds": 1175.4828,
+        "stoppedHandles": 558,
+        "physical": 81191,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-download-1073741824-2",
+        "mode": "MetadataOnly",
+        "direction": "download",
+        "size": 1073741824,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 1073741824,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-download-1073741824-2-baseline",
+          "Utc": "2026-09-29T20:59:44.1406805+08:00",
+          "PrivateBytes": 35209216,
+          "WorkingSet": 71348224,
+          "ManagedBytes": 4665008,
+          "Handles": 571,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 331776,
+        "sampleCount": 8,
+        "milliseconds": 2579.779,
+        "stopMilliseconds": 1168.7445,
+        "stoppedHandles": 555,
+        "physical": 81192,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-upload-134217728-0",
+        "mode": "MetadataOnly",
+        "direction": "upload",
+        "size": 134217728,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 134217728,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-upload-134217728-0-baseline",
+          "Utc": "2026-09-29T20:59:47.3955724+08:00",
+          "PrivateBytes": 34791424,
+          "WorkingSet": 71950336,
+          "ManagedBytes": 5161744,
+          "Handles": 571,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 20480,
+        "sampleCount": 2,
+        "milliseconds": 1399.7552,
+        "stopMilliseconds": 1172.8382,
+        "stoppedHandles": 555,
+        "physical": 81132,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-upload-134217728-1",
+        "mode": "MetadataOnly",
+        "direction": "upload",
+        "size": 134217728,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 134217728,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-upload-134217728-1-baseline",
+          "Utc": "2026-09-29T20:59:49.6265429+08:00",
+          "PrivateBytes": 33497088,
+          "WorkingSet": 70651904,
+          "ManagedBytes": 4476160,
+          "Handles": 567,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 1515520,
+        "sampleCount": 3,
+        "milliseconds": 1660.9652,
+        "stopMilliseconds": 1179.1714,
+        "stoppedHandles": 551,
+        "physical": 81107,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-upload-134217728-2",
+        "mode": "MetadataOnly",
+        "direction": "upload",
+        "size": 134217728,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": true,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 134217728,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-upload-134217728-2-baseline",
+          "Utc": "2026-09-29T20:59:52.1293255+08:00",
+          "PrivateBytes": 34189312,
+          "WorkingSet": 70643712,
+          "ManagedBytes": 5158904,
+          "Handles": 570,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 65536,
+        "sampleCount": 6,
+        "milliseconds": 2400.8478,
+        "stopMilliseconds": 1171.8263,
+        "stoppedHandles": 554,
+        "physical": 81261,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-upload-1073741824-0",
+        "mode": "MetadataOnly",
+        "direction": "upload",
+        "size": 1073741824,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 1073741824,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-upload-1073741824-0-baseline",
+          "Utc": "2026-09-29T20:59:55.353871+08:00",
+          "PrivateBytes": 34471936,
+          "WorkingSet": 70889472,
+          "ManagedBytes": 4828968,
+          "Handles": 573,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 724992,
+        "sampleCount": 7,
+        "milliseconds": 2523.0153,
+        "stopMilliseconds": 1146.1013,
+        "stoppedHandles": 557,
+        "physical": 81150,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-upload-1073741824-1",
+        "mode": "MetadataOnly",
+        "direction": "upload",
+        "size": 1073741824,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 1073741824,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-upload-1073741824-1-baseline",
+          "Utc": "2026-09-29T20:59:58.6479255+08:00",
+          "PrivateBytes": 33730560,
+          "WorkingSet": 71147520,
+          "ManagedBytes": 3983456,
+          "Handles": 569,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 921600,
+        "sampleCount": 14,
+        "milliseconds": 4461.9092,
+        "stopMilliseconds": 1155.2665,
+        "stoppedHandles": 553,
+        "physical": 81125,
+        "portReleased": true
+      },
+      {
+        "phase": "MetadataOnly-upload-1073741824-2",
+        "mode": "MetadataOnly",
+        "direction": "upload",
+        "size": 1073741824,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": true,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": null,
+        "expectedPrefix": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "observed": 1073741824,
+        "stored": 0,
+        "state": "MetadataOnly",
+        "baseline": {
+          "Phase": "MetadataOnly-upload-1073741824-2-baseline",
+          "Utc": "2026-09-29T21:00:03.940503+08:00",
+          "PrivateBytes": 33406976,
+          "WorkingSet": 70524928,
+          "ManagedBytes": 5293376,
+          "Handles": 570,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 0
+        },
+        "peak": 880640,
+        "sampleCount": 10,
+        "milliseconds": 3562.8634,
+        "stopMilliseconds": 1181.1849,
+        "stoppedHandles": 554,
+        "physical": 81271,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-download-134217728-0",
+        "mode": "BoundedBody",
+        "direction": "download",
+        "size": 134217728,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 134217728,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-download-134217728-0-baseline",
+          "Utc": "2026-09-29T21:00:08.3370472+08:00",
+          "PrivateBytes": 37523456,
+          "WorkingSet": 74194944,
+          "ManagedBytes": 9304528,
+          "Handles": 581,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2151716
+        },
+        "peak": 86016,
+        "sampleCount": 2,
+        "milliseconds": 1500.1636,
+        "stopMilliseconds": 1166.2324,
+        "stoppedHandles": 565,
+        "physical": 3304756,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-download-134217728-1",
+        "mode": "BoundedBody",
+        "direction": "download",
+        "size": 134217728,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 134217728,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-download-134217728-1-baseline",
+          "Utc": "2026-09-29T21:00:10.6115171+08:00",
+          "PrivateBytes": 37302272,
+          "WorkingSet": 74031104,
+          "ManagedBytes": 10376128,
+          "Handles": 574,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2151716
+        },
+        "peak": 884736,
+        "sampleCount": 3,
+        "milliseconds": 1730.749,
+        "stopMilliseconds": 1154.8734,
+        "stoppedHandles": 556,
+        "physical": 3304736,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-download-134217728-2",
+        "mode": "BoundedBody",
+        "direction": "download",
+        "size": 134217728,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 134217728,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-download-134217728-2-baseline",
+          "Utc": "2026-09-29T21:00:13.1288411+08:00",
+          "PrivateBytes": 37294080,
+          "WorkingSet": 74031104,
+          "ManagedBytes": 9942832,
+          "Handles": 572,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2127140
+        },
+        "peak": 593920,
+        "sampleCount": 2,
+        "milliseconds": 1482.5231,
+        "stopMilliseconds": 1152.7572,
+        "stoppedHandles": 556,
+        "physical": 3280166,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-download-1073741824-0",
+        "mode": "BoundedBody",
+        "direction": "download",
+        "size": 1073741824,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 1073741824,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-download-1073741824-0-baseline",
+          "Utc": "2026-09-29T21:00:15.4217339+08:00",
+          "PrivateBytes": 37236736,
+          "WorkingSet": 73973760,
+          "ManagedBytes": 10176600,
+          "Handles": 571,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2118948
+        },
+        "peak": 798720,
+        "sampleCount": 7,
+        "milliseconds": 2644.4236,
+        "stopMilliseconds": 1148.837,
+        "stoppedHandles": 555,
+        "physical": 3272004,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-download-1073741824-1",
+        "mode": "BoundedBody",
+        "direction": "download",
+        "size": 1073741824,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 1073741824,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-download-1073741824-1-baseline",
+          "Utc": "2026-09-29T21:00:18.8331252+08:00",
+          "PrivateBytes": 35708928,
+          "WorkingSet": 72511488,
+          "ManagedBytes": 10343336,
+          "Handles": 569,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2777088
+        },
+        "peak": 843776,
+        "sampleCount": 13,
+        "milliseconds": 4399.7145,
+        "stopMilliseconds": 1176.003,
+        "stoppedHandles": 553,
+        "physical": 3930121,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-download-1073741824-2",
+        "mode": "BoundedBody",
+        "direction": "download",
+        "size": 1073741824,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 1073741824,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-download-1073741824-2-baseline",
+          "Utc": "2026-09-29T21:00:24.1382365+08:00",
+          "PrivateBytes": 37212160,
+          "WorkingSet": 73830400,
+          "ManagedBytes": 6887304,
+          "Handles": 570,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2151716
+        },
+        "peak": 700416,
+        "sampleCount": 7,
+        "milliseconds": 2642.101,
+        "stopMilliseconds": 1157.5018,
+        "stoppedHandles": 554,
+        "physical": 3304742,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-upload-134217728-0",
+        "mode": "BoundedBody",
+        "direction": "upload",
+        "size": 134217728,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 134217728,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-upload-134217728-0-baseline",
+          "Utc": "2026-09-29T21:00:27.4363324+08:00",
+          "PrivateBytes": 37761024,
+          "WorkingSet": 74452992,
+          "ManagedBytes": 10399504,
+          "Handles": 584,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2118948
+        },
+        "peak": 520192,
+        "sampleCount": 2,
+        "milliseconds": 1498.2431,
+        "stopMilliseconds": 1172.758,
+        "stoppedHandles": 568,
+        "physical": 3272263,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-upload-134217728-1",
+        "mode": "BoundedBody",
+        "direction": "upload",
+        "size": 134217728,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 134217728,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-upload-134217728-1-baseline",
+          "Utc": "2026-09-29T21:00:29.7843472+08:00",
+          "PrivateBytes": 37384192,
+          "WorkingSet": 74121216,
+          "ManagedBytes": 10521480,
+          "Handles": 579,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2168100
+        },
+        "peak": 720896,
+        "sampleCount": 4,
+        "milliseconds": 1903.1372,
+        "stopMilliseconds": 1158.3558,
+        "stoppedHandles": 563,
+        "physical": 3321397,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-upload-134217728-2",
+        "mode": "BoundedBody",
+        "direction": "upload",
+        "size": 134217728,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": true,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 134217728,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-upload-134217728-2-baseline",
+          "Utc": "2026-09-29T21:00:32.6141297+08:00",
+          "PrivateBytes": 37625856,
+          "WorkingSet": 74555392,
+          "ManagedBytes": 9849624,
+          "Handles": 566,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2151716
+        },
+        "peak": 745472,
+        "sampleCount": 7,
+        "milliseconds": 2741.7464,
+        "stopMilliseconds": 1167.404,
+        "stoppedHandles": 550,
+        "physical": 3305176,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-upload-1073741824-0",
+        "mode": "BoundedBody",
+        "direction": "upload",
+        "size": 1073741824,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 1073741824,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-upload-1073741824-0-baseline",
+          "Utc": "2026-09-29T21:00:36.1700933+08:00",
+          "PrivateBytes": 37408768,
+          "WorkingSet": 74121216,
+          "ManagedBytes": 9416504,
+          "Handles": 570,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2094928
+        },
+        "peak": 679936,
+        "sampleCount": 6,
+        "milliseconds": 2569.0932,
+        "stopMilliseconds": 1150.7437,
+        "stoppedHandles": 554,
+        "physical": 3248273,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-upload-1073741824-1",
+        "mode": "BoundedBody",
+        "direction": "upload",
+        "size": 1073741824,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 1073741824,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-upload-1073741824-1-baseline",
+          "Utc": "2026-09-29T21:00:39.5996353+08:00",
+          "PrivateBytes": 37396480,
+          "WorkingSet": 74113024,
+          "ManagedBytes": 9145104,
+          "Handles": 581,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2176292
+        },
+        "peak": 827392,
+        "sampleCount": 14,
+        "milliseconds": 4500.8607,
+        "stopMilliseconds": 1171.0981,
+        "stoppedHandles": 565,
+        "physical": 3329626,
+        "portReleased": true
+      },
+      {
+        "phase": "BoundedBody-upload-1073741824-2",
+        "mode": "BoundedBody",
+        "direction": "upload",
+        "size": 1073741824,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": true,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "expectedPrefix": "CC2CFFA7208256C3D2E7FC44BC928E2B18C4390920E90BF087C97FCC4BEC1F23",
+        "observed": 1073741824,
+        "stored": 1048576,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "BoundedBody-upload-1073741824-2-baseline",
+          "Utc": "2026-09-29T21:00:44.8221477+08:00",
+          "PrivateBytes": 37289984,
+          "WorkingSet": 73945088,
+          "ManagedBytes": 10686120,
+          "Handles": 572,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2110756
+        },
+        "peak": 872448,
+        "sampleCount": 10,
+        "milliseconds": 3656.8147,
+        "stopMilliseconds": 1187.6342,
+        "stoppedHandles": 556,
+        "physical": 3264250,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-download-134217728-0",
+        "mode": "Disk",
+        "direction": "download",
+        "size": 134217728,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "167BA7D4F9DBF56E5D8175E1CD5FCF7DB0FAF288429690E60F7065D6C12AEB12",
+        "expectedPrefix": "167BA7D4F9DBF56E5D8175E1CD5FCF7DB0FAF288429690E60F7065D6C12AEB12",
+        "observed": 134217728,
+        "stored": 4161396,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-download-134217728-0-baseline",
+          "Utc": "2026-09-29T21:00:49.293302+08:00",
+          "PrivateBytes": 37412864,
+          "WorkingSet": 74059776,
+          "ManagedBytes": 9250824,
+          "Handles": 569,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2102981
+        },
+        "peak": 12288,
+        "sampleCount": 2,
+        "milliseconds": 1544.6611,
+        "stopMilliseconds": 1184.3028,
+        "stoppedHandles": 553,
+        "physical": 6368794,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-download-134217728-1",
+        "mode": "Disk",
+        "direction": "download",
+        "size": 134217728,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "90B57CAE91F514BA1AE0B379F67422B878CB771A75F6B1E3A5AFFD22D8662422",
+        "expectedPrefix": "90B57CAE91F514BA1AE0B379F67422B878CB771A75F6B1E3A5AFFD22D8662422",
+        "observed": 134217728,
+        "stored": 108658688,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-download-134217728-1-baseline",
+          "Utc": "2026-09-29T21:00:51.6741557+08:00",
+          "PrivateBytes": 37187584,
+          "WorkingSet": 73900032,
+          "ManagedBytes": 9920736,
+          "Handles": 569,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2118948
+        },
+        "peak": 4263936,
+        "sampleCount": 4,
+        "milliseconds": 1858.9714,
+        "stopMilliseconds": 1188.6994,
+        "stoppedHandles": 553,
+        "physical": 110882049,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-download-134217728-2",
+        "mode": "Disk",
+        "direction": "download",
+        "size": 134217728,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "0D7AD43F5741C2568712715A1105E1188519F5C8B3DCB315694B94DE4DE3A862",
+        "expectedPrefix": "0D7AD43F5741C2568712715A1105E1188519F5C8B3DCB315694B94DE4DE3A862",
+        "observed": 134217728,
+        "stored": 3800948,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-download-134217728-2-baseline",
+          "Utc": "2026-09-29T21:00:54.3610849+08:00",
+          "PrivateBytes": 37122048,
+          "WorkingSet": 73859072,
+          "ManagedBytes": 10167784,
+          "Handles": 572,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2023424
+        },
+        "peak": 73728,
+        "sampleCount": 2,
+        "milliseconds": 1603.4815,
+        "stopMilliseconds": 1164.4798,
+        "stoppedHandles": 556,
+        "physical": 5928784,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-download-1073741824-0",
+        "mode": "Disk",
+        "direction": "download",
+        "size": 1073741824,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "62E574FB54D3866845BE9D2B01CB5A1CEDAD884AD7D221F2C2DBB14574CCD136",
+        "expectedPrefix": "62E574FB54D3866845BE9D2B01CB5A1CEDAD884AD7D221F2C2DBB14574CCD136",
+        "observed": 1073741824,
+        "stored": 4054899,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-download-1073741824-0-baseline",
+          "Utc": "2026-09-29T21:00:56.6958084+08:00",
+          "PrivateBytes": 37269504,
+          "WorkingSet": 74014720,
+          "ManagedBytes": 10606912,
+          "Handles": 557,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2151716
+        },
+        "peak": 745472,
+        "sampleCount": 7,
+        "milliseconds": 2669.7514,
+        "stopMilliseconds": 1175.6803,
+        "stoppedHandles": 541,
+        "physical": 6311049,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-download-1073741824-1",
+        "mode": "Disk",
+        "direction": "download",
+        "size": 1073741824,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "C5647A5CB110324A69A2F05190AD3B584B3B7CDDC77B5C67263B1E8F5AFBD6A3",
+        "expectedPrefix": "C5647A5CB110324A69A2F05190AD3B584B3B7CDDC77B5C67263B1E8F5AFBD6A3",
+        "observed": 1073741824,
+        "stored": 53453509,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-download-1073741824-1-baseline",
+          "Utc": "2026-09-29T21:01:00.1777531+08:00",
+          "PrivateBytes": 37531648,
+          "WorkingSet": 74211328,
+          "ManagedBytes": 10398824,
+          "Handles": 576,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2118948
+        },
+        "peak": 2371584,
+        "sampleCount": 14,
+        "milliseconds": 4507.6221,
+        "stopMilliseconds": 1173.171,
+        "stoppedHandles": 560,
+        "physical": 55676892,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-download-1073741824-2",
+        "mode": "Disk",
+        "direction": "download",
+        "size": 1073741824,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "5520F3475070876AA98A00989602FB219CBE4100C6F18D45C4B3515DDBB370A8",
+        "expectedPrefix": "5520F3475070876AA98A00989602FB219CBE4100C6F18D45C4B3515DDBB370A8",
+        "observed": 1073741824,
+        "stored": 4226931,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-download-1073741824-2-baseline",
+          "Utc": "2026-09-29T21:01:05.4738908+08:00",
+          "PrivateBytes": 37834752,
+          "WorkingSet": 74326016,
+          "ManagedBytes": 5383224,
+          "Handles": 609,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2127140
+        },
+        "peak": 741376,
+        "sampleCount": 8,
+        "milliseconds": 2702.4586,
+        "stopMilliseconds": 1177.2785,
+        "stoppedHandles": 593,
+        "physical": 6458502,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-upload-134217728-0",
+        "mode": "Disk",
+        "direction": "upload",
+        "size": 134217728,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "D608C1BD2C3C3E7B684BC4785FAB974D7E9390A0E38D351C3259F73A78D9EBDD",
+        "expectedPrefix": "D608C1BD2C3C3E7B684BC4785FAB974D7E9390A0E38D351C3259F73A78D9EBDD",
+        "observed": 134217728,
+        "stored": 3743620,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-upload-134217728-0-baseline",
+          "Utc": "2026-09-29T21:01:08.9441751+08:00",
+          "PrivateBytes": 37244928,
+          "WorkingSet": 74059776,
+          "ManagedBytes": 10122024,
+          "Handles": 570,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2102564
+        },
+        "peak": 585728,
+        "sampleCount": 2,
+        "milliseconds": 1619.0256,
+        "stopMilliseconds": 1167.9495,
+        "stoppedHandles": 554,
+        "physical": 5950891,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-upload-134217728-1",
+        "mode": "Disk",
+        "direction": "upload",
+        "size": 134217728,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "761C0C8493CB919D29A0682D7465811ECF386E2D1553A039351DC6C954A792C6",
+        "expectedPrefix": "761C0C8493CB919D29A0682D7465811ECF386E2D1553A039351DC6C954A792C6",
+        "observed": 134217728,
+        "stored": 45778674,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-upload-134217728-1-baseline",
+          "Utc": "2026-09-29T21:01:11.301025+08:00",
+          "PrivateBytes": 37306368,
+          "WorkingSet": 74035200,
+          "ManagedBytes": 6859208,
+          "Handles": 570,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2200868
+        },
+        "peak": 339968,
+        "sampleCount": 4,
+        "milliseconds": 1837.6683,
+        "stopMilliseconds": 1164.6793,
+        "stoppedHandles": 555,
+        "physical": 48084242,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-upload-134217728-2",
+        "mode": "Disk",
+        "direction": "upload",
+        "size": 134217728,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": true,
+        "hash": "06233646F01770D62D9318D0228528A8097936A5D25D96484A45526F48DED01C",
+        "storedHash": "E1D01F2FC415B18C6B51CC242A7E447111A5CB427A416998C5568805AB7A8371",
+        "expectedPrefix": "E1D01F2FC415B18C6B51CC242A7E447111A5CB427A416998C5568805AB7A8371",
+        "observed": 134217728,
+        "stored": 3670016,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-upload-134217728-2-baseline",
+          "Utc": "2026-09-29T21:01:14.0013089+08:00",
+          "PrivateBytes": 37462016,
+          "WorkingSet": 74096640,
+          "ManagedBytes": 9890336,
+          "Handles": 573,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2168100
+        },
+        "peak": 770048,
+        "sampleCount": 6,
+        "milliseconds": 2494.4252,
+        "stopMilliseconds": 1176.5054,
+        "stoppedHandles": 557,
+        "physical": 5942961,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-upload-1073741824-0",
+        "mode": "Disk",
+        "direction": "upload",
+        "size": 1073741824,
+        "repeat": 0,
+        "knownLength": true,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "B8651F2E9C8F2514C10548A648BA4F1332B5D8EF06B1607253B24965904164DA",
+        "expectedPrefix": "B8651F2E9C8F2514C10548A648BA4F1332B5D8EF06B1607253B24965904164DA",
+        "observed": 1073741824,
+        "stored": 3850114,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-upload-1073741824-0-baseline",
+          "Utc": "2026-09-29T21:01:17.2450009+08:00",
+          "PrivateBytes": 37470208,
+          "WorkingSet": 74231808,
+          "ManagedBytes": 9891152,
+          "Handles": 566,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2160047
+        },
+        "peak": 811008,
+        "sampleCount": 7,
+        "milliseconds": 2677.9072,
+        "stopMilliseconds": 1185.0367,
+        "stoppedHandles": 550,
+        "physical": 6114874,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-upload-1073741824-1",
+        "mode": "Disk",
+        "direction": "upload",
+        "size": 1073741824,
+        "repeat": 1,
+        "knownLength": false,
+        "expectContinue": false,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "9BF8AE7FC016CC5C9182D178425E529E8F39C71D4D172D91B66F8BA78599B365",
+        "expectedPrefix": "9BF8AE7FC016CC5C9182D178425E529E8F39C71D4D172D91B66F8BA78599B365",
+        "observed": 1073741824,
+        "stored": 49120550,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-upload-1073741824-1-baseline",
+          "Utc": "2026-09-29T21:01:20.8379901+08:00",
+          "PrivateBytes": 37371904,
+          "WorkingSet": 74448896,
+          "ManagedBytes": 9282632,
+          "Handles": 578,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2127140
+        },
+        "peak": 1818624,
+        "sampleCount": 14,
+        "milliseconds": 4441.0398,
+        "stopMilliseconds": 1154.5905,
+        "stoppedHandles": 562,
+        "physical": 51352384,
+        "portReleased": true
+      },
+      {
+        "phase": "Disk-upload-1073741824-2",
+        "mode": "Disk",
+        "direction": "upload",
+        "size": 1073741824,
+        "repeat": 2,
+        "knownLength": true,
+        "expectContinue": true,
+        "hash": "3A33D58AA8EE1E9D21FD4F510CC5D1CE8D25BA5E24363D19C28E2BF866F4185C",
+        "storedHash": "A3142D1BD43ABD26845C4E93930BC86F64B894F0F006184D374FD3B74D3735EF",
+        "expectedPrefix": "A3142D1BD43ABD26845C4E93930BC86F64B894F0F006184D374FD3B74D3735EF",
+        "observed": 1073741824,
+        "stored": 3162112,
+        "state": "Partial",
+        "baseline": {
+          "Phase": "Disk-upload-1073741824-2-baseline",
+          "Utc": "2026-09-29T21:01:26.0946865+08:00",
+          "PrivateBytes": 36888576,
+          "WorkingSet": 73793536,
+          "ManagedBytes": 10008976,
+          "Handles": 575,
+          "ActiveRequests": 0,
+          "QueueBytes": 0,
+          "StoredBytes": 2151716
+        },
+        "peak": 839680,
+        "sampleCount": 10,
+        "milliseconds": 3762.4589,
+        "stopMilliseconds": 1168.3823,
+        "stoppedHandles": 559,
+        "physical": 5418681,
+        "portReleased": true
+      }
+    ],
+    "sampleCount": 271,
+    "csvSha256": "D2C7BB124F0E9C3E490EE09A8FDFDB3810CCA7FBBAE34AFDBBF9487DCCD54B4D",
+    "profileSha256": "C20859D0E1292E0BD8F7AFAD39F8EFBD1E8D08E10A7B126A4D15D9CD85366F16"
+  },
+  "h2ProductScope": {
+    "activeRecordId": "8181ba4a-dc0c-4659-9260-ce4b1eb39817",
+    "endedRecordId": "76e73e2b-f897-43b3-a1dc-9b4e41b531fe",
+    "ClientProtocol": "2.0",
+    "OriginProtocol": "2.0",
+    "events": 16,
+    "activeCount": 1,
+    "idleCancellationSupported": false,
+    "idlePolicy": "notify-only",
+    "diagnostic": "UnsupportedH2Cancellation",
+    "transportAtIdle": "Receiving",
+    "captureAtIdle": "Partial",
+    "sameClientConnection": true,
+    "continuedAfterCancel": true,
+    "stoppedActiveCount": 0
+  },
+  "capture": {
+    "upload-False-True": {
+      "knownLength": false,
+      "cancel": true,
+      "observedBeforeEnd": 65536,
+      "observed": 65536,
+      "state": "Partial",
+      "transport": "Failed",
+      "receipts": 1,
+      "receiptHashes": [
+        "4B640D85AB3BA30FD02C9FC9DB4A8928F416322AD27022EA58A65AAEE68A4DF2"
+      ],
+      "expectedCompleteHash": "528D7C4CCBFB9B6C5BE870818614C6BB306E726715CDE1F50704F2DE017697EB",
+      "expectedObservedHash": "4B640D85AB3BA30FD02C9FC9DB4A8928F416322AD27022EA58A65AAEE68A4DF2",
+      "stateBeforeStop": "Partial"
+    },
+    "upload-True-True": {
+      "knownLength": true,
+      "cancel": true,
+      "observedBeforeEnd": 65536,
+      "observed": 65536,
+      "state": "Partial",
+      "transport": "Failed",
+      "receipts": 0,
+      "receiptHashes": [],
+      "expectedCompleteHash": "528D7C4CCBFB9B6C5BE870818614C6BB306E726715CDE1F50704F2DE017697EB",
+      "expectedObservedHash": "4B640D85AB3BA30FD02C9FC9DB4A8928F416322AD27022EA58A65AAEE68A4DF2",
+      "stateBeforeStop": "Partial"
+    },
+    "upload-False-False": {
+      "knownLength": false,
+      "cancel": false,
+      "observedBeforeEnd": 65536,
+      "observed": 2097152,
+      "state": "Partial",
+      "transport": "Completed",
+      "receipts": 1,
+      "receiptHashes": [
+        "528D7C4CCBFB9B6C5BE870818614C6BB306E726715CDE1F50704F2DE017697EB"
+      ],
+      "expectedCompleteHash": "528D7C4CCBFB9B6C5BE870818614C6BB306E726715CDE1F50704F2DE017697EB",
+      "expectedObservedHash": "528D7C4CCBFB9B6C5BE870818614C6BB306E726715CDE1F50704F2DE017697EB",
+      "stateBeforeStop": "Partial"
+    },
+    "upload-True-False": {
+      "knownLength": true,
+      "cancel": false,
+      "observedBeforeEnd": 65536,
+      "observed": 2097152,
+      "state": "Partial",
+      "transport": "Completed",
+      "receipts": 1,
+      "receiptHashes": [
+        "528D7C4CCBFB9B6C5BE870818614C6BB306E726715CDE1F50704F2DE017697EB"
+      ],
+      "expectedCompleteHash": "528D7C4CCBFB9B6C5BE870818614C6BB306E726715CDE1F50704F2DE017697EB",
+      "expectedObservedHash": "528D7C4CCBFB9B6C5BE870818614C6BB306E726715CDE1F50704F2DE017697EB",
+      "stateBeforeStop": "Partial"
+    },
+    "encoded-False-gzip": {
+      "RecordId": "0e01340b-78c2-46b9-85ea-08aa06d45449",
+      "ClientProtocol": "1.1",
+      "OriginProtocol": "1.1",
+      "representation": "EncodedEntity",
+      "requestObserved": 37,
+      "requestStored": 37,
+      "responseObserved": 39,
+      "responseStored": 39,
+      "requestHash": "030DDF9FA11239F3A2B5FD3AB48164B10BDDBF5DDF6C94E0AD453D4464082BB1",
+      "responseHash": "5E02230822548ADB1EB6ACA75A7CD16A55EA319E2D7D25AF6B312464BBD208FC",
+      "receipts": 1,
+      "decoded": "压缩响应正文"
+    },
+    "encoded-True-br": {
+      "RecordId": "ea084438-d5c4-4ef2-abaf-ae2003c0474b",
+      "ClientProtocol": "2.0",
+      "OriginProtocol": "2.0",
+      "representation": "EncodedEntity",
+      "requestObserved": 20,
+      "requestStored": 20,
+      "responseObserved": 22,
+      "responseStored": 22,
+      "requestHash": "389248CD6955407D1B5657D55B263B701BC6F0BAD5CD0278C2A28477A6AAA978",
+      "responseHash": "CA5BCB6B1A7ADD75D1E507275078FC763CB7B5FEAAEA73BE4B1C793B673563ED",
+      "receipts": 1,
+      "decoded": "压缩响应正文"
+    },
+    "encoded-True-gzip": {
+      "RecordId": "defe716b-69e8-4973-904a-f7b1c182b9da",
+      "ClientProtocol": "2.0",
+      "OriginProtocol": "2.0",
+      "representation": "EncodedEntity",
+      "requestObserved": 37,
+      "requestStored": 37,
+      "responseObserved": 39,
+      "responseStored": 39,
+      "requestHash": "030DDF9FA11239F3A2B5FD3AB48164B10BDDBF5DDF6C94E0AD453D4464082BB1",
+      "responseHash": "5E02230822548ADB1EB6ACA75A7CD16A55EA319E2D7D25AF6B312464BBD208FC",
+      "receipts": 1,
+      "decoded": "压缩响应正文"
+    },
+    "encoded-False-br": {
+      "RecordId": "63043e41-6e65-4f33-bd3e-5974b7d70b50",
+      "ClientProtocol": "1.1",
+      "OriginProtocol": "1.1",
+      "representation": "EncodedEntity",
+      "requestObserved": 20,
+      "requestStored": 20,
+      "responseObserved": 22,
+      "responseStored": 22,
+      "requestHash": "389248CD6955407D1B5657D55B263B701BC6F0BAD5CD0278C2A28477A6AAA978",
+      "responseHash": "CA5BCB6B1A7ADD75D1E507275078FC763CB7B5FEAAEA73BE4B1C793B673563ED",
+      "receipts": 1,
+      "decoded": "压缩响应正文"
+    },
+    "response-302-GET": {
+      "status": 302,
+      "method": "GET",
+      "bytes": 0,
+      "observed": 0,
+      "expected": 0,
+      "receipts": 1
+    },
+    "response-304-GET": {
+      "status": 304,
+      "method": "GET",
+      "bytes": 0,
+      "observed": 0,
+      "expected": 0,
+      "receipts": 1
+    },
+    "response-206-GET": {
+      "status": 206,
+      "method": "GET",
+      "bytes": 4,
+      "observed": 4,
+      "expected": null,
+      "receipts": 1
+    },
+    "response-200-HEAD": {
+      "status": 200,
+      "method": "HEAD",
+      "bytes": 0,
+      "observed": 0,
+      "expected": 0,
+      "receipts": 1
+    },
+    "response-204-GET": {
+      "status": 204,
+      "method": "GET",
+      "bytes": 0,
+      "observed": 0,
+      "expected": 0,
+      "receipts": 1
+    }
+  },
+  "storage": {
+    "failure-records": {
+      "point": "records",
+      "targetPreserved": true,
+      "temporaryDirectories": 0
+    },
+    "failure-body": {
+      "point": "body",
+      "targetPreserved": true,
+      "temporaryDirectories": 0
+    },
+    "failure-manifest": {
+      "point": "manifest",
+      "targetPreserved": true,
+      "temporaryDirectories": 0
+    },
+    "failure-snapshot": {
+      "point": "snapshot",
+      "targetPreserved": true,
+      "temporaryDirectories": 0
+    },
+    "failure-commit": {
+      "point": "commit",
+      "targetPreserved": true,
+      "temporaryDirectories": 0
+    },
+    "snapshot-watermark": {
+      "frozen": 5,
+      "copied": 5,
+      "BodyBytes": 5,
+      "state": "Receiving"
+    },
+    "roundtrip": {
+      "SnapshotId": "a55a0322-f437-4349-866e-d70d49603f68",
+      "Records": 3,
+      "totalBodyBytes": 23,
+      "source": "a7f10d22-4740-4dc7-bbcc-f8d2123bbd68",
+      "actual": "a7f10d22-4740-4dc7-bbcc-f8d2123bbd68",
+      "state": "Complete",
+      "bodyBytes": 12,
+      "reopenedRunning": false
+    }
+  },
+  "query": {
+    "retention": {
+      "Total": 10011,
+      "retained": 10001,
+      "Evicted": 10,
+      "matched": 10000,
+      "activeRetained": true
+    }
+  },
+  "lifetime": {
+    "pages": {
+      "rounds": 20,
+      "reservedAfter": 0,
+      "peak": 4194304,
+      "running": true
+    },
+    "restart": {
+      "rounds": 20,
+      "state": "Stopped",
+      "generation": 40
+    }
+  },
+  "desktop": {
+    "renderer": "Avalonia Desktop",
+    "realHost": false,
+    "physicalInput": false,
+    "smoke": false,
+    "seconds": 601.2771072,
+    "rounds": 20,
+    "sampleCount": 2162,
+    "p95": 2.0725,
+    "maximum": 49.2469,
+    "baseline": 217104384,
+    "maxPrivate": 317337600,
+    "contentPeak": 3932160,
+    "contentAfter": 0,
+    "stopMs": 1162.7326,
+    "virtualized": [
+      {
+        "index": 0,
+        "containers": 4,
+        "visible": 4
+      },
+      {
+        "index": 5000,
+        "containers": 4,
+        "visible": 4
+      },
+      {
+        "index": 9999,
+        "containers": 4,
+        "visible": 4
+      }
+    ],
+    "parsedUtc": "2026-09-29T21:01:36.7718971+08:00",
+    "visibleUtc": "2026-09-29T21:01:36.8034254+08:00",
+    "pausedContinued": true,
+    "originReceipts": 10020,
+    "curveSha256": "A5E04DEC617F98F67182AFE471F6CC345040C9F9CAF9E3DE95216ABA0AEFC517"
+  },
+  "screenshots": {
+    "m1-document-dark-1200.png": {
+      "name": "m1-document-dark-1200.png",
+      "width": 1200,
+      "height": 720,
+      "sha256": "0699F2E3FE955E25CF02E9A5447E067F693C3318B846E3DE5E820328F58D4111",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-document-light-800.png": {
+      "name": "m1-document-light-800.png",
+      "width": 800,
+      "height": 600,
+      "sha256": "6C20502F93ACBCC79B29C424BD032993172F3385F6D43D64D8BC0D385F18546C",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-document-light-520.png": {
+      "name": "m1-document-light-520.png",
+      "width": 520,
+      "height": 420,
+      "sha256": "C22DE924C6D299B3E8B2EE8803C7B9D973097AFB7AEF77D17BC541A4F67D3C2A",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-document-dark-520.png": {
+      "name": "m1-document-dark-520.png",
+      "width": 520,
+      "height": 420,
+      "sha256": "9B9F95532F733550E386ECE51F9CB413F3EDBFD6DF8890231B4516AA1C7A8A6B",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-tool-dark-420.png": {
+      "name": "m1-tool-dark-420.png",
+      "width": 420,
+      "height": 600,
+      "sha256": "C189220B12D32CAE15294B3320BC0DB95B26ECE9751771A4682F8B37D3ED86E5",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-document-light-1200.png": {
+      "name": "m1-document-light-1200.png",
+      "width": 1200,
+      "height": 720,
+      "sha256": "D7337D5F4E486DE0399E491C7AF454AD96C78363826CCDEF644A4ADB190385F1",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-tool-light-420.png": {
+      "name": "m1-tool-light-420.png",
+      "width": 420,
+      "height": 600,
+      "sha256": "4B6EADF465763E5CCF2F9C7F888F17613FB8A66950BED805B1480C870D13D7DC",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-tool-dark-280.png": {
+      "name": "m1-tool-dark-280.png",
+      "width": 280,
+      "height": 420,
+      "sha256": "C2FF637EF0DF32145AB1630BB22F4A445B59F7D45D63E28AC99415C8420BFDD1",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-tool-light-280.png": {
+      "name": "m1-tool-light-280.png",
+      "width": 280,
+      "height": 420,
+      "sha256": "1E7393D62ED4B9E6CCF98A610B089F58AF18C6C79C518C1FA2B52F8A3A5C3BCD",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-document-dark-800.png": {
+      "name": "m1-document-dark-800.png",
+      "width": 800,
+      "height": 600,
+      "sha256": "A644E341B7FA21AEE5CB9DAFCA1002DAA0E0F334DA739CDDE23D9A198A9918B4",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-resource.png": {
+      "name": "m1-resource.png",
+      "width": 1000,
+      "height": 640,
+      "sha256": "127C85C5859536052C2D28D04D08A59F3182354EFA0472F6D200DF4EECEFFFF8",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-sse.png": {
+      "name": "m1-sse.png",
+      "width": 1000,
+      "height": 640,
+      "sha256": "E13CB6198EA71C20CB5239003A261EBB4DC456905C6D2F2930850459B8D5A614",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-quota.png": {
+      "name": "m1-quota.png",
+      "width": 1000,
+      "height": 640,
+      "sha256": "D3E5B274B245ECAB3560039C472FB8C29F81475C682E1B65338CA16D292012DF",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-image.png": {
+      "name": "m1-image.png",
+      "width": 1000,
+      "height": 640,
+      "sha256": "3FE05B14330D33554D75E12F7CF59E5F3E95210B68B54287BD0DB0D2542794D2",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    },
+    "m1-readonly-partial.png": {
+      "name": "m1-readonly-partial.png",
+      "width": 900,
+      "height": 620,
+      "sha256": "122DF290E962E02D71F0815AAB14B86779BBE90789B417ACBADB7E183D06A588",
+      "renderer": "Avalonia Headless / Skia",
+      "realHost": false
+    }
+  }
+}

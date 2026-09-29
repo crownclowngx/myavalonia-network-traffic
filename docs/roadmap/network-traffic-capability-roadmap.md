@@ -1,10 +1,10 @@
 # HTTP 流量工作台能力路线图与里程碑
 
 > 对象：`myavalonia-network-traffic` / `myavalonia.plugin.network.traffic`。更新日期：2026-09-29。
-> 状态：M0 实现与本地开发自动验收已通过；真实 Host/客户端与人工验收待执行。M1–M6 仍为计划。
+> 状态：M0 已实现并通过本地开发验证；M1 已实现，自动结果见 V3 实施记录；真实 Host/客户端与人工验收待执行。M2–M6 为计划。
 > 产品范围见[产品方案](network-traffic-product-plan.md)，验收场景见[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
 > M0 详细任务已补充为 [V2 执行计划](network-traffic-v2-m0-technical-baseline-plan.md)，配套[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)与[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)；实际结果见[当日实施记录](../archive/2026-09-29-v2-m0-implementation.md)。
-> M1 详细任务已补充为 [V3 执行计划](network-traffic-v3-m1-capture-plan.md)，配套[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)与[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)；当前仅完成执行文档，业务未开始。
+> M1 详细任务为 [V3 执行计划](network-traffic-v3-m1-capture-plan.md)，配套[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)与[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)；当前行为见[M1 说明](../reference/network-traffic-m1-runtime.md)，结果见[V3 实施记录](../archive/2026-09-29-v3-m1-implementation.md)。
 
 ## 1. 分期原则与总览
 
@@ -15,7 +15,7 @@ M 表示用户可使用的能力阶段，V 表示方案序号，包版本与交�
 | 阶段 | 用户价值/交付目标 | 依赖 | 规模判断 | 当前状态 |
 | --- | --- | --- | --- | --- |
 | M0 技术基线 | 确认代理、HTTPS、流式、大文件与域名改写可以走通 | 现有模板 | 中，存在选型风险 | 已实现；自动结果见 V2 实施记录，人工未验 |
-| M1 可用抓包 | 稳定查看真实流量，支持流式和大资源记录 | M0 | 大 | V3 执行文档已编写；业务未开始 |
+| M1 可用抓包 | 查看真实流量，支持流式和大资源记录 | M0 | 大 | V3 已实现；自动结果及人工待验见实施记录 |
 | M2 DSL 分组 | 用自定义字段分析一段时间内的调用过程 | M1 | 大 | 未开始 |
 | M3 DSL 改写 | 可追踪地切换目标环境和修改请求 | M2，复用 M0 改写验证 | 中到大 | 未开始 |
 | M4 请求调试 | 手工发送、编辑重发、模板和结果对比 | M3 | 中到大 | 未开始 |
@@ -50,7 +50,9 @@ M 表示用户可使用的能力阶段，V 表示方案序号，包版本与交�
 
 执行入口为 [V3-01～V3-14](network-traffic-v3-m1-capture-plan.md)。首要满足 SOLID，朴素使用设计模式，关键代码、测试和脚本使用详细中文注释并说明设计思路；单元测试、生产 UI、资源和本地开发门禁同步落地。不使用 AIFLOW、Windows CI 或发布门禁，发布阶段另行启用发布验证。
 
-V3 固定首版为回环显式代理、每运行内存 CA、双向有限捕获、SSE/NDJSON、PNG/JPEG 受限预览及原生目录快照。系统代理管理、持久根证书安装、按域名记录策略及后续 DSL 不纳入本轮；详细边界与预算见 V3 技术设计，53 项业务场景与门禁失败注入见专用矩阵。当前 `-Mode M1` 尚未实现，不能将文档完成视为可用抓包已经交付。
+V3 首版实现回环显式代理、每运行内存 CA、双向有限捕获、SSE/NDJSON、PNG/JPEG 受限预览及原生目录快照。系统代理管理、持久根证书安装、按域名记录策略及后续 DSL 不纳入本轮；详细边界与预算见 V3 技术设计，53 项业务场景与门禁失败注入见专用矩阵。`-Mode M1` 已接入本地开发入口，自动通过不代表人工或 Host 验收。
+
+用户于 2026-09-29 确认无法通过正式发布依赖实现的能力可从产品层面降级：HTTP/2 自动单流空闲取消不纳入首版，只提示并保留接收中状态；客户端取消和全局停止仍验证。普通 h2 抓包保留，接入面板、当前说明与 P06 同步披露。
 
 | 工作项 | 范围与交付物 |
 | --- | --- |
@@ -167,7 +169,7 @@ V3 固定首版为回环显式代理、每运行内存 CA、双向有限捕获�
 ## 10. 状态维护与阶段启动方式
 
 - [ ] M0：V2 技术基线已实现且本地自动验证通过；真实 Host、真实客户端与人工验收仍待执行。
-- [ ] M1：可用抓包与流式/大资源处理；V3-01～14 执行计划、技术设计和专用验证矩阵已编写，业务未开始。
+- [ ] M1：V3 可用抓包已实现；已确认的 HTTP/2 空闲降级和自动结果见实施记录，真实 Host/客户端与人工尚待验收。
 - [ ] M2：DSL 字段、过滤分组与调用时间线。
 - [ ] M3：DSL 请求改写与环境映射。
 - [ ] M4：请求编辑、重发、模板与对比。

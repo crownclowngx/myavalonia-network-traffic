@@ -1,5 +1,7 @@
 # V2 · M0 开发快速开始
 
+本文保留 M0 基线流程；当前 M1 页面与默认策略见[M1 快速开始](network-traffic-m1.md)。
+
 适用：本地 .NET 10 / PowerShell 7 / Windows x64 开发环境。当前行为见[运行说明](../reference/network-traffic-m0-runtime.md)，技术结论见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)。
 
 ## 1. 开发检查
@@ -18,7 +20,7 @@ Docs 只校验链接、锚点和空白，报告明确不代表业务验证。M0 
 只修改局部逻辑时可先运行普通测试：
 
 ~~~powershell
-dotnet test tests/NetWorkTrafficPlugin.Tests -c Debug --filter 'Category!=ResourceProbe'
+dotnet test tests/NetWorkTrafficPlugin.Tests -c Debug --filter 'Category!=ResourceProbe&Category!=M1ResourceProbe&Category!=NativeUiProbe'
 pwsh -NoProfile -File tools/test-development-gate.ps1
 ~~~
 

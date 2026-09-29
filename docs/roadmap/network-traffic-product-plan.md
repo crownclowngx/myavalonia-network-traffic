@@ -1,10 +1,10 @@
 # HTTP 流量工作台：产品与规划方案
 
 > 对象：`myavalonia-network-traffic` / `myavalonia.plugin.network.traffic`。
-> 编写日期：2026-09-28。方案编号：V1；状态：V1 产品规划；V2/M0 已实施，M1–M6 待实施。
+> 编写日期：2026-09-28。方案编号：V1；状态：V1 产品规划；V2/M0、V3/M1 已实施，M2–M6 待实施；人工验收另行登记。
 > 配套：[能力路线图与里程碑](network-traffic-capability-roadmap.md)、[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
 > 2026-09-29 补充：[V2 / M0 技术基线执行计划](network-traffic-v2-m0-technical-baseline-plan.md)、[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)及[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)已实施；当前行为及结论见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)，本产品方案保持 V1 编号。
-> 同日补充：[V3 / M1 可用抓包执行计划](network-traffic-v3-m1-capture-plan.md)、[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)和[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)已编写，业务未开始；V3 是方案序号，不改变 V1 产品文档编号或包版本。
+> 同日补充：[V3 / M1 可用抓包执行计划](network-traffic-v3-m1-capture-plan.md)、[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)和[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)已实施，当前行为和 HTTP/2 空闲降级见[M1 说明](../reference/network-traffic-m1-runtime.md)，验证结果见[V3 记录](../archive/2026-09-29-v3-m1-implementation.md)；V3 不改变 V1 文档编号或包版本。
 
 V1 表示产品方案序号，M0–M6 表示能力里程碑，均不是插件包版本或交付日期。本文件整理本次产品讨论，并补充分阶段设计建议；编写规划不代表已开始实现、已通过验收或已发布。
 
@@ -19,8 +19,8 @@ V1 表示产品方案序号，M0–M6 表示能力里程碑，均不是插件包
 | 工程目录 | `myavalonia-network-traffic`，已存在插件模板工程 |
 | 工程名称 | `NetWorkTrafficPlugin`，本次不更名 |
 | 稳定插件身份 | `myavalonia.plugin.network.traffic`，沿用现有工程配置 |
-| 候选显示名称 | `HttpLab / HTTP 工作台`；尚未正式确定，不改变插件身份 |
-| 当前实现 | M0 代理、共享运行协调器、有限记录、Document/Tool、专用测试与本地门禁；保留模板命令回归 |
+| 显示名称 | V3 采用“HTTP 工作台”，不改变插件身份 |
+| 当前实现 | M0 代理基线与 M1 双向抓包、筛选、内容、存档、Document/Tool、专用测试及本地门禁；保留模板命令回归 |
 | 当前依赖 | .NET 10 / C# 14、Avalonia 12.1.2、Plugin SDK 3.4.1；Titanium.Web.Proxy 7.0.13 |
 | 交付形态 | 现有 Plugin 为正式交付项目，Standalone 为复用生产界面的开发入口，Tests 为验证项目 |
 | 平台基线 | 沿用当前 Windows x64 目标；独立成品与跨平台适配没有纳入首版 |
@@ -219,4 +219,4 @@ Host 提供生命周期、Document/Tool 和公开交互端口；插件负责业�
 
 技术核对入口：[Titanium 官方仓库](https://github.com/justcoding121/titanium-web-proxy)、[协议与流式支持矩阵](https://github.com/justcoding121/titanium-web-proxy/wiki/Protocol-Support)、[OpenAPI 官方规范](https://spec.openapis.org/oas/latest.html)。上游文档会变化，具体版本与实际能力由 M0/M5 的验证记录确认。
 
-尚未实施的设计保留在 `roadmap`；重复使用的验证方法放入 `maintenance`；M0 已新增当前行为 `reference` 与可执行步骤 `quick-start`。阶段证据另建带日期记录，分别说明代码、自动验证、真实 Host、人工使用和发布状态。
+尚未实施的设计保留在 `roadmap`；重复使用的验证方法放入 `maintenance`；M0、M1 均已新增当前行为 `reference` 与可执行步骤 `quick-start`。阶段证据另建带日期记录，分别说明代码、自动验证、真实 Host、人工使用和发布状态。

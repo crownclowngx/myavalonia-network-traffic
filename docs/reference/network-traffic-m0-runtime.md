@@ -1,6 +1,6 @@
 # V2 · M0 当前运行行为
 
-更新：2026-09-29。本文描述当前实现；验收结果见[当日实施记录](../archive/2026-09-29-v2-m0-implementation.md)，操作见[开发快速开始](../quick-start/network-traffic-m0.md)。
+更新：2026-09-29。本文保留 M0 基线；当前 M1 行为见[M1 运行说明](network-traffic-m1-runtime.md)；验收结果见[当日实施记录](../archive/2026-09-29-v2-m0-implementation.md)，操作见[开发快速开始](../quick-start/network-traffic-m0.md)。
 
 ## 1. 已实现范围
 

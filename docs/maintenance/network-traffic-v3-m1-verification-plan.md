@@ -1,6 +1,6 @@
 # V3 · M1 专用验证矩阵与本地开发门禁
 
-> 编写日期：2026-09-29。状态：**验证要求已编写，V3 测试、M1 门禁分支和业务证据尚未实现/执行**。
+> 编写/实施日期：2026-09-29。状态：**V3 测试、M1 本地门禁与证据生产已实现；实际通过范围和 H 待验见[实施记录](../archive/2026-09-29-v3-m1-implementation.md)**。
 > 配套：[V3 执行计划](../roadmap/network-traffic-v3-m1-capture-plan.md)、[V3 技术设计与预算](../design/network-traffic-v3-m1-capture-design.md)、[分阶段验证计划](network-traffic-verification-plan.md)。
 
 本文件规定如何证明 M1“可用抓包”。SOLID 为首要规定，设计模式朴素使用，测试、脚本及关键实现有详细中文注释。不使用 AIFLOW、Windows CI 或发布门禁；所有自动检查均为本机 Debug 开发验证。
@@ -65,9 +65,13 @@ A 记录代码基线、审查范围、发现及修复位置；不能只写“四
 | V3-P03 | 端口无效/冲突、上游拒绝/响应头超时、无效 CA/域名/过期、客户端不信任 | 中文 Stage/Kind 明确；启动失败无残留；不关闭证书校验、不自动重放 POST |
 | V3-P04 | 当前 CA/重启新 CA、公开导出、客户端信任未知/成功、不走代理 | 只导出公钥；指纹/运行身份变更；一次连接不代表全机信任；系统代理/信任库快照不变 |
 | V3-P05 | 普通 h2 两侧实际版本、同连接多流，列表/请求体/响应体归属 | 实际两侧 h2 证据；RecordId、连接/流归属不串；映射 h1 限制继续可见 |
-| V3-P06 | h2 一个流空闲/取消同时其他流正常，活跃长流跨多个空闲窗口 | 仅目标流终止；其他流正文哈希和终态正确；活动 SSE 不被短总超时杀死 |
+| V3-P06 | 用户确认的 h2 产品降级：同连接沉默流仅提示；客户端取消该流，其他流继续；全局停止 | 实际两侧 h2、同客户端连接；空闲时 Receiving/Partial、有明确限制，自动取消支持为 false；客户端取消后另流事件继续、活动数为 1；Stop 后为 0；h1 自动空闲超时与活跃流仍回归 |
 
 P01 是进入双向抓包实现的技术前置。仅 POST 短正文成功不证明大上传有界，需同时执行 B01。
+
+取消上传必须在代理 Stop **之前**验证请求记录终态，避免停止强行 Cancelled 掩盖错误 Complete。未知长度取消允许无回执或一个已接收前缀回执；用端点实际哈希与生成体完整/观察前缀哈希核对，不能把“回执数非零”直接等同完整上传。chunked 原始结束块以公开 IsLastChunk 回调核实。
+
+P06 于 2026-09-29 根据用户“直接引用 GitHub 发布版本”和“不能实现就从产品层面降级”调整。官方最新正式版本仍为 7.0.13；门禁要求 `idleCancellationSupported=false`、`idlePolicy=notify-only`、限制诊断、诚实状态、同连接与取消后继续的实际证据。不会删除 P06 或把不支持写成 true。接入面板在启动前后显示同一说明，H 项仍需真实客户端验收。
 
 ## 5. 查询与列表（Q）
 
@@ -153,12 +157,12 @@ H 不属于发布门禁，不执行打包发布/签名/上传。没有实际 Hos
 
 ## 11. 负载、阈值与测量方法
 
-预算值以技术设计第 5 节和实施后 profile 为准；以下为冻结前的测量目标，尚无通过结果。
+预算值以技术设计第 5 节和实施后 profile 为准；以下阈值已冻结到 profile，实际结果见实施记录。
 
 | 测量 | 负载与方法 | 初始开发门槛 |
 | --- | --- | --- |
 | 代理内存 | 独立进程；20×16MiB预热；128MiB/1GiB各3次；250ms采样，含每种策略 | 私有内存增量≤256MiB；大/小文件峰值增量中位差≤64MiB；M0阈值不放宽 |
-| UI内存 | 同一生产UI进程一万摘要稳定预热；20路混合10分钟，完成20轮打开/关闭详情 | 相对预热私有增量≤256MiB；有限缓存≤profile；释放后业务订阅/任务/位图租约=0 |
+| UI内存 | 同一生产UI进程一万摘要稳定预热；先20路混合、保留5流持续10分钟，完成20轮页面打开/关闭 | 相对预热私有增量≤256MiB；有限缓存≤profile；释放后业务订阅/任务/位图租约=0 |
 | 流式首预览 | 受控端点发首事件并等待预览确认才发结束；记录端点、客户端、捕获和UI时间 | 首事件在响应结束前可见；从捕获可解析时刻到UI可见≤1秒（生产UI宿主测） |
 | UI投递响应 | 一万摘要+5条流，记录至少200次输入投递到处理完成的延迟 | p95≤200ms，最大≤1秒；页面待投递数≤1；批量每次≤200 |
 | 列表虚拟化 | 固定一万行，滚动头/中/尾并记录实现容器数 | 容器数≤当前可见行数×3+20；不因总行数实现一万控件 |
@@ -176,37 +180,37 @@ H 不属于发布门禁，不执行打包发布/签名/上传。没有实际 Hos
 | --- | --- |
 | 现有 `tools/verify-development.ps1` | 扩展 ValidateSet 为 Docs/M0/M1，保留默认M0直到全部接通；M1同时运行前置与本轮检查 |
 | 现有 `tools/DevelopmentChecks.ps1` | 复用进程/TRX/证据/文档校验，加载M1专用函数；改动旧函数须跑原自测 |
-| 计划 `tools/M1DevelopmentChecks.ps1` | 53必测ID固定清单、M1 evidence/profile/schema/预算及UI检查；不复制M0实现 |
-| 计划 `tools/m1-test-map.json` | 复用M0 `schemaVersion/scenarios[].id/tests[].method/rows`，明确必需参数行及结果数约束 |
-| 计划 `tools/m1-resource-profile.json` | 技术设计预算、测量负载、阈值；纳入源码摘要；与M0配置分开 |
-| 现有 `tools/test-development-gate.ps1` + 计划 `tools/TestM1DevelopmentGate.ps1` | 全部旧自测及G01～G08正反例，隔离临时目录；反例不得写正式业务目录 |
-| 现有测试项目及计划的UI测量宿主 | 真实断言后输出证据；若新增工程，加入解决方案/lock和源码摘要，不进入插件交付依赖 |
+| 现有 `tools/M1DevelopmentChecks.ps1` | 53必测ID固定清单、M1 evidence/profile/schema/预算及UI检查；不复制M0实现 |
+| 现有 `tools/m1-test-map.json` | 复用M0 `schemaVersion/scenarios[].id/tests[].method/rows`，明确必需参数行及结果数约束 |
+| 现有 `tools/m1-resource-profile.json` | 技术设计预算、测量负载、阈值；纳入源码摘要；与M0配置分开 |
+| 现有 `tools/test-development-gate.ps1` + 现有 `tools/TestM1DevelopmentGate.ps1` | 全部旧自测及G01～G08正反例，隔离临时目录；反例不得写正式业务目录 |
+| 现有测试项目及 NetWorkTrafficPlugin.UiProbe | 真实断言后输出证据；若新增工程，加入解决方案/lock和源码摘要，不进入插件交付依赖 |
 
 完整 M1 顺序：文档预检查 → 旧/M1门禁自测 → locked restore → Debug `-warnaserror`构建 → 全量非资源测试 → 独立M0资源 → 独立M1资源/生产UI测量 → TRX/全部场景映射 → M0及M1证据校验 → 文档/diff → 源码摘要一致性 → 报告。
 
 全部非资源测试包括原项目及新增UI项目，不可只按 V3 Trait 选测试。资源分类保证每个测试恰好进入一个适用执行集合；R01需核对各集合的并集与必测映射。M0 和 M1 的大资源/流式进程顺序运行，禁止同时测污染曲线。
 
-各命令保存参数、起止、退出码和超时。现有脚本整轮1800秒只为M0设计；M1拟采用整轮3600秒截止，restore/build各300秒、普通测试600秒、M0资源1200秒、M1资源1200秒、UI测量300秒。每步实际截止取自身预算与整轮剩余时间较小值；超时只终止本次创建的进程树并判失败。
+各命令保存参数、起止、退出码和超时。现有脚本整轮1800秒只为M0设计；M1采用整轮3600秒截止，restore/build各300秒、普通测试600秒、M0资源1200秒、M1资源1200秒、UI测量1200秒（实际持续测量600秒，另计预热与收口）。每步实际截止取自身预算与整轮剩余时间较小值；超时只终止本次创建的进程树并判失败。
 
-当前可执行（文档工作）：
+当前可执行（文档检查）：
 
 ```powershell
 pwsh -NoProfile -File tools/verify-development.ps1 -Mode Docs
 git diff --check
 ```
 
-现有业务回归使用 `-Mode M0`。**计划中的** `pwsh -NoProfile -File tools/verify-development.ps1 -Mode M1` 需待 V3-13 实现，当前不可用。
+M0 回归使用 `-Mode M0`；完整 M1 使用 `pwsh -NoProfile -File tools/verify-development.ps1 -Mode M1`，默认仍为 M0。
 
 Docs只给文档通过，绝不生成M1已验证结论；功能/脚本未齐时M1分支返回非零。正式发布才考虑发布门禁；本轮不生成Windows CI工作流，不运行Release/发布ZIP/签名/自动部署。
 
 ## 13. 必须由真实运行生成的证据
 
-计划目录 `TestResults/NetworkTrafficM1/<runId>/`，沿用忽略产物约定。所有数据必须来自真实断言后的观察；不能用固定 passed=true、截图文件名、空JSON或门禁夹具充当结果。
+实际目录 `TestResults/NetworkTrafficM1/<runId>/`，沿用忽略产物约定。所有数据必须来自真实断言后的观察；不能用固定 passed=true、截图文件名、空JSON或门禁夹具充当结果。
 
 | 产物 | 内容与门禁核验 |
 | --- | --- |
 | `verification.json` | schemaVersion、runId、HEAD、dirty、sourceHash、profileHash、OS/架构/SDK、起止、各命令/超时、真实测试数、M0/M1覆盖、最终结论及未验项 |
-| `ordinary.trx`、`m0-resource.trx`、`m1-resource.trx`、`ui.trx` | 实际执行方法/参数行、时间、结果，零失败/零跳过/非零测试；定义/执行身份唯一且计数一致 |
+| `ordinary.trx`、`resource.trx`（M0）、`m1-resource.trx`、`ui.trx` | 实际执行方法/参数行、时间、结果，零失败/零跳过/非零测试；定义/执行身份唯一且计数一致 |
 | `scenario-coverage.json` | M0必测集和53个V3 ID→本轮真实TRX方法/参数行，不以Trait或总数代替 |
 | M0原有协议/流式/资源JSON与曲线 | 本轮原检查器完整验证；原m0-test-map/profile参与sourceHash；旧轮文件无效 |
 | `m1-capture.json` | 请求/响应身份/协议/表示/状态、观察/提交字节、端点与客户端哈希、额外请求数=0、系统设置变更数=0 |
