@@ -57,7 +57,7 @@ function Get-M2ExpectedValues {
         'V5-I01'=@{receipts=6;grouped=6}; 'V5-I02'=@{frozenCount=1;currentCount=2}
         'V5-I03'=@{records=1;unchanged=$true;running=$false}; 'V5-I04'=@{secondGroups=1;firstGroups=0;active=0;maxConcurrent=2}
         'V5-I05'=@{oldApplied=0;active=0;reservedAfter=0;leases=0}; 'V5-I06'=@{running=$true;reservedAfter=0}
-        'V5-UI01'=@{diagnosticFocused=$true;oldResultPreserved=$true;repaired=$true}; 'V5-UI02'=@{previewSamples=20;applied=$false}
+        'V5-UI01'=@{diagnosticFocused=$true;oldResultPreserved=$true;repaired=$true}; 'V5-UI02'=@{previewSamples=20;applied=$false;sampleStart=21;lastSampleCount=1;keyStatesVisible=$true;invalidStartRejected=$true}
         'V5-UI03'=@{views=2;loaded='调用过程';applied=$false}; 'V5-UI04'=@{compactBack=$true}
         'V5-UI05'=@{invalidPreserved=$true;unknownRows=1}; 'V5-UI06'=@{groupsBefore=4;reset=$true}; 'V5-UI07'=@{rounds=20;preserved=$true;active=0}; 'V5-UI08'=@{}
         'V5-P01'=@{records=10000;fields=32;groups=5000;components=4;warmups=2;reservedAfter=0}

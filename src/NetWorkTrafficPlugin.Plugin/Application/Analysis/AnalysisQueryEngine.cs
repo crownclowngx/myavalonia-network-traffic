@@ -17,8 +17,11 @@ public sealed class AnalysisQueryEngine(AnalysisResources resources)
     /// 预览与正式查询共享并发/内存预算和字段管线，仅输出最多20条有界的遮罩文本。
     /// 预览不创建可应用结果；编排层负责取消和代次，应用层负责资源，不把这些规则放进控件。
     /// </summary>
-    public async Task<string> PreviewAsync(IAnalysisSource source, DslProgram program, CancellationToken token)
+    public async Task<string> PreviewAsync(IAnalysisSource source, DslProgram program, CancellationToken token, int startIndex = 0)
     {
+        // 样本序号针对本次冻结后按时间、序列、身份排序的保留集，不复用请求列表筛选。
+        // 偏移仅决定本次最多20条的读取范围；不持有跨次预览的正文或源租约。
+        if (startIndex < 0 || startIndex >= DslLimits.Records) throw new ArgumentOutOfRangeException(nameof(startIndex));
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
         deadline.CancelAfter(TimeSpan.FromSeconds(2));
         var ct = deadline.Token;
@@ -26,11 +29,12 @@ public sealed class AnalysisQueryEngine(AnalysisResources resources)
         using var snapshot = await source.FreezeAsync(ct);
         using var allocations = new AnalysisReservations(resources.Memory);
         allocations.Add(SnapshotCost(snapshot));
-        // 最坏20条 × 32字段 ×（值4096字符+来源8条），提前预留输出空间。
-        allocations.Add(20L * 32 * 16384);
+        // 最坏20条 ×（32字段+4个键分量）× 有界文本，提前预留输出空间。
+        allocations.Add(20L * (DslLimits.Fields + 4) * 16384);
         var lines = new List<string>();
         var work = new EvaluationBudget(ct, 2000);
-        foreach (var record in snapshot.Records.OrderBy(r => r.StartedUtc).ThenBy(r => r.Sequence).ThenBy(r => r.RecordId).Take(20))
+        var samples = snapshot.Records.OrderBy(r => r.StartedUtc).ThenBy(r => r.Sequence).ThenBy(r => r.RecordId).Skip(startIndex).Take(20).ToArray();
+        foreach (var record in samples)
         {
             work.Check();
             var fields = snapshot.OpenFields(record, work);
@@ -45,10 +49,16 @@ public sealed class AnalysisQueryEngine(AnalysisResources resources)
                     lines.Add($"  {definition.Name}: {value.Type.Kind} / {value.State} = {value.Display()} · " +
                         string.Join(", ", (value.Origins ?? []).Select(o => $"{o.Location}[{o.Path}]")));
                 }
+                // 即使条件为False/Unknown也解释候选键，便于修改草稿；这不表示请求已经入组。
+                // tuple按分量展示状态，不能用整体遮罩隐藏Missing/NotReady的具体位置。
+                var keys = new List<FieldValue>();
+                foreach (var key in program.GroupKeys) keys.Add(await evaluator.EvaluateAsync(key));
+                if (keys.Count == 1 && keys[0].State == ValueState.Value && keys[0].Type == DslType.Tuple) keys = keys[0].ItemsValue.ToList();
+                lines.Add("  分组键（待条件/窗口判定）：" + string.Join("；", keys.Select(value => $"{value.Type.Kind}/{value.State} = {value.Display()}")));
             }
             finally { (fields as IDisposable)?.Dispose(); }
         }
-        return $"样本 {Math.Min(20, snapshot.Records.Count)} / 保留 {snapshot.Records.Count}（非全量统计）\n" + string.Join('\n', lines);
+        return $"样本 {samples.Length} / 保留 {snapshot.Records.Count}（从第{startIndex + 1}条开始，每次最多20条；非全量统计）\n" + string.Join('\n', lines);
     }
     private static long SnapshotCost(AnalysisSnapshot snapshot) => snapshot.Records.Sum(r => 512L + 2L * (r.OriginalUri.Length + r.EffectiveUri.Length) +
         r.RequestHeaders.Concat(r.ResponseHeaders).Sum(h => 64L + 2L * (h.Name.Length + h.Value.Length)));

@@ -73,7 +73,18 @@ public sealed class M2UiTests
         s.Click("生成片段"); Assert.Contains("field businessId",s.Page.Editor.Fragment);
         s.Click("插入片段"); Assert.Contains("field businessId",s.Page.Editor.Text); s.Click("验证"); Assert.Empty(s.Page.Editor.Diagnostics);
         s.Click("样本预览"); await s.Page.PreviewCommand.ExecutionTask!; Assert.Contains("样本 20 / 保留 101",s.Page.PreviewText); Assert.Null(s.Page.Result);
-        M2Fixture.Evidence("layout","UI02",new {previewSamples=20,applied=false,fragment=s.Page.Editor.Fragment});
+        Assert.Contains("分组键",s.Page.PreviewText); Assert.Contains("String/Value = ••••",s.Page.PreviewText);
+        // 通过生产输入框切换样本，而非直接设置模型；范围只改变预览，不应用规则或改列表筛选。
+        var start=s.View.FindControl<TextBox>("PreviewStartInput")!;
+        start.BringIntoView(); Pump(s.Window); start.Focus(); start.SelectAll(); s.Window.KeyTextInput("21");
+        s.Click("样本预览"); await s.Page.PreviewCommand.ExecutionTask!;
+        Assert.Contains("从第21条开始",s.Page.PreviewText); Assert.Contains("\n#21 ·",s.Page.PreviewText); Assert.DoesNotContain("\n#1 ·",s.Page.PreviewText);
+        start.Focus(); start.SelectAll(); s.Window.KeyTextInput("101"); s.Click("样本预览"); await s.Page.PreviewCommand.ExecutionTask!;
+        Assert.Contains("样本 1 / 保留 101",s.Page.PreviewText); Assert.Contains("String/Missing",s.Page.PreviewText);
+        var prior=s.Page.PreviewText; start.Focus(); start.SelectAll(); s.Window.KeyTextInput("0");
+        s.Click("样本预览"); await s.Page.PreviewCommand.ExecutionTask!; Assert.Equal(prior,s.Page.PreviewText); Assert.Contains("1～10000",s.Page.Status);
+        Assert.Null(s.Page.Result);
+        M2Fixture.Evidence("layout","UI02",new {previewSamples=20,applied=false,fragment=s.Page.Editor.Fragment,sampleStart=21,lastSampleCount=1,keyStatesVisible=true,invalidStartRejected=true});
     });
     [Fact] public Task UI03SaveAndLoadFromControls()=>Run(async s=>
     {

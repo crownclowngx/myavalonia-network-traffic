@@ -41,6 +41,7 @@ public sealed partial class AnalysisWorkspace : ObservableObject, IDisposable
     [ObservableProperty] private string _status = "选择实时捕获或只读存档后，应用规则分析。", _previewText = "", _selectionText = "", _viewName = "调用过程";
     [ObservableProperty] private string _resultDescription = "";
     [ObservableProperty] private string _paneTitle = "选择一个业务组";
+    [ObservableProperty] private string _previewStart = "1";
     [ObservableProperty] private string _windowText = "", _sourcesText = "capture", _columnsText = "";
     [ObservableProperty] private TrafficGroup? _selectedGroup;
     [ObservableProperty] private AnalyzedRequest? _selectedRequest;
@@ -87,6 +88,7 @@ public sealed partial class AnalysisWorkspace : ObservableObject, IDisposable
         ObserveLibraryGeneration();
         if (_source?.InstanceId == source?.InstanceId) { HasUpdates = _result is not null && _result.SnapshotRevision != revision; return; }
         _generation++; _operation?.Cancel(); _source = source; ClearResult(); RevealValues = false; PreviewText = "";
+        PreviewStart = "1";
         Status = source is null ? "当前没有捕获数据源。" : source.IsArchive ? "只读存档；历史窗口按最后请求定位，重算不发网。" : "实时源已选择；点击应用/刷新固定一次快照。";
     }
     // 复用页面已有的刷新节拍，只比较一个共享代次，不添加文件监听器或长寿命事件订阅。
@@ -142,13 +144,16 @@ public sealed partial class AnalysisWorkspace : ObservableObject, IDisposable
         if (_disposed || generation != _generation) return;
         var compiled = Editor.Validate();
         if (!compiled.Success || _source is null) return;
+        var sampleStart = PreviewStart;
+        if (!int.TryParse(sampleStart, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var start) || start < 1 || start > DslLimits.Records)
+        { Status = "样本起始序号请输入1～10000；每次最多预览20条。"; return; }
         var source = _source; var editorGeneration = Editor.Generation;
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(_closing.Token);
         _operation = cancellation; Busy = true;
         try
         {
-            var text = await Task.Run(() => _engine.PreviewAsync(source, compiled.Program!, cancellation.Token), cancellation.Token);
-            if (!_disposed && generation == _generation && editorGeneration == Editor.Generation && source.InstanceId == _source?.InstanceId) PreviewText = text;
+            var text = await Task.Run(() => _engine.PreviewAsync(source, compiled.Program!, cancellation.Token, start - 1), cancellation.Token);
+            if (!_disposed && generation == _generation && editorGeneration == Editor.Generation && source.InstanceId == _source?.InstanceId && sampleStart == PreviewStart) PreviewText = text;
         }
         catch (Exception ex) when (ex is OperationCanceledException or AnalysisLimitException or IOException)
         { if (!_disposed && generation == _generation) Status = "预览未完成：" + ex.GetType().Name; }

@@ -95,6 +95,8 @@ BrokenM2 'm2-rules-storage' {param($d)$d.scenarios['V5-S05'].unchangedOnFailure=
 BrokenM2 'm2-lifetime' {param($d)$d.scenarios['V5-I03'].running=$true}
 BrokenM2 'm2-lifetime' {param($d)$d.scenarios['V5-I05'].oldApplied=1}
 BrokenM2 'm2-performance' {param($d)$d.scenarios['V5-P04'].measurements[0]=1001}
+BrokenM2 'm2-layout' {param($d)$d.scenarios['V5-UI02'].sampleStart=1}
+BrokenM2 'm2-layout' {param($d)$d.scenarios['V5-UI02'].keyStatesVisible=$false}
 BrokenM2 'm2-layout' {param($d)$d.scenarios['V5-UI08'].shots=@($d.scenarios['V5-UI08'].shots|Select-Object -Skip 1)}
 BrokenM2 'm2-layout' {param($d)$d.scenarios['V5-UI08'].shots[0].measurements.stop.x=100000}
 $png=Join-Path $directory 'm2-diagnostic.png';$bytes=[IO.File]::ReadAllBytes($png)

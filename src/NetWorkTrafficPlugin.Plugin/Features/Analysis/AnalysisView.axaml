@@ -75,6 +75,8 @@
          <Button Content="生成片段" Command="{Binding GenerateFieldCommand}"/><Button Content="插入片段" Command="{Binding InsertFieldCommand}"/>
         </WrapPanel>
         <TextBox Text="{Binding Editor.Fragment}" IsReadOnly="True"/>
+        <TextBox x:Name="PreviewStartInput" Text="{Binding PreviewStart}" PlaceholderText="样本起始序号（从1开始，每次最多20条）" AutomationProperties.Name="预览样本起始序号"/>
+        <TextBlock Text="样本按开始时间、请求序列排序；修改起始序号后点样本预览。" TextWrapping="Wrap" FontSize="11"/>
         <TextBox Text="{Binding SourcesText}" PlaceholderText="来源 capture,manual,replay,unknown" AutomationProperties.Name="分析来源"/>
         <TextBox Text="{Binding ColumnsText}" PlaceholderText="显示字段，以逗号分隔；留空使用DSL定义" AutomationProperties.Name="分析显示列"/>
         <WrapPanel><CheckBox Content="包含窗口前上下文" IsChecked="{Binding IncludeContext}"/><CheckBox Content="按请求数排序" IsChecked="{Binding SortByCount}"/></WrapPanel>

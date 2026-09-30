@@ -80,7 +80,7 @@ public sealed record AnalysisWindow(TimeSpan? Last, DateTimeOffset? From = null,
 }
 public sealed record DslProgram(string Source, string Name, IReadOnlyList<FieldDefinition> Fields, DslExpr Filter,
     AnalysisWindow Window, IReadOnlyList<DslExpr> GroupKeys, IReadOnlyList<string> Columns,
-    IReadOnlyDictionary<string, DslType> FieldTypes);
+    IReadOnlyDictionary<string, DslType> FieldTypes, IReadOnlyDictionary<DslExpr, DslType> ExpressionTypes);
 public sealed record Compilation(DslProgram? Program, IReadOnlyList<DslDiagnostic> Diagnostics)
 {
     public bool Success => Program is not null && Diagnostics.Count == 0;

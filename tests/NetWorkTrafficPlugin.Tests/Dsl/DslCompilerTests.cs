@@ -67,8 +67,10 @@ public sealed class DslCompilerTests
         Assert.Throws<AnalysisLimitException>(() => { for (var i = 0; i <= DslLimits.QueryOperations; i++) work.Step(); });
         var f = new M2Fixture(); var r = f.Add(); var p = M2Fixture.Compile(M2Fixture.Program());
         var evaluator = new FieldEvaluator(p, new ConstantSource(), new(default), default);
-        FieldValue? result = null; for (var i = 0; i <= DslLimits.RecordOperations; i++) result = await evaluator.EvaluateAsync(new LiteralExpr(FieldValue.Boolean(true), new(0,1,1,1)));
+        // 使用已经绑定的真实where节点；生产求值只接收本程序AST，不临时注入另一棵无类型树。
+        FieldValue? result = null; for (var i = 0; i <= DslLimits.RecordOperations; i++) result = await evaluator.EvaluateAsync(p.Filter);
         Assert.Equal(ValueState.BudgetExceeded, result!.State);
+        Assert.Equal(DslType.Boolean,result.Type);
         M2Fixture.Evidence("language", "L08", new { queryOperations = work.Operations, recordState = result.State.ToString(), cancelled = true });
     }
     [Fact] public void L09DiagnosticSpansAndRecovery()

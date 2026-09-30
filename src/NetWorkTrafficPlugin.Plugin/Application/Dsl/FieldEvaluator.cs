@@ -40,15 +40,19 @@ public sealed class FieldEvaluator(DslProgram program, IFieldSource source, Eval
     public async ValueTask<FieldValue> FieldAsync(string name)
     {
         if (_values.TryGetValue(name, out var value)) return value;
-        value = await EvaluateAsync(_fields[name].Expression);
-        // 未知状态没有载荷，类型应取字段的绑定结果；例如first(缺失列表)仍是String字段。
-        // 保留状态、原因和来源，只修正类型，避免界面把调用者标识误显示为List。
-        return _values[name] = value.State == ValueState.Value ? value : value with { Type = program.FieldTypes[name] };
+        return _values[name] = await EvaluateAsync(_fields[name].Expression);
     }
     public async ValueTask<FieldValue> EvaluateAsync(DslExpr expression)
     {
         budget.Step();
-        if (++_steps > DslLimits.RecordOperations) return FieldValue.Problem(ValueState.BudgetExceeded, reason: "DATA_OPERATION_LIMIT");
+        var result = ++_steps > DslLimits.RecordOperations
+            ? FieldValue.Problem(ValueState.BudgetExceeded, reason: "DATA_OPERATION_LIMIT") : await EvaluateCoreAsync(expression);
+        // Unknown没有载荷，保留原因/来源并使用绑定类型；直接写在组键里的first(缺失列表)
+        // 与先声明字段必须同为String，不能因是否有字段别名而显示不同类型。
+        return result.State == ValueState.Value ? result : result with { Type = program.ExpressionTypes[expression] };
+    }
+    private async ValueTask<FieldValue> EvaluateCoreAsync(DslExpr expression)
+    {
         switch (expression)
         {
             case LiteralExpr literal: return literal.Value;

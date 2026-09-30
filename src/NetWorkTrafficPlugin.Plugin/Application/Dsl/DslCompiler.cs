@@ -110,8 +110,9 @@ public static class DslCompiler
             var columns = new List<string>(); if (Match("columns")) { columns.Add(Identifier().Text); while (Match(",")) columns.Add(Identifier().Text); Expect(";"); }
             Expect("timeline"); Expect("by"); Expect("startedAt"); Expect(";"); Expect("}"); Expect("<end>");
             if (_diagnostics.Count > 0) return new(null, _diagnostics);
-            var types = new Binder(fields, Check).Bind(filter, keys, columns);
-            return new(new(source, nameText, fields.AsReadOnly(), filter, window, keys.AsReadOnly(), columns.AsReadOnly(), types), []);
+            var binder = new Binder(fields, Check);
+            var types = binder.Bind(filter, keys, columns);
+            return new(new(source, nameText, fields.AsReadOnly(), filter, window, keys.AsReadOnly(), columns.AsReadOnly(), types, binder.ExpressionTypes), []);
         }
         private AnalysisWindow Window()
         {
@@ -197,6 +198,10 @@ public static class DslCompiler
     private sealed class Binder(IReadOnlyList<FieldDefinition> fields, Action check)
     {
         private readonly Dictionary<string, DslType> _types = new(StringComparer.Ordinal);
+        // 同一语法树节点只绑定一次；按引用索引，避免结构相等比较重复遍历子树。
+        // 节点类型供未知值展示使用，运行时不再猜测first/转换/条件表达式的输出类型。
+        private readonly Dictionary<DslExpr, DslType> _expressionTypes = new(ReferenceEqualityComparer.Instance);
+        public IReadOnlyDictionary<DslExpr, DslType> ExpressionTypes => new System.Collections.ObjectModel.ReadOnlyDictionary<DslExpr, DslType>(_expressionTypes);
         private readonly HashSet<string> _visiting = new(StringComparer.Ordinal);
         private Dictionary<string, FieldDefinition> _fields = [];
         public IReadOnlyDictionary<string, DslType> Bind(DslExpr filter, IReadOnlyList<DslExpr> keys, IReadOnlyList<string> columns)
@@ -222,6 +227,11 @@ public static class DslCompiler
         private DslType Type(DslExpr expr, int depth = 0)
         {
             check(); if (depth > DslLimits.Depth) throw new SyntaxFailure("DSL009", "AST深度超过32。", expr.Span);
+            if (_expressionTypes.TryGetValue(expr, out var known)) return known;
+            return _expressionTypes[expr] = InferType(expr, depth);
+        }
+        private DslType InferType(DslExpr expr, int depth)
+        {
             switch (expr)
             {
                 case LiteralExpr literal: Require(literal.Value.State != ValueState.BudgetExceeded, expr, "字面量长度超限。"); return literal.Value.Type;

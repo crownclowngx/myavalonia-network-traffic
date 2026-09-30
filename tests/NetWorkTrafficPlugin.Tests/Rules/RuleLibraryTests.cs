@@ -26,6 +26,15 @@ public sealed class RuleLibraryTests
             await page.ApplyAsync(); var old = page.Result; Assert.NotNull(old);
             page.Editor.Text = "dsl 2;"; await page.ApplyAsync(); Assert.Same(old,page.Result);
             page.Editor.Text = M2Fixture.Program(filter:"false"); await page.PreviewAsync(); Assert.Same(old,page.Result);
+            Assert.Contains("条件 False",page.PreviewText); Assert.Contains("String/Value = ••••",page.PreviewText); Assert.DoesNotContain("u1",page.PreviewText);
+            // 无自定义显示列时仍解释内置键；tuple逐项保留确定/未知状态，禁止只输出一个整体遮罩。
+            var engine=new AnalysisQueryEngine(resources);
+            var tuple=M2Fixture.Compile(M2Fixture.Program(fields:"",group:"tuple(original.host, first(original.query[\"missing\"]))",columns:""));
+            var preview=await engine.PreviewAsync(f.Source(),tuple,default);
+            Assert.Contains("String/Value = example.test",preview); Assert.Contains("String/Missing",preview);
+            Assert.Contains("样本 0 / 保留 1",await engine.PreviewAsync(f.Source(),tuple,default,1));
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(()=>engine.PreviewAsync(f.Source(),tuple,default,-1));
+            Assert.Equal(0,f.Leases);
             await page.ApplyAsync(); Assert.Empty(page.Result!.Groups); Assert.NotSame(old,page.Result);
             M2Fixture.Evidence("rules-storage","S01",new { retainedOnFailure=true,previewApplied=false,finalGroups=page.Result.Groups.Count });
         }
