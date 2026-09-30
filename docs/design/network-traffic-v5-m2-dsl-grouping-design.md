@@ -1,6 +1,6 @@
 # V5 · M2 DSL 与分组专项设计
 
-> 日期：2026-09-30。状态：**待实施的语言与行为契约，不是当前可运行配置**。
+> 日期：2026-09-30。状态：**语言与行为契约已接通实现，当前说明与验证状态见V5实施记录**。
 > 执行顺序见[V5 执行计划](../roadmap/network-traffic-v5-m2-dsl-grouping-plan.md)，证明方式见[V5 验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)。
 
 ## 1. 设计目标与依赖方向
@@ -13,29 +13,29 @@ M2 是捕获事实之上的只读分析层。输入是已保存或当前保留�
 | O 开闭原则 | 内置函数由有限名称、签名和普通分支集中定义；新增一种提取不修改捕获记录器和组 UI | 不散布字符串判断；允许修改有限语言实现，不为未来扩展搭运行时插件框架 |
 | L 里氏替换 | Fake、实时、存档源共同遵守冻结、缺口、取消、释放和来源契约 | 相同契约测试覆盖三类源；不把 Fake 的错误全部变成空成功 |
 | I 接口隔离 | 分析只读源与规则库写入分开；领域纯计算无需接口 | 分析拿不到代理起停、重发和任意文件读写能力 |
-| D 依赖倒置 | Application 接受快照/窄端口、TimeProvider 和额度；Infrastructure 适配现有会话/文件；组合根构造 | 应用无 Titanium、Avalonia、服务定位器或静态全局会话 |
+| D 依赖倒置 | Application 接受带固定时间锚点的快照/窄端口和额度；Infrastructure 适配现有会话/文件；组合根构造 | 应用无 Titanium、Avalonia、服务定位器或静态全局会话 |
 
-朴素实现：递归下降解析器、不可变记录、枚举结果、字典聚合、拓扑排序、MVVM 和构造注入。不生成动态代码，不用编译器平台执行用户文本，不为 AST 节点建立接口工厂层；求值采用节点类型分支即可。
+朴素实现：递归下降解析器、不可变记录、枚举结果、字典聚合、有限依赖图检查、MVVM 和构造注入。不生成动态代码，不用编译器平台执行用户文本，不为 AST 节点建立接口工厂层；求值采用节点类型分支即可。
 
-建议在现有 Plugin 项目内增加以下职责，不预拆程序集：
+已在现有 Plugin 项目内按以下职责实现，未拆分新程序集：
 
-| 拟新增位置 | 主要对象与职责 | 所有权 |
+| 实现位置 | 主要对象与职责 | 所有权 |
 | --- | --- | --- |
-| `Application/Dsl/` | DslLexer/Parser/Binder、AST、DslDiagnostic、FieldEvaluator、有限函数与状态类型 | 编译结果不可变；求值上下文每记录一份 |
-| `Application/Analysis/` | IAnalysisSource、AnalysisQueryEngine、GroupAccumulator、TimelineProjection、AnalysisBudget | 引擎无页面状态；容器额度最多两项任务 |
+| `Application/Dsl/` | DslCompiler 内的词法/Parser/Binder、AST、DslDiagnostic、FieldEvaluator、有限函数与状态类型 | 编译结果不可变；求值上下文每记录一份 |
+| `Application/Analysis/` | IAnalysisSource、AnalysisQueryEngine、AnalyzedRequest、AnalysisResources/AnalysisReservations | 引擎无页面状态；容器额度最多两项任务 |
 | `Application/Rules/` | RuleRevision、SavedView、RuleLibrary、IRuleLibraryStore | 领域契约；修订不可变 |
-| `Infrastructure/Analysis/` | CaptureAnalysisSource、BoundedRequestContentReader | 适配 ICaptureSession，持有并归还读取租约 |
+| `Infrastructure/Analysis/` | CaptureAnalysisSource、RequestFieldReader | 适配 ICaptureSession，持有并归还读取租约 |
 | `Infrastructure/Rules/` | FileRuleLibraryStore | 容器共享、串行原子写入和库代次检查 |
-| `Features/Analysis/` | AnalysisWorkspace、分组列表、TimelineView | 每 Document 独立；取消、选择、刷新与显示状态 |
-| `Features/Rules/` | RuleEditorModel/View、字段辅助表单 | 当前页面草稿与预览，不直接改全局生效规则 |
+| `Features/Analysis/` | AnalysisWorkspace、AnalysisView 分组/时间线列表、TimelineStrip | 每 Document 独立；取消、选择、刷新与显示状态 |
+| `Features/Rules/` | RuleEditorModel / AnalysisView 内的规则面板、字段辅助表单 | 当前页面草稿与预览，不直接改全局生效规则 |
 
-MainDocument 组合 CaptureWorkspace 与 AnalysisWorkspace。现有 CaptureWorkspace 只补只读数据源变化及按身份打开详情的薄协作，不把新业务继续塞入其 partial 文件。共享规则库只发布“库已更新”信息，页面自行决定是否加载修订；通知订阅必须释放。
+MainDocument 组合 CaptureWorkspace 与 AnalysisWorkspace。现有 CaptureWorkspace 只补只读数据源变化及按身份打开详情的薄协作，不把新业务继续塞入其 partial 文件。共享规则库公布已知 generation，页面复用原有节拍提示“库已更新”，自行决定是否加载；不新增文件监听或长期通知订阅。
 
 ## 2. 语言版本、程序结构与样例
 
 `dsl 1;` 是首行版本声明，一份文本含 0～32 个字段和恰好一个 view；字段可前向引用，由绑定阶段排序，循环依赖拒绝。v1 只分析 original 请求，禁止 route、rewrite、send、response 和 effective 访问器，给出不支持诊断而非忽略。
 
-以下为**实施后应支持的 v1 样例**，字段名与测试数据均为合成值：
+以下为**当前支持的 v1 样例**，字段名与测试数据均为合成值：
 
 ```text
 dsl 1;
@@ -137,7 +137,7 @@ JSON 路径的静态类型为受限 `JsonValue`（运行期标量或同类型标
 
 ## 3. 类型、状态、三值逻辑与诊断
 
-值载荷支持 String、Number(decimal)、Boolean、同类型 List、有限 Tuple。`FieldResult` 独立携带 State、Value、Origins、Sensitivity、DiagnosticCodes；Null 是状态而不是空字符串。每个字段最多保留 8 条有界来源说明，记录实际选择及必要的回退原因，不复制完整头或正文。
+值载荷支持 String、Number(decimal)、Boolean、同类型 List、有限 Tuple。`FieldValue` 独立携带 State、Data、Origins、Sensitive、Reason；Null 是状态而不是空字符串。每个字段最多保留 8 条有界来源说明，记录实际选择及必要的回退原因，不复制完整头或正文。
 
 | State | 含义与例子 | 可以当作缺失回退吗 |
 | --- | --- | --- |
@@ -163,7 +163,7 @@ JSON 路径的静态类型为受限 `JsonValue`（运行期标量或同类型标
 
 诊断分为语言错误、输入记录诊断、操作错误：语言错误阻止候选应用；输入诊断附在字段/计数；取消、超出总预算、快照失败、存储失败则保留旧结果。诊断至少包含 code、severity、中文 message、span(start,length,line,column)、fieldName 和建议动作。跨度为 UTF-16 偏移，行列从 1 开始，LF/CRLF 及中文/emoji 均测试；错误消息不嵌入捕获原值。
 
-拟定稳定 code 类别：`DSL001` 版本、`DSL002` 词法、`DSL003` 文法、`DSL004` 未知名称、`DSL005` 类型/签名、`DSL006` 重复字段、`DSL007` 依赖环、`DSL008` 不支持能力、`DSL009` 语言预算、`DSL010` 窗口；输入使用 `DATA_*`，操作使用 `ANALYSIS_*`、`STORE_*`。诊断最多 50 条，再显示省略数；解析失败后在分号/闭括号处恢复，不能无限重试同一 token。
+拟定稳定 code 类别：`DSL001` 版本、`DSL002` 词法、`DSL003` 文法、`DSL004` 未知名称、`DSL005` 类型/签名、`DSL006` 重复字段、`DSL007` 依赖环、`DSL008` 不支持能力、`DSL009` 语言预算、`DSL010` 窗口；输入使用 `DATA_*`；操作错误通过 AnalysisLimitException、RuleLibraryConflictException 与中文状态消息分层显示。诊断最多 50 条，到限停止恢复并要求修正后重验；解析失败后在分号/闭括号处恢复，不能无限重试同一 token。
 
 ## 4. 六种提取位置与完整性
 
@@ -203,7 +203,7 @@ JSON 路径限定 `$` 根、`.name`、`["name"]`、`[非负整数]` 组合，如
 
 一次 AnalysisRequest 固定以下信息：SourceInstanceId（每次打开或切换生成）、SessionId、SnapshotRevision、CutoffUtc、RuleRevisionId/Hash、WindowSpec、实际 UTC from/to、AnalysisId 和页面 OperationGeneration。存档与实时可以拥有相同 SessionId，故缓存/迟到判断不能只用 SessionId。
 
-冻结后复制必要不可变元信息和头数组；冻结不能停止捕获或持有全局锁等待正文 I/O。当前 CaptureLease/CaptureSnapshot 没有冻结时间，V5-02 应以兼容方式补充只读冻结时间，在 LiveCaptureSession 固定记录/日志位置的同一锁区采一次 UTC；不能把后续补头或读取完成时间当作快照时刻。原有调用者与 M1 存档格式继续兼容。正文每次只读冻结 CommittedBytes，不能看到冻结后补齐的数据后声称同一快照结果。分析结束立即归还源租约，结果只持有有界 ID/统计/字段；用户点详情再获取当前可用读能力。
+冻结后借用 CaptureLease 已拥有且不会原地修改的元信息和头数组，避免再次复制；冻结不能停止捕获或持有全局锁等待正文 I/O。V5-02 已为 CaptureLease 兼容补充只读 FrozenUtc，在 LiveCaptureSession 固定记录/日志位置的同一锁区采一次 UTC；不能把后续补头或读取完成时间当作快照时刻。原有调用者与 M1 存档格式继续兼容。正文每次只读冻结 CommittedBytes，不能看到冻结后补齐的数据后声称同一快照结果。分析结束立即归还源租约，结果只持有有界 ID/统计/字段；用户点详情再获取当前可用读能力。
 
 执行顺序：语法绑定成功 → 申请分析名额 → 冻结并固定窗口 → 元信息/来源预筛 → 按记录需要提取/求值 → 分组/时间线投影 → 校验结果预算 → 核对页面/源/修订/代次 → UI 一次替换。单记录以依赖拓扑顺序或等价的惰性记忆求值，每字段至多一次；没有跨轮正文缓存、无界索引或自动增量计算。
 
@@ -247,7 +247,7 @@ sum(每个业务组.requestCount) = groupedRecords
 
 ## 7. 时间窗口与时间线
 
-实时 `last(d)` 在取得快照时捕获一次 TimeProvider UTC 时间作为 CutoffUtc，窗口为 `[CutoffUtc-d,CutoffUtc)`，扫描期间不移动。新数据只提示源已变，不暗中修改本次时间锚点。绝对 range 固定使用指定端点。
+实时 `last(d)` 在取得快照时捕获一次 UTC 时间作为 CutoffUtc，窗口为 `[CutoffUtc-d,CutoffUtc)`，扫描期间不移动。新数据只提示源已变，不暗中修改本次时间锚点。绝对 range 固定使用指定端点。
 
 历史 `last(d)` 使用存档明确保存的快照时刻；当前 V3 格式只有 ArchiveManifest.CreatedUtc，它是在复制后写 manifest 的时间，不是冻结时刻，而且未通过 ICaptureSession 暴露。因此 V5 对当前存档固定采用“保留集中最大 StartedUtc 加一个 DateTime tick”作为参考，UI 标“按最后请求时间定位”，不为 M2 升级存档格式。将来若格式明确提供冻结时刻，需另做兼容验证后采用。空存档显示无记录、不虚构时间；溢出或异常时间提供诊断。重开相同存档的窗口必须相同，不能使用当前系统时间。末端包含历史最后一条仅依上述 +tick 规则，不改变半开窗口定义。
 
@@ -311,7 +311,7 @@ SavedView 不保存样本正文、运行期字段值、结果缓存、源绝对�
 
 ## 11. 中文注释示例与审查重点
 
-下例说明后续实现的注释深度，是伪代码而非现有 API：
+下例规定关键边界的注释深度，是设计伪代码而非现有 API；实际实现使用 AnalysisWorkspace 和 AnalysisQueryEngine 的相应入口：
 
 ```csharp
 // 设计思路：快照分析必须可复现，不能在扫描一半时接纳新提交的正文。
@@ -350,7 +350,7 @@ Publish(candidate);
 | R07 | 12:05:00 | t1/u1 | Query | 与 R01 业务内容重复但 RecordId 不同 |
 | R08 | 12:06:00 | t1/未知 | Missing | 所有位置均明确缺失 |
 | R09 | 12:07:00 | t1/未知 | NotReady | 请求 JSON 未接收完整 |
-| R10 | 12:08:00 | t1/u1 | Query | 合成来源 replay，默认排除 |
+| R10 | 12:08:00 | t1/u1 | Query | 合成未知来源 unknown，默认排除；未实现主动 replay |
 | R11 | 12:30:00 | t1/u1 | Query | 终边界排除 |
 
 默认来源与 where 后：retained=12、sourceExcluded=1、outsideWindow=2、evaluated=9、filterTrue=9、filterFalse=0、filterUnknown=0、groupedRecords=7、unresolvedGroupRecords=2。R00 的上下文不增加这些计数。这里 filterUnknown=0 是因为 where 只检查 source；未知 caller 在分组阶段分类。

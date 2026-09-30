@@ -1,10 +1,10 @@
 # V5 · M2 DSL 字段、过滤分组与调用时间线执行计划
 
-> 编写日期：2026-09-30。状态：**执行方案已编写，业务实现、专项测试和 M2 开发门禁尚未开始**。
+> 编写日期：2026-09-30。状态：**V5开发完成，完整M2本地门禁通过；236个测试、207项场景，人工未验见实施记录**。
 > 承接：[产品方案](network-traffic-product-plan.md)、[能力路线图 M2](network-traffic-capability-roadmap.md)、[M1 当前行为](../reference/network-traffic-m1-runtime.md)和[V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)。
 > 配套：[V5 DSL 与分组专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)、[V5 单元测试、验证矩阵与本地开发门禁](../maintenance/network-traffic-v5-m2-verification-plan.md)。
 
-V1 为产品规划，V2 为 M0，V3 为 M1，V4 为 M1 UX，本次顺延为 **V5**，执行编号 **V5-01～V5-14**。V 是方案序号，M 是能力里程碑，DSL 语言版本单独使用 `dsl 1;`；三者均不是插件包版本。本文交付可执行的实施安排，不将规划写成已完成功能。
+V1 为产品规划，V2 为 M0，V3 为 M1，V4 为 M1 UX，本次顺延为 **V5**，执行编号 **V5-01～V5-14**。V 是方案序号，M 是能力里程碑，DSL 语言版本单独使用 `dsl 1;`；三者均不是插件包版本。本文保留实施安排；逐项结果和人工未验见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md)。
 
 ## 1. 目标与首要规定
 
@@ -34,7 +34,7 @@ V1 为产品规划，V2 为 M0，V3 为 M1，V4 为 M1 UX，本次顺延为 **V5
 | [ContentMemoryBudget](../../src/NetWorkTrafficPlugin.Plugin/Application/Content/ContentMemoryBudget.cs) | 容器共享 32 MiB 内容额度 | DSL 正文缓冲和解析对象参与共享预留，不能另给每页 32 MiB |
 | [CaptureWorkspace](../../src/NetWorkTrafficPlugin.Plugin/Features/Capture/CaptureWorkspace.cs) | 每页筛选/选择/跟随与异步代次隔离 | 新建 AnalysisWorkspace/RuleEditorModel，原模型只提供当前源和详情跳转协作 |
 | [服务注册](../../src/NetWorkTrafficPlugin.Plugin/Plugin/NetWorkTrafficPluginServices.cs) | 捕获/代理容器共享，页面模型独立 | 规则库与分析资源额度容器共享；草稿、已应用修订、结果、选择按 Document 隔离 |
-| [开发入口](../../tools/verify-development.ps1) | 当前仅 Docs/M0/M1/UX，默认 M0；UX 同轮继承 M0/M1 | 拟新增显式 `-Mode M2`；旧模式语义与默认值不变，不声称现已支持 M2 |
+| [开发入口](../../tools/verify-development.ps1) | 方案编写时仅 Docs/M0/M1/UX，默认 M0；UX 同轮继承 M0/M1 | 现已新增显式 `-Mode M2`；旧模式语义与默认值不变 |
 
 参考网易云的[V8 实施计划](../../../myavalonia-music-netease/docs/archive/plans/netease-v8-m4-music-discovery-plan.md)、[文档维护约定](../../../myavalonia-music-netease/docs/maintenance/documentation.md)及[V8 检查器](../../../myavalonia-music-netease/tools/V8DevelopmentChecks.ps1)：借鉴职责审查、当前行为与历史证据分离、场景映射及反例校验。音乐业务、其已完成状态、默认门禁模式和历史文档中的执行指令不继承为本轮要求。
 
@@ -114,7 +114,7 @@ V5 首版使用**显式刷新快照分析**：打开分析后主动应用或刷�
 ### V5-06：查询与统计
 
 1. 每次分析固定源身份、快照、规则修订、时间锚点和预算；筛选元信息后按需读取正文，避免无关 Body I/O。
-2. 单记录复用已求值字段；依赖只求值一次；本轮结束不保留正文缓存。按 RecordId 消除重复投影，不去重重复业务请求。
+2. 单记录复用已求值字段；依赖只求值一次；本轮结束不保留正文缓存。生产冻结源按 RecordId 提供唯一投影；若适配器给出重复身份，整批拒绝以免猜选修订；不同 RecordId 的重复业务请求仍分别计数。
 3. 输出记录数、接口数、首次/最后开始、错误数、接收中数与状态覆盖计数；给出分母和缺口，未知分类不冒充业务组。
 4. 记录数、组数或总内存超限则整次候选不提交，保留上次有效结果和失败提示；不得只取前 N 组后显示分析完成。
 
@@ -164,7 +164,7 @@ V5 首版使用**显式刷新快照分析**：打开分析后主动应用或刷�
 1. 新增 `M2DevelopmentChecks.ps1`、`TestM2DevelopmentGate.ps1`、`m2-test-map.json`、`m2-profile.json` 并扩展现有入口，不创建 CI。
 2. M2 同一轮运行全部 M0/M1/UX 及 V5 必测集合，复用旧检查器；不以读取历史报告代替前置回归。
 3. 校验真实 TRX 方法/参数行、数据身份、业务观察、PNG 和原始资源曲线；加入缺证据、跳过、错误身份、越界和前置检查被移除的拒绝自测。
-4. 实现前 `-Mode M2` 不可用；本次只执行 Docs。实现后的命令和产物约定见专用矩阵。
+4. `-Mode M2` 已实现；命令和产物约定见专用矩阵，完整结果按实际记录。
 
 ### V5-14：审查、文档和结论
 
@@ -175,9 +175,9 @@ V5 首版使用**显式刷新快照分析**：打开分析后主动应用或刷�
 
 ## 6. 文件交付与完成条件
 
-本次新增本计划、专项设计、专用验证矩阵；同步两级索引、产品方案、路线图和总验证计划。其余文件是**后续实施拟新增**，不是当前已有入口：
+本次新增本计划、专项设计、专用验证矩阵；同步两级索引、产品方案、路线图和总验证计划。下列交付已落地，当前行为与结果以专用说明和实施记录为准：
 
-| 类别 | 拟交付位置 |
+| 类别 | 交付位置 |
 | --- | --- |
 | 语言/分析代码 | `Application/Dsl/`、`Application/Analysis/`；具体职责见设计，不要求每个类型单独建接口 |
 | 适配/存储/UI | `Infrastructure/Analysis/`、`Infrastructure/Rules/`、`Features/Analysis/`、`Features/Rules/` |

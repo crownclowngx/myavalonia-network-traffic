@@ -1,12 +1,12 @@
 # HTTP 流量工作台能力路线图与里程碑
 
 > 对象：`myavalonia-network-traffic` / `myavalonia.plugin.network.traffic`。更新日期：2026-09-30。
-> 状态：M0 已实现并通过本地开发验证；M1 已实现，自动结果见 V3 实施记录；真实 Host/客户端与人工验收待执行。M2–M6 为计划。
+> 状态：M0 已实现并通过本地开发验证；M1 已实现，自动结果见 V3 实施记录；真实 Host/客户端与人工验收待执行。M2 已实现，M3–M6 为计划。
 > 产品范围见[产品方案](network-traffic-product-plan.md)，验收场景见[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
 > M0 详细任务已补充为 [V2 执行计划](network-traffic-v2-m0-technical-baseline-plan.md)，配套[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)与[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)；实际结果见[当日实施记录](../archive/2026-09-29-v2-m0-implementation.md)。
 > M1 详细任务为 [V3 执行计划](network-traffic-v3-m1-capture-plan.md)，配套[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)与[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)；当前行为见[M1 说明](../reference/network-traffic-m1-runtime.md)，结果见[V3 实施记录](../archive/2026-09-29-v3-m1-implementation.md)。
 > 2026-09-30 补充：[V4 / M1 UX 执行计划](network-traffic-v4-m1-ux-plan.md)、[专项设计](../design/network-traffic-v4-m1-ux-design.md)与[专用验证矩阵](../maintenance/network-traffic-v4-m1-ux-verification-plan.md)已接通实现，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)；是 M1 体验优化，不改变里程碑编号或启动 M2。
-> 同日补充：[V5 / M2 DSL 分组执行计划](network-traffic-v5-m2-dsl-grouping-plan.md)、[专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)及[专用验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)已编写；业务实现、专项测试与 M2 开发门禁待开始，不据此勾选 M2 完成。
+> 同日补充：[V5 / M2 DSL 分组执行计划](network-traffic-v5-m2-dsl-grouping-plan.md)、[专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)及[专用验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)已接通实现；自动结果与人工未验见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md)，不将开发自动通过等同整体验收。
 
 ## 1. 分期原则与总览
 
@@ -18,7 +18,7 @@ M 表示用户可使用的能力阶段，V 表示方案序号，包版本与交�
 | --- | --- | --- | --- | --- |
 | M0 技术基线 | 确认代理、HTTPS、流式、大文件与域名改写可以走通 | 现有模板 | 中，存在选型风险 | 已实现；自动结果见 V2 实施记录，人工未验 |
 | M1 可用抓包 | 查看真实流量，支持流式和大资源记录 | M0 | 大 | V3 已实现；人工待验；V4 UX 已接通实现，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md) |
-| M2 DSL 分组 | 用自定义字段分析一段时间内的调用过程 | M1 | 大 | V5 执行方案已编写，业务实现未开始 |
+| M2 DSL 分组 | 用自定义字段分析一段时间内的调用过程 | M1 | 大 | V5开发完成，236个测试/207项同轮场景通过；人工未验见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md) |
 | M3 DSL 改写 | 可追踪地切换目标环境和修改请求 | M2，复用 M0 改写验证 | 中到大 | 未开始 |
 | M4 请求调试 | 手工发送、编辑重发、模板和结果对比 | M3 | 中到大 | 未开始 |
 | M5 文档辅助 | 接入现有文档或手工说明，辅助理解和请求构造 | M4 | 中，取决于实际文档格式 | 未开始 |
@@ -81,7 +81,7 @@ V3 首版实现回环显式代理、每运行内存 CA、双向有限捕获、SS
 
 V5 首版固定 DSL v1、Query/Header/Cookie/JSON/urlencoded 表单/路径六位置提取、显式多值/回退、三值筛选、类型化组合键、半开时间窗口和保存视图。分析为只读冻结快照，显式刷新；历史重算不补发网络请求，缺口和未确定身份分别呈现。规则草稿、已应用修订及保存视图分离，语法或计算失败保留旧结果；正则、通用 JSONPath、响应提取和自动增量分析不纳入首版。
 
-专用矩阵定义 64 项 V5 业务场景、4 项工程审查、12 组门禁自测及4项人工验收。拟新增 `-Mode M2` 在同轮继承 M0/M1/UX，当前入口仍只有 Docs/M0/M1/UX；文档完成不代表业务测试通过。语法、完整性、窗口及资源初始预算以 V5 专项设计为后续实现依据。
+专用矩阵定义 64 项 V5 业务场景、4 项工程审查、12 组门禁自测及4项人工验收。`-Mode M2` 已在同轮继承 M0/M1/UX，固定检查207项场景；语法、完整性、窗口与预算的当前行为见 [M2 说明](../reference/network-traffic-m2-dsl.md)，实际结果与人工未验见 V5 实施记录。
 
 | 工作项 | 范围与交付物 |
 | --- | --- |
@@ -180,7 +180,7 @@ V5 首版固定 DSL v1、Query/Header/Cookie/JSON/urlencoded 表单/路径六位
 
 - [ ] M0：V2 技术基线已实现且本地自动验证通过；真实 Host、真实客户端与人工验收仍待执行。
 - [ ] M1：V3 可用抓包已实现；已确认的 HTTP/2 空闲降级和自动结果见实施记录，真实 Host/客户端与人工尚待验收。
-- [ ] M2：V5 执行方案、专项设计与验证矩阵已编写；DSL 字段、过滤分组与调用时间线业务实现未开始。
+- [ ] M2：V5 DSL 字段、过滤分组、调用时间线、保存视图和开发门禁已实现；开发验证结果见 V5 实施记录，人工验收未执行，整体里程碑保持未勾选。
 - [ ] M3：DSL 请求改写与环境映射。
 - [ ] M4：请求编辑、重发、模板与对比。
 - [ ] M5：文档地址与手工接口说明。

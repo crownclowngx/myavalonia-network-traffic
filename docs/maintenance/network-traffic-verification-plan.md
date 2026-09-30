@@ -5,7 +5,7 @@
 > 2026-09-29 补充：[V2 / M0 专用验证矩阵](network-traffic-v2-m0-verification-plan.md)细化单元测试、协议探针、资源测量、门禁自测与证据；[执行计划](../roadmap/network-traffic-v2-m0-technical-baseline-plan.md)规定 V2-01～10 的实施顺序，M0 已实现，结果见[当日记录](../archive/2026-09-29-v2-m0-implementation.md)。
 > 同日补充：[V3 / M1 专用验证矩阵](network-traffic-v3-m1-verification-plan.md)定义 53 项业务场景、SOLID/中文注释审查、生产 UI、资源/存档故障、8 组门禁自测和 4 项人工验证；业务及本地 M1 门禁已实现，结果见[V3 记录](../archive/2026-09-29-v3-m1-implementation.md)。P06 按用户确认的产品降级验证 HTTP/2 空闲仅提示、客户端单流取消和全局停止。
 > 2026-09-30 补充：[V4 / M1 UX 专用矩阵](network-traffic-v4-m1-ux-verification-plan.md)定义 40 项业务场景、4 项工程审查、10 组门禁自测及 4 项人工验收；配套[V4 执行计划](../roadmap/network-traffic-v4-m1-ux-plan.md)和[专项设计](../design/network-traffic-v4-m1-ux-design.md)。生产测试与 `-Mode UX` 已接通，结果和人工未验见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)。
-> 同日补充：[V5 / M2 专用矩阵](network-traffic-v5-m2-verification-plan.md)定义 64 项业务场景、4 项工程审查、12 组门禁自测及 4 项人工验收，配套[V5 执行计划](../roadmap/network-traffic-v5-m2-dsl-grouping-plan.md)和[专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)。目前仅完成文档方案，业务与拟新增 `-Mode M2` 均待实施。
+> 同日补充：[V5 / M2 专用矩阵](network-traffic-v5-m2-verification-plan.md)定义 64 项业务场景、4 项工程审查、12 组门禁自测及 4 项人工验收，配套[V5 执行计划](../roadmap/network-traffic-v5-m2-dsl-grouping-plan.md)和[专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)。业务与 `-Mode M2` 已实现，236个测试及同轮207项场景通过；实际结果见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md)。
 
 ## 1. 验证层次与结果表达
 
@@ -74,9 +74,9 @@ T01/T13 等协议项在 M0 先验证最小链路，在 M3 用真实规则执行�
 
 M0 的 T00～T03、T12/T13 改写前置及 T07/T24 所有权前置，按 [V2 专用矩阵](network-traffic-v2-m0-verification-plan.md)第 12 节细化；它不改变 M1/M3/M6 的完成状态。V2 仅执行本地开发门禁，不使用 AIFLOW、Windows CI 或发布门禁。HTTP/2 调查必须执行，明确不支持/回退可成为范围结论，不能记作完整 h2 兼容。
 
-M1 的 T00/T01、T02～T07 及 T22/T24 前置，按 [V3 专用矩阵](network-traffic-v3-m1-verification-plan.md)细化，要求继承同轮 M0 回归。V3 以 SOLID 为首要规定，包含详细中文注释与设计说明，不使用 AIFLOW、Windows CI 或发布门禁；仅文档完成不计为这些场景通过。现行脚本支持 Docs/M0/M1/UX，默认 M0；M1 与 UX 均完整运行前置阶段，Docs 仅检查文档。
+M1 的 T00/T01、T02～T07 及 T22/T24 前置，按 [V3 专用矩阵](network-traffic-v3-m1-verification-plan.md)细化，要求继承同轮 M0 回归。V3 以 SOLID 为首要规定，包含详细中文注释与设计说明，不使用 AIFLOW、Windows CI 或发布门禁；仅文档完成不计为这些场景通过。现行脚本支持 Docs/M0/M1/UX/M2，默认 M0；M1 与 UX 均完整运行前置阶段，Docs 仅检查文档。
 
-M2 的 T08～T11 及 T07/T22/T24 适用回归，按 [V5 专用矩阵](network-traffic-v5-m2-verification-plan.md)细化为语言、六位置提取、分组、时间线、修订/保存视图、集成、生产 UI、资源和回归共64项业务场景。拟新增 M2 模式要求同轮继承143项 M0/M1/UX 场景，不能借用历史报告；当前尚不可执行。V5 首要 SOLID，朴素模式、详细中文注释及设计思路随实现审查，不使用 AIFLOW、Windows CI 或发布门禁。
+M2 的 T08～T11 及 T07/T22/T24 适用回归，按 [V5 专用矩阵](network-traffic-v5-m2-verification-plan.md)细化为语言、六位置提取、分组、时间线、修订/保存视图、集成、生产 UI、资源和回归共64项业务场景。M2 模式已实现并通过完整本地开发验证，同轮继承143项 M0/M1/UX 场景，不能借用历史报告。V5 首要 SOLID，朴素模式、详细中文注释及设计思路随实现审查，不使用 AIFLOW、Windows CI 或发布门禁。
 
 产品场景到交付与验证的对应关系：
 

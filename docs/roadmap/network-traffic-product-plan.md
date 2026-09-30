@@ -1,12 +1,12 @@
 # HTTP 流量工作台：产品与规划方案
 
 > 对象：`myavalonia-network-traffic` / `myavalonia.plugin.network.traffic`。
-> 编写日期：2026-09-28。方案编号：V1；状态：V1 产品规划；V2/M0、V3/M1 已实施，M2–M6 待实施；人工验收另行登记。
+> 编写日期：2026-09-28。方案编号：V1；状态：V1 产品规划；V2/M0、V3/M1 已实施，V5/M2 已实现，M3–M6 待实施；人工验收另行登记。
 > 配套：[能力路线图与里程碑](network-traffic-capability-roadmap.md)、[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
 > 2026-09-29 补充：[V2 / M0 技术基线执行计划](network-traffic-v2-m0-technical-baseline-plan.md)、[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)及[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)已实施；当前行为及结论见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)，本产品方案保持 V1 编号。
 > 同日补充：[V3 / M1 可用抓包执行计划](network-traffic-v3-m1-capture-plan.md)、[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)和[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)已实施，当前行为和 HTTP/2 空闲降级见[M1 说明](../reference/network-traffic-m1-runtime.md)，验证结果见[V3 记录](../archive/2026-09-29-v3-m1-implementation.md)；V3 不改变 V1 文档编号或包版本。
 > 2026-09-30 补充：[V4 / M1 UX 执行计划](network-traffic-v4-m1-ux-plan.md)、[专项设计](../design/network-traffic-v4-m1-ux-design.md)与[专用验证矩阵](../maintenance/network-traffic-v4-m1-ux-verification-plan.md)已接通实现，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)；围绕现有抓包列表、跟随阅读、详情和文件操作优化，不启动 M2，不改写 V1 编号或已有实现结论。
-> 同日补充：[V5 / M2 DSL 分组执行计划](network-traffic-v5-m2-dsl-grouping-plan.md)、[专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)和[专用验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)已编写，业务实现未开始。V5 细化 M2 语言、字段、过滤分组、时间线、修订与保存视图，保持本产品方案 V1 编号；不使用 AIFLOW、Windows CI 或发布门禁。
+> 同日补充：[V5 / M2 DSL 分组执行计划](network-traffic-v5-m2-dsl-grouping-plan.md)、[专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)和[专用验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)已完成开发并通过完整M2本地门禁（236个测试、207项场景），实际结果与人工未验见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md)。V5 细化 M2 语言、字段、过滤分组、时间线、修订与保存视图，保持本产品方案 V1 编号；不使用 AIFLOW、Windows CI 或发布门禁。
 
 V1 表示产品方案序号，M0–M6 表示能力里程碑，均不是插件包版本或交付日期。本文件整理本次产品讨论，并补充分阶段设计建议；编写规划不代表已开始实现、已通过验收或已发布。
 
@@ -116,9 +116,9 @@ Document/Tool 的最终拆分依 Host 可用能力细化。多个观察页面共
 
 DSL 面向流量领域，先提供字段访问、比较、布尔运算、集合判断、字符串处理、显式转换、组合键和有限动作。可视化编辑与文本编辑使用同一语义模型，语法错误不能替换正在生效的有效规则。
 
-M2 的具体实现契约已在 [V5 DSL 专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)细化为语言 v1，仍待实现：六位置请求字段、多值显式选择、有限表达式、类型化分组和只读快照分析。v1 不包含动作、正则、通用 JSONPath、响应提取或自动增量分析；本节下例保留 V1 产品意图，其中路由属于 M3，不能直接作为 V5 配置。可实施语法与有效/无效样例要求以 V5 设计和矩阵为准。
+M2 的具体实现契约已在 [V5 DSL 专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)细化为语言 v1，现已实现：六位置请求字段、多值显式选择、有限表达式、类型化分组和只读快照分析。v1 不包含动作、正则、通用 JSONPath、响应提取或自动增量分析；本节下例保留 V1 产品意图，其中路由属于 M3，不能直接作为 V5 配置。当前可运行语法和有效/无效样例见 [M2 说明](../reference/network-traffic-m2-dsl.md)；设计与验证要求仍以 V5 专项文档为准。
 
-下例只说明设计意图；`firstNonEmpty`、属性路径及块语法在 M2 定稿，不是可运行配置：
+下例保留 V1 的混合设计意图，含尚未交付的路由动作，不是现行 DSL v1 的可运行配置：
 
 ```text
 field caller = firstNonEmpty(
@@ -212,7 +212,7 @@ Host 提供生命周期、Document/Tool 和公开交互端口；插件负责业�
 | Titanium 版本和 HTTP/2 覆盖 | 已锁定 7.0.13；普通 h2 通过受控验证，映射运行 h1，见 M0 实施记录 | M0 |
 | 后台抓包与最后页面关闭行为 | 已实现容器级服务，最后页关闭继续；Tool 显式停止，容器退出有界；真实 Host 待验 | M0 |
 | 默认记录/预览预算 | V3 技术设计给出初始 profile，须经大文件、流式、UI 并发测量后核定；未有 M1 结果 | M1 |
-| DSL 文法、值状态和重复字段语义 | V5 设计已定义 v1 文法、六位置提取、多值/未知、冻结窗口和预算；实现及测量待执行 | M2 |
+| DSL 文法、值状态和重复字段语义 | V5 已实现 v1 文法、六位置提取、多值/未知、冻结窗口和预算；完整开发验证已通过，人工验收见 V5 实施记录 | M2 |
 | 重发客户端与环境凭据组织 | 单执行入口、变量解析、明确规则应用方式 | M4 |
 | 公司文档系统格式 | 使用实际可访问样例决定导入或关联策略 | M5 |
 | 交付节奏和日期 | M0 后结合实际工作量估计，不把阶段编号当工期 | 各阶段启动前 |
