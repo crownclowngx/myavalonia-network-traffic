@@ -75,9 +75,18 @@ public sealed class M2ResourceProbeTests
         // 一个读取器先占住内容额度，再验证另一读取器立即降级而非等待；释放后全部归还。
         using (var held = f.Memory.TryReserve((32L << 20) - 1)!)
             Assert.Equal(ValueState.BudgetExceeded, (await f.Value("original.json(\"$.user\")", r)).State);
+        var bombs = new M2Fixture();
+        for(var i=0;i<129;i++)
+        {
+            var item=bombs.Add(body:"{}",contentType:"application/json");
+            bombs.Bodies[item.RequestBody.BodyId]=compressed.ToArray();
+            bombs.Records[i]=item with {RequestBody=item.RequestBody with {ContentEncoding="gzip",CommittedBytes=compressed.Length,ObservedBytes=compressed.Length}};
+        }
+        await Assert.ThrowsAsync<AnalysisLimitException>(()=>GroupingTests.Run(bombs,text,resources));
+        Assert.Equal(128,bombs.BodyReads); Assert.Equal(0,bombs.Memory.Reserved); Assert.Equal(0,bombs.Leases);
         Assert.Equal(0, resources.Memory.Reserved); Assert.Equal(0, f.Memory.Reserved); Assert.Equal(0, f.Leases);
         M2Fixture.Evidence("performance", "P02", new { encoded, decoded, bodyBytes = Encoding.UTF8.GetByteCount(body),
-            reads = f.BodyReads, expansionState = "BudgetExceeded", contentPeak = f.Memory.Peak, analysisPeak = resources.Memory.Peak,
+            reads = f.BodyReads, bombReads=bombs.BodyReads, decodedBudgetRejected=true, expansionState = "BudgetExceeded", contentPeak = f.Memory.Peak, analysisPeak = resources.Memory.Peak,
             reservedAfter = resources.Memory.Reserved, contentAfter = f.Memory.Reserved, leases = f.Leases });
     }
     [Fact] public async Task P03DesktopCaptureAndAnalysisForTenMinutes()

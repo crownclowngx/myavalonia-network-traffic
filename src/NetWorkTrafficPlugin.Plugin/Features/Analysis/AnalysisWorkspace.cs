@@ -118,7 +118,7 @@ public sealed partial class AnalysisWorkspace : ObservableObject, IDisposable
             foreach (var group in _result.Groups) Groups.Add(group);
             HasUpdates = false;
             ResultDescription = $"{(source.IsArchive ? "只读存档，按最后请求定位" : "实时快照")} · 来源 {string.Join(',', options.Sources ?? ["capture"])} · 修订 {revision.RevisionId.ToString("N")[..8]}\n" +
-                $"{_result.From:u} 至 {_result.To:u} [开始,结束)\n{_result.Coverage.Description}";
+                (_result.Coverage.Retained == 0 ? "无保留记录\n" : $"{_result.From:u} 至 {_result.To:u} [开始,结束)\n") + _result.Coverage.Description;
             Status = _result.Coverage.Retained == 0 ? "当前保留范围没有记录。" :
                 _result.Coverage.FilterTrue == 0 ? "本次范围没有匹配请求。" :
                 _result.Groups.Count == 0 ? "匹配请求的分组身份全部未确定。" : "分析完成；数据变化后需手动刷新。";

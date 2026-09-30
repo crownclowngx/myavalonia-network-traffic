@@ -61,7 +61,7 @@ function Get-M2ExpectedValues {
         'V5-UI03'=@{views=2;loaded='调用过程';applied=$false}; 'V5-UI04'=@{compactBack=$true}
         'V5-UI05'=@{invalidPreserved=$true;unknownRows=1}; 'V5-UI06'=@{groupsBefore=4;reset=$true}; 'V5-UI07'=@{rounds=20;preserved=$true;active=0}; 'V5-UI08'=@{}
         'V5-P01'=@{records=10000;fields=32;groups=5000;components=4;warmups=2;reservedAfter=0}
-        'V5-P02'=@{encoded=33554432;decoded=33554432;bodyBytes=262144;expansionState='BudgetExceeded';reservedAfter=0;contentAfter=0;leases=0}
+        'V5-P02'=@{encoded=33554432;decoded=33554432;bodyBytes=262144;bombReads=128;decodedBudgetRejected=$true;expansionState='BudgetExceeded';reservedAfter=0;contentAfter=0;leases=0}
         'V5-P03'=@{smoke=$false;renderer='Avalonia Desktop';realHost=$false;physicalInput=$false;concurrent=20;streams=5;retained=10000;cycles=20;analysisAfter=0;contentAfter=0;activeAfter=0}
         'V5-P04'=@{rounds=20;active=0;leases=0;reservedAfter=0}
         'V5-R01'=@{inherited=143;privateBytes=268435456;stopMilliseconds=10000}

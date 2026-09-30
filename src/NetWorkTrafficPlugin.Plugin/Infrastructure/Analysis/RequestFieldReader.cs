@@ -133,7 +133,7 @@ public sealed class RequestFieldReader(TrafficRecord record, ICaptureSession ses
                     if (input.LongLength != body.CommittedBytes) _bodyFailure = FieldValue.Problem(ValueState.Unavailable, reason: "DATA_SHORT_READ");
                     else
                     {
-                        _bytes = await DecodeBodyAsync(input, body, token); work.Read(0, _bytes.Length);
+                        _bytes = await DecodeBodyAsync(input, body, work, token);
                         var charset = body.ContentType?.Split(';').Select(x => x.Trim()).FirstOrDefault(x => x.StartsWith("charset=", StringComparison.OrdinalIgnoreCase))?[8..].Trim('"');
                         if (charset is not null && !charset.Equals("utf-8", StringComparison.OrdinalIgnoreCase)) _bodyFailure = FieldValue.Problem(ValueState.Unavailable, reason: "DATA_CHARSET");
                         else if (isJson) { ValidateJson(_bytes, token); _json = JsonDocument.Parse(_bytes, new JsonDocumentOptions { MaxDepth = DslLimits.JsonDepth }); }
@@ -150,15 +150,22 @@ public sealed class RequestFieldReader(TrafficRecord record, ICaptureSession ses
         return access.Name == "json" ? JsonFieldPath.Read(_json!.RootElement, access.Argument!) : Fields(Pairs(StrictUtf8.GetString(_bytes!), true), access.Argument!);
     }
     private sealed class BodyLimitException : Exception;
-    private static async Task<byte[]> DecodeBodyAsync(byte[] input, BodyDescriptor body, CancellationToken token)
+    private static async Task<byte[]> DecodeBodyAsync(byte[] input, BodyDescriptor body, EvaluationBudget work, CancellationToken token)
     {
-        if (body.Representation == BodyRepresentation.DecodedEntity || string.IsNullOrEmpty(body.ContentEncoding) || body.ContentEncoding.Equals("identity", StringComparison.OrdinalIgnoreCase)) return input;
+        if (body.Representation == BodyRepresentation.DecodedEntity || string.IsNullOrEmpty(body.ContentEncoding) || body.ContentEncoding.Equals("identity", StringComparison.OrdinalIgnoreCase))
+        { work.Read(0, input.Length); return input; }
         using var stream = new MemoryStream(input, false);
         using Stream decoder = body.ContentEncoding.Trim().ToLowerInvariant() switch
         { "gzip" => new GZipStream(stream, CompressionMode.Decompress), "br" => new BrotliStream(stream, CompressionMode.Decompress), "deflate" => new DeflateStream(stream, CompressionMode.Decompress), _ => throw new NotSupportedException() };
         using var output = new MemoryStream(); var buffer = new byte[8192]; int count;
         while ((count = await decoder.ReadAsync(buffer, token)) != 0)
-        { if (output.Length + count > DslLimits.BodyBytes) throw new BodyLimitException(); await output.WriteAsync(buffer.AsMemory(0, count), token); }
+        {
+            // 已经解出的字节即使使当前正文超限，也消耗了本轮资源。必须先计入整轮预算，
+            // 否则一连串膨胀/损坏正文会因没有“成功结果”而绕过累计32MiB限制。
+            work.Read(0, count);
+            if (output.Length + count > DslLimits.BodyBytes) throw new BodyLimitException();
+            await output.WriteAsync(buffer.AsMemory(0, count), token);
+        }
         return output.ToArray();
     }
     private static void ValidateJson(byte[] bytes, CancellationToken token)
