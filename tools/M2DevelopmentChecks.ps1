@@ -45,7 +45,7 @@ function Get-M2ExpectedValues {
         'V5-E04'=@{unknownNot=$true;fallbackState='NotReady';unselectedBodyReads=0}; 'V5-E05'=@{decoded='a b';segment='a/b';emptySegment=$true}
         'V5-E06'=@{partialStates=3;archivedState='Unavailable';reservedAfter=0}; 'V5-E07'=@{codecs=3;depthExceeded=$true;reservedAfter=0}
         'V5-E08'=@{completedRequestUsable=$true;missingMime='Unavailable'}; 'V5-E09'=@{conversionsRejected=3;valueLimit=4096;itemLimit=128}
-        'V5-E10'=@{reads=1;reservedAfter=0}; 'V5-E11'=@{unavailable=3;bodyReads=0}; 'V5-E12'=@{masked='••••';bodyReads=0;reservedAfter=0}
+        'V5-E10'=@{reads=1;reservedAfter=0}; 'V5-E11'=@{unavailable=3;bodyReads=0}; 'V5-E12'=@{masked='••••';bodyReads=0;reservedAfter=0;customConstantsMasked=$true;customTupleComponentsMasked=$true}
         'V5-Q01'=@{context=1}; 'V5-Q02'=@{collisions=0;equivalent=4}; 'V5-Q03'=@{Retained=3;FilterFalse=1;FilterTrue=1;FilterUnknown=1}
         'V5-Q04'=@{businessCount=2;duplicateIdentityRejected=$true}; 'V5-Q05'=@{groups=2;excluded=1;explicitlyIncluded=1}
         'V5-Q06'=@{firstCount=2}; 'V5-Q07'=@{Count=3;Interfaces=2;Errors=1;Receiving=1}; 'V5-Q08'=@{records=10001;reservedAfter=0;leases=0}

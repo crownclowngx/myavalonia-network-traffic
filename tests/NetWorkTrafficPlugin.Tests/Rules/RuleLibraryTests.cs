@@ -33,6 +33,9 @@ public sealed class RuleLibraryTests
             var preview=await engine.PreviewAsync(f.Source(),tuple,default);
             Assert.Contains("String/Value = example.test",preview); Assert.Contains("String/Missing",preview);
             Assert.Contains("样本 0 / 保留 1",await engine.PreviewAsync(f.Source(),tuple,default,1));
+            var namedTuple=M2Fixture.Compile(M2Fixture.Program("field user=tuple(original.host,\"private-constant\");"));
+            var maskedPreview=await engine.PreviewAsync(f.Source(),namedTuple,default);
+            Assert.DoesNotContain("private-constant",maskedPreview); Assert.DoesNotContain("example.test",maskedPreview);
             await Assert.ThrowsAsync<ArgumentOutOfRangeException>(()=>engine.PreviewAsync(f.Source(),tuple,default,-1));
             Assert.Equal(0,f.Leases);
             await page.ApplyAsync(); Assert.Empty(page.Result!.Groups); Assert.NotSame(old,page.Result);

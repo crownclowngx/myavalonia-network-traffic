@@ -40,7 +40,12 @@ public sealed class FieldEvaluator(DslProgram program, IFieldSource source, Eval
     public async ValueTask<FieldValue> FieldAsync(string name)
     {
         if (_values.TryGetValue(name, out var value)) return value;
-        return _values[name] = await EvaluateAsync(_fields[name].Expression);
+        value = await EvaluateAsync(_fields[name].Expression);
+        // 自定义字段默认敏感，不因它来自常量、公开host或状态码而自动公开。
+        // tuple随后会拆成独立组键，分量也须继承字段的遮罩，否则展开会丢失保护。
+        if (value.State == ValueState.Value && value.Type == DslType.Tuple && value.ItemsValue.Any(item => !item.Sensitive))
+            value = value with { Data = value.ItemsValue.Select(item => item.Sensitive ? item : item with { Sensitive = true }).ToArray() };
+        return _values[name] = value.Sensitive ? value : value with { Sensitive = true };
     }
     public async ValueTask<FieldValue> EvaluateAsync(DslExpr expression)
     {

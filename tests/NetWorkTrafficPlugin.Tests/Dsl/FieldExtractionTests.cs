@@ -164,6 +164,14 @@ public sealed class FieldExtractionTests
         var value = await f.Value("upper(first(original.query[\"user\"]))", r);
         Assert.True(value.Sensitive); Assert.Equal("••••", value.Display()); Assert.Equal("U1", value.Display(true));
         Assert.Equal("user", Assert.Single(value.Origins!).Path); Assert.Equal(0, f.BodyReads); Assert.Equal(0, f.Memory.Reserved);
-        M2Fixture.Evidence("grouping", "E12", new { masked = value.Display(), bodyReads = f.BodyReads, reservedAfter = f.Memory.Reserved });
+        foreach (var expression in new[] { "\"private-constant\"", "original.host", "statusCode", "true" })
+        {
+            var custom = await f.Value(expression,r);
+            Assert.True(custom.Sensitive); Assert.Equal("••••",custom.Display()); Assert.NotEqual("••••",custom.Display(true));
+        }
+        var tuple = await f.Value("tuple(original.host, \"private-constant\")",r);
+        Assert.True(tuple.Sensitive); Assert.All(tuple.ItemsValue,item=>Assert.Equal("••••",item.Display()));
+        Assert.Contains("private-constant",tuple.Display(true));
+        M2Fixture.Evidence("grouping", "E12", new { masked = value.Display(), bodyReads = f.BodyReads, reservedAfter = f.Memory.Reserved, customConstantsMasked=true,customTupleComponentsMasked=true });
     }
 }
