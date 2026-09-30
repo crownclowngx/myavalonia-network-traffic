@@ -6,8 +6,13 @@ M1 提供双向捕获、筛选、内容预览、SSE/NDJSON、受配额落盘、�
 
 V4 / M1 工作台 UX 紧凑化与阅读体验已实现，完整本地 UX 门禁通过（172 个唯一测试、143 项同轮场景）；V4-01～V4-12 的结果和人工未验范围见 [V4 实施记录](docs/archive/2026-09-30-v4-m1-ux-implementation.md)。重点是双行列表、紧凑工具栏、独立跟随、正文优先、分栏/窄屏导航和明确的快照操作，配套 40 项 V4 业务验证场景。V4 沿用 SOLID 首要规定、朴素设计和详细中文注释，仅执行本地 Debug 开发验证，未使用 AIFLOW、Windows CI 或发布门禁。
 
+V5 / M2 DSL 分组已补充执行方案，业务实现与专项门禁待开始。按 V5-01～V5-14 交付六位置字段提取、过滤分组、时间线、规则修订、保存视图和历史重算，配套专项设计及 64 项业务验证场景。首要满足 SOLID，朴素使用设计模式、详细中文注释；不使用 AIFLOW、Windows CI 或发布门禁。`-Mode M2` 仅为拟新增入口，当前请勿将其视为已可执行。
+
 | 阅读目的 | 文档 |
 | --- | --- |
+| V5-01～14：M2 DSL 分组实施顺序与完成条件 | [V5 / M2 执行计划](docs/roadmap/network-traffic-v5-m2-dsl-grouping-plan.md) |
+| DSL v1、值状态、六位置提取、时间线与保存视图契约 | [V5 DSL 与分组专项设计](docs/design/network-traffic-v5-m2-dsl-grouping-design.md) |
+| 64 项 V5 场景、单元测试、累计回归与门禁反例 | [V5 M2 专用验证矩阵](docs/maintenance/network-traffic-v5-m2-verification-plan.md) |
 | V4-01～12 紧凑度与阅读体验 | [V4 / M1 UX 执行计划](docs/roadmap/network-traffic-v4-m1-ux-plan.md) |
 | 查看布局、跟随、筛选、详情与 SOLID 契约 | [V4 UX 专项设计](docs/design/network-traffic-v4-m1-ux-design.md) |
 | 查看 40 项 V4 场景及本地开发门禁设计 | [V4 UX 专用验证矩阵](docs/maintenance/network-traffic-v4-m1-ux-verification-plan.md) |
