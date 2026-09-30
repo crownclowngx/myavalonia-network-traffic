@@ -7,6 +7,7 @@
 
 | 阅读目的 | 入口 |
 | --- | --- |
+| DSL 入门教程、语法手册与设计意图 | [DSL 专用文档文件夹](dsl/README.md) |
 | M2 当前语义、限制与预算 | [M2 DSL 说明](reference/network-traffic-m2-dsl.md) |
 | M2 分组、视图保存与开发验证 | [M2 快速开始](quick-start/network-traffic-m2.md) |
 | V5-01～14：DSL 字段、过滤分组与调用时间线 | [V5 / M2 执行计划](roadmap/network-traffic-v5-m2-dsl-grouping-plan.md) |
@@ -34,7 +35,7 @@
 当前源码包含 Titanium 7.0.13 生产适配、共享协调器、双向有界捕获、生产 Document/Tool、内容预览、原生存档、受控协议/资源/UI 测试和本地门禁。HTTP/2 空闲流仅提示，不自动取消；M2 的 DSL 分组已实现，M3–M6 仍为后续规划。
 正式工程及插件身份保持不变，V3 采用“HTTP 工作台”。V1 是产品方案，V2 是 M0 执行方案，V3 是 M1 执行方案，V4 是现有 M1 的 UX 优化方案，V5 是 M2 DSL 分组方案，均不是包版本。V4 未启动 M2 DSL；实现与开发自动结果、真实 Host、真实客户端和人工验收分别登记。
 
-规划放入 `roadmap`，专项设计放入 `design`，可复用验证方法放入 `maintenance`。已新增当前行为 `reference`、使用步骤
+DSL 教程、语法手册和设计意图集中放入 `dsl`。规划放入 `roadmap`，专项设计放入 `design`，可复用验证方法放入 `maintenance`。已新增当前行为 `reference`、使用步骤
 `quick-start` 和带日期的实施记录；现有模板开发文档暂保留当前位置。实现、自动验证、真实 Host、人工验收和发布分别记录。
 
 ## 开发快速开始

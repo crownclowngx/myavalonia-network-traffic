@@ -2,6 +2,8 @@
 
 先按 [M1 快速开始](network-traffic-m1.md)接入本机显式代理，或打开已有原生存档。完整语义见 [M2 当前说明](../reference/network-traffic-m2-dsl.md)。
 
+第一次编写规则，建议从 [DSL 入门教程](../dsl/01-tutorial.md)开始；需要查函数和类型时看 [语法手册](../dsl/02-syntax-reference.md)，架构与取舍见 [设计意图](../dsl/03-design-rationale.md)。
+
 ## 分析当前记录
 
 1. 在主 Document 顶部点“分组”。代理停止按钮继续位于顶栏。

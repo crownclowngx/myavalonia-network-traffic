@@ -10,6 +10,7 @@ V5 / M2 DSL 分组已实现：六位置字段提取、三值过滤、组合键�
 
 | 阅读目的 | 文档 |
 | --- | --- |
+| 学习 DSL、查询完整语法与理解设计意图 | [DSL 使用与设计手册](docs/dsl/README.md) |
 | M2 当前语义、限制与预算 | [M2 DSL 说明](docs/reference/network-traffic-m2-dsl.md) |
 | M2 使用、保存视图与验证 | [M2 快速开始](docs/quick-start/network-traffic-m2.md) |
 | V5-01～14：M2 DSL 分组实施顺序与完成条件 | [V5 / M2 执行计划](docs/roadmap/network-traffic-v5-m2-dsl-grouping-plan.md) |

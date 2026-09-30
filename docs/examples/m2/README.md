@@ -1,5 +1,7 @@
 # DSL v1 可核对样例
 
+首次使用请先阅读 [DSL 入门教程](../../dsl/01-tutorial.md)；完整语法与设计意图统一放在 [DSL 手册](../../dsl/README.md)。
+
 - [caller.dsl](caller.dsl)：六位置回退，按 caller 分组。
 - [tenant-caller.dsl](tenant-caller.dsl)：相同字段提取，按 tenant+caller 分组。
 - [invalid-type.dsl](invalid-type.dsl)：数值转布尔的静态类型错误，应给 DSL005。
