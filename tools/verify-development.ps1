@@ -67,6 +67,13 @@ try {
         $protocol = Read-CheckedEvidence (Join-Path $directory 'protocol-probes.json') $runId $sourceHash $ordinaryStarted
         $stream = Read-CheckedEvidence (Join-Path $directory 'stream-probes.json') $runId $sourceHash $ordinaryStarted
         Test-ProtocolEvidence $protocol $stream
+        if ($Mode -eq 'M2') {
+            # 新增的持续分析先执行，尽早暴露M2资源问题；通过后仍逐项执行全部旧阶段，
+            # 汇总继续要求同轮207项与完整前置证据，不复用先前运行的成功文件。
+            $m2Started = [DateTimeOffset]::UtcNow
+            Run-Step 'm2-resource-tests' 'dotnet' @('test','tests/NetWorkTrafficPlugin.Tests','-c','Debug','--no-build','--no-restore','--filter','Category=M2ResourceProbe','--logger','trx;LogFileName=m2-resource.trx','--results-directory',$directory) 1200
+            $m2Rows = @(Read-CheckedTrx (Join-Path $directory 'm2-resource.trx') $m2Started)
+        }
         $resourceStarted = [DateTimeOffset]::UtcNow
         Run-Step 'resource-tests' 'dotnet' @('test', 'tests/NetWorkTrafficPlugin.Tests', '-c', 'Debug', '--no-build', '--no-restore',
             '--filter', 'Category=ResourceProbe', '--logger', 'trx;LogFileName=resource.trx', '--results-directory', $directory) 1200
@@ -95,9 +102,6 @@ try {
                 $uxProfile = Get-Content (Join-Path $PSScriptRoot 'ux-profile.json') -Raw | ConvertFrom-Json -AsHashtable
                 $report['requiredUXScenarios'] = 40
                 if ($Mode -eq 'M2') {
-                    $m2Started = [DateTimeOffset]::UtcNow
-                    Run-Step 'm2-resource-tests' 'dotnet' @('test','tests/NetWorkTrafficPlugin.Tests','-c','Debug','--no-build','--no-restore','--filter','Category=M2ResourceProbe','--logger','trx;LogFileName=m2-resource.trx','--results-directory',$directory) 1200
-                    $m2Rows = @(Read-CheckedTrx (Join-Path $directory 'm2-resource.trx') $m2Started)
                     $m2Map = Get-Content (Join-Path $PSScriptRoot 'm2-test-map.json') -Raw | ConvertFrom-Json
                     $m2Profile = Get-Content (Join-Path $PSScriptRoot 'm2-profile.json') -Raw | ConvertFrom-Json -AsHashtable
                     Assert-Check ($m2Rows.Count -eq 4 -and @($m2Rows | Where-Object method -CNotIn $m2Map.scenarios.Where({$_.id -match '^V5-P'}).tests.method).Count -eq 0) 'M2资源类别执行集合不完整。'

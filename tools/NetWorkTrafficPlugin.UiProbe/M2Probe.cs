@@ -43,8 +43,15 @@ public sealed partial class ProbeApp
         {
             var info = await runtime.StartAsync(new(Capture: CaptureMode.BoundedBody, RecordDirectory: Path.Combine(root, "capture"), Limits: CaptureLimits.M1()), ct);
             using var client = new HttpClient(new SocketsHttpHandler { Proxy = new WebProxy($"http://127.0.0.1:{info.Port}"), UseProxy = true }) { Timeout = Timeout.InfiniteTimeSpan };
-            await Parallel.ForEachAsync(Enumerable.Range(0, 9980), new ParallelOptions { MaxDegreeOfParallelism = 12, CancellationToken = ct }, async (i, token) =>
-            { using var response = await client.GetAsync(new Uri(origin.Address, $"/empty?user=u{i % 100}"), token); response.EnsureSuccessStatusCode(); });
+            // 预填不是吞吐压力测量。每批32条最多产生64条开始/完成日志，批间让后台写入者排空；
+            // 避免瞬时填满128项元信息队列后，按产品契约降级为MetadataPartial，污染“完整10k”分析负载。
+            // 正式计时仍在预填和渲染预热之后，20并发、5条流、10k保留和600秒均不变。
+            foreach (var batch in Enumerable.Range(0, 9980).Chunk(32))
+            {
+                await Parallel.ForEachAsync(batch, new ParallelOptions { MaxDegreeOfParallelism = 12, CancellationToken = ct }, async (i, token) =>
+                { using var response = await client.GetAsync(new Uri(origin.Address, $"/empty?user=u{i % 100}"), token); response.EnsureSuccessStatusCode(); });
+                await Task.Delay(20, ct);
+            }
             await ProxyFixture.WaitUntilAsync(() => runtime.GetMetrics().ActiveRequests == 0);
             var responses = await Task.WhenAll(Enumerable.Range(0, 20).Select(i =>
                 client.GetAsync(new Uri(origin.Address, i < 5 ? $"/stream?user=stream{i}" : $"/binary?size={16 << 20}&hold=1&user=file{i}"), HttpCompletionOption.ResponseHeadersRead, ct)));
@@ -69,7 +76,8 @@ public sealed partial class ProbeApp
                 window.UpdateLayout(); return model;
             }
             page = CreatePage(); await page.ApplyAsync();
-            Check(page.Result?.Coverage.Retained == 10000 && page.Result.Coverage.GroupedRecords == 10000, page.Status);
+            Check(page.Result?.Coverage.Retained == 10000 && page.Result.Coverage.GroupedRecords == 10000,
+                $"{page.Status}；初始覆盖={JsonSerializer.Serialize(page.Result?.Coverage)}；窗口={page.Result?.From:O}～{page.Result?.To:O}");
             var baseline = Process.GetCurrentProcess().PrivateMemorySize64;
             var baselineHandles = Process.GetCurrentProcess().HandleCount;
             var seconds = smoke ? 5 : 600; var watch = Stopwatch.StartNew();
