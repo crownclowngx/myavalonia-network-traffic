@@ -103,6 +103,11 @@ public sealed class GroupingTests
         var f=new M2Fixture(); for(var i=0;i<5001;i++) f.Add($"https://example.test/?user={i}");
         var resources=new AnalysisResources(); await Assert.ThrowsAsync<AnalysisLimitException>(()=>Run(f,M2Fixture.Program(),resources));
         Assert.Equal(0,resources.Memory.Reserved); Assert.Equal(0,f.Leases);
+        // 候选与其它页面的旧结果共用额度，不能因是新查询就获得第二份64MiB。
+        f.Records.RemoveAt(f.Records.Count-1);
+        using(var held=resources.Memory.TryReserve(DslLimits.AnalysisBytes)!)
+            await Assert.ThrowsAsync<AnalysisLimitException>(()=>Run(f,M2Fixture.Program(),resources));
+        Assert.Equal(0,resources.Memory.Reserved);
         while(f.Records.Count<10001) f.Add();
         await Assert.ThrowsAsync<AnalysisLimitException>(()=>Run(f,M2Fixture.Program(),resources));
         M2Fixture.Evidence("grouping","Q08",new { records=f.Records.Count, reservedAfter=resources.Memory.Reserved, leases=f.Leases });

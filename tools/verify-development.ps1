@@ -21,6 +21,7 @@ $report = [ordered]@{
     profileHash = (Get-FileHash (Join-Path $PSScriptRoot 'm1-resource-profile.json')).Hash
     uxProfileHash = (Get-FileHash (Join-Path $PSScriptRoot 'ux-profile.json')).Hash
     m2ProfileHash = (Get-FileHash (Join-Path $PSScriptRoot 'm2-profile.json')).Hash
+    documentationHash = Get-DocumentationHash $root
     head = (& git -C $root rev-parse HEAD); dirty = @(& git -C $root status --porcelain).Count -gt 0
     os = [Runtime.InteropServices.RuntimeInformation]::OSDescription; architecture = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
     sdk = (& dotnet --version); automaticPassed = $false; testCount = 0; commands = $history
@@ -28,6 +29,9 @@ $report = [ordered]@{
     windowsCiExecuted = $false; releaseGateExecuted = $false
     productDowngrades = @('HTTP/2 空闲流只提示，不自动终止；客户端单流取消与全局停止仍须验证。')
     pending = @('H01/H02 实际界面操作', 'H03 指定真实 Host', 'H04 指定真实客户端')
+}
+if ($Mode -eq 'M2') {
+    $report.pending = @('V5-H01 实际Standalone与物理缩放', 'V5-H02 指定真实Host', 'V5-H03 指定真实客户端', 'V5-H04 用户保存视图及历史重算验收')
 }
 function Check-Docs {
     # git 清单包含未跟踪 Markdown，不能用仅检查 diff 的方式漏掉新文档。
@@ -122,6 +126,7 @@ try {
 } finally {
     $report['finishedUtc'] = [DateTimeOffset]::UtcNow
     $report['endingSourceHash'] = Get-SourceHash $root
+    $report['endingDocumentationHash'] = Get-DocumentationHash $root
     $artifacts = @(Get-ChildItem -LiteralPath $directory -File | Where-Object Name -NotIn @('verification.json','artifacts.json') | ForEach-Object {
         @{ name = $_.Name; length = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName).Hash }
     })

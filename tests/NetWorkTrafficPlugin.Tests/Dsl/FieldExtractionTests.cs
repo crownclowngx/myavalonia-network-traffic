@@ -17,6 +17,7 @@ public sealed class FieldExtractionTests
         var all = await f.Value("all(original.query[\"x\"])", r); Assert.Equal(3, all.ItemsValue.Count); Assert.Equal("", all.ItemsValue[1].Data); Assert.Equal("b+c", all.ItemsValue[2].Data);
         Assert.Equal("大", (await f.Value("first(original.query[\"X\"])", r)).Data);
         Assert.Equal(ValueState.Missing, (await f.Value("first(original.query[\"absent\"])", r)).State);
+        Assert.Equal(DslType.String,(await f.Value("first(original.query[\"absent\"])",r)).Type);
         foreach (var bad in new[] { "%", "%Q1", "%FF", "%C0%AF" })
             Assert.Equal(ValueState.Invalid, (await f.Value("first(original.query[\"x\"])", r with { OriginalUri = "https://example.test/?x=" + bad })).State);
         M2Fixture.Evidence("grouping", "E01", new { repeated = all.ItemsValue.Count, invalid = 4 });
@@ -47,11 +48,22 @@ public sealed class FieldExtractionTests
     {
         var f = new M2Fixture(); var r = f.Add(body: "{\"user\":", contentType: "application/json", bodyState: ValueState.NotReady);
         var unknown = "toBool(original.json(\"$.flag\"))";
+        // 行/列顺序固定为True、False、Unknown，手写Kleene真值表避免用实现自身计算期望。
+        string[] operands=["true","false",unknown];
+        bool?[] andTable=[true,false,null,false,false,false,null,false,null];
+        bool?[] orTable=[true,true,true,true,false,null,true,null,null];
+        for(var left=0;left<3;left++) for(var right=0;right<3;right++)
+        {
+            Assert.Equal(andTable[left*3+right],(await f.Value($"{operands[left]} and {operands[right]}",r)).Truth);
+            Assert.Equal(orTable[left*3+right],(await f.Value($"{operands[left]} or {operands[right]}",r)).Truth);
+        }
         // 真值表的关键反例：未知取反仍未知，明确False/True可以决定短路结果。
         foreach (var expr in new[] { $"not ({unknown})", $"{unknown} and true", $"{unknown} or false" }) Assert.Null((await f.Value(expr, r)).Truth);
         Assert.False((await f.Value($"{unknown} and false", r)).Truth); Assert.True((await f.Value($"{unknown} or true", r)).Truth);
         Assert.Equal(ValueState.NotReady, (await f.Value("firstNonEmpty(toString(original.json(\"$.user\")), \"fallback\")", r)).State);
         Assert.Equal("fallback", (await f.Value("firstNonEmpty(null, \"\", \"fallback\")", r)).Data);
+        Assert.Null((await f.Value("first(original.query[\"absent\"]) in [\"u1\"]",r)).Truth);
+        Assert.True((await f.Value("\"u1\" in all(original.query[\"user\"])",r)).Truth);
         var reads = f.BodyReads; Assert.Equal("selected", (await f.Value("if(true,\"selected\",toString(original.json(\"$.user\")))", r)).Data); Assert.Equal(reads, f.BodyReads);
         M2Fixture.Evidence("grouping", "E04", new { unknownNot = (await f.Value($"not ({unknown})", r)).Truth is null, fallbackState = (await f.Value("firstNonEmpty(toString(original.json(\"$.user\")), \"fallback\")", r)).State.ToString(), unselectedBodyReads = f.BodyReads - reads });
     }
@@ -73,6 +85,8 @@ public sealed class FieldExtractionTests
         Assert.Equal(ValueState.NotReady, (await f.Value("original.json(\"$.user\")", waiting)).State);
         f.IsArchive = true; Assert.Equal("DATA_ARCHIVED_INCOMPLETE", (await f.Value("original.json(\"$.user\")", waiting)).Reason);
         f.ReadFailure = new FileNotFoundException(); Assert.Equal(ValueState.Unavailable, (await f.Value("original.json(\"$.user\")", r)).State);
+        f.ReadFailure = null; f.Bodies[r.RequestBody.BodyId] = [];
+        Assert.Equal("DATA_SHORT_READ",(await f.Value("original.json(\"$.user\")",r)).Reason);
         Assert.Equal(0, f.Memory.Reserved);
         M2Fixture.Evidence("grouping", "E06", new { partialStates = 3, archivedState = "Unavailable", reservedAfter = f.Memory.Reserved });
     }
@@ -91,6 +105,12 @@ public sealed class FieldExtractionTests
             var encoded = r with { RequestBody = r.RequestBody with { ContentEncoding = encoding, CommittedBytes = compressed.Length, ObservedBytes = compressed.Length } };
             Assert.Equal("compressed", (await f.Value("toString(original.json(\"$.user\"))", encoded)).Data);
         }
+        f.Bodies[r.RequestBody.BodyId]=Encoding.UTF8.GetBytes("{\"user\":\"u\"}");
+        Assert.Equal(ValueState.Unavailable,(await f.Value("original.json(\"$.user\")",r with {RequestBody=r.RequestBody with {ContentEncoding="gzip, br"}})).State);
+        Assert.Equal(ValueState.Invalid,(await f.Value("original.json(\"$.user\")",r with {RequestBody=r.RequestBody with {ContentEncoding="gzip"}})).State);
+        Assert.Equal("u",(await f.Value("toString(original.json(\"$.user\"))",r with {RequestBody=r.RequestBody with {ContentEncoding="gzip",Representation=BodyRepresentation.DecodedEntity}})).Data);
+        var tokens=f.Add(body:"["+string.Join(',',Enumerable.Repeat("0",16384))+"]",contentType:"application/json");
+        Assert.Equal(ValueState.BudgetExceeded,(await f.Value("original.json(\"$[0]\")",tokens)).State);
         Assert.Equal(0, f.Memory.Reserved);
         M2Fixture.Evidence("grouping", "E07", new { codecs = 3, depthExceeded = true, reservedAfter = f.Memory.Reserved });
     }

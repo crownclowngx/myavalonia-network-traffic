@@ -8,11 +8,15 @@ using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using NetWorkTrafficPlugin.Application.Analysis;
+using NetWorkTrafficPlugin.Application.Capture;
 using NetWorkTrafficPlugin.Application.Proxy;
 using NetWorkTrafficPlugin.Features.Analysis;
+using NetWorkTrafficPlugin.Features.Capture;
 using NetWorkTrafficPlugin.Features.Main;
 using NetWorkTrafficPlugin.Features.ProxyStatus;
 using NetWorkTrafficPlugin.Infrastructure.Proxy;
+using NetWorkTrafficPlugin.Infrastructure.Capture;
+using NetWorkTrafficPlugin.Infrastructure.Content;
 using NetWorkTrafficPlugin.Infrastructure.Rules;
 using NetWorkTrafficPlugin.Tests.Fixtures;
 using Xunit;
@@ -88,6 +92,28 @@ public sealed class M2UiTests
         var selected=s.Page.SelectedRequest!.RecordId; Guid? opened=null; s.Page.OpenRequest+=r=>opened=r.RecordId;
         s.Click("打开请求详情"); Assert.Equal(selected,opened); Assert.NotEmpty(list.GetVisualDescendants().OfType<TimelineStrip>());
         s.Window.Width=520; s.Window.Height=420; Pump(s.Window); s.Click("返回组列表"); Assert.True(s.View.FindControl<ListBox>("GroupList")!.IsEffectivelyVisible);
+        // 真实CaptureView绑定下验证隐藏行详情；只检查ViewModel会漏掉ListBox回写和定时刷新清空。
+        await using var fixture=new M1SessionFixture();
+        var hidden=await fixture.AddAsync("hidden body"u8.ToArray(),uri:"https://example.test/hidden?user=u");
+        await fixture.AddAsync("visible body"u8.ToArray(),uri:"https://example.test/visible?user=u");
+        var store=new CaptureSessionStore(); store.Publish(fixture.Session);
+        await using var archives=new FileCaptureArchiveStore();
+        using var capture=new CaptureWorkspace(store,archives,new BoundedImageDecoder(store.ContentBudget));
+        capture.Keyword="visible"; await Task.Delay(220); await capture.RefreshAsync();
+        var captureView=new CaptureView {DataContext=capture};
+        var detailWindow=new Window {Width=800,Height=600,Content=captureView}; detailWindow.Show(); Pump(detailWindow);
+        try
+        {
+            Assert.True(await capture.OpenAnalyzedRecordAsync(fixture.Session,hidden.Id)); Pump(detailWindow);
+            await capture.RefreshAsync(); Pump(detailWindow);
+            Assert.Equal(hidden.Id,capture.Selected!.RecordId); Assert.Null(capture.ListSelected);
+            Assert.Equal("hidden body",capture.BodyText); Assert.Equal("visible",capture.Keyword); Assert.Single(capture.Rows);
+            var visible=captureView.FindControl<ListBox>("TrafficList")!.GetVisualDescendants().OfType<ListBoxItem>().First();
+            var location=visible.TranslatePoint(new Point(20,10),detailWindow)!.Value;
+            detailWindow.MouseDown(location,MouseButton.Left); detailWindow.MouseUp(location,MouseButton.Left); await capture.DetailTask;
+            Assert.NotEqual(hidden.Id,capture.Selected!.RecordId); Assert.Equal("visible body",capture.BodyText);
+        }
+        finally {detailWindow.Close();}
         M2Fixture.Evidence("layout","UI04",new {selected,opened,compactBack=true});
     });
     [Fact] public Task UI05InvalidWindowAndUnknownRange()=>Run(async s=>
@@ -95,6 +121,13 @@ public sealed class M2UiTests
         await s.Apply(); var old=s.Page.Result; var window=s.View.GetVisualDescendants().OfType<TextBox>().Single(t=>t.PlaceholderText?.StartsWith("留空")==true);
         window.Focus(); s.Window.KeyTextInput("invalid"); s.Click("应用/刷新"); await s.Page.CurrentTask; Assert.Same(old,s.Page.Result);
         window.SelectAll(); s.Window.KeyTextInput("last(30m)"); await s.Apply(); s.Click("未确定"); Assert.Single(s.Page.Requests); Assert.Contains("Missing",s.Page.SelectionText);
+        Assert.Null(s.Page.SelectedGroup); Assert.Contains("未确定",s.Page.PaneTitle);
+        var groups=s.View.FindControl<ListBox>("GroupList")!;
+        var first=groups.GetVisualDescendants().OfType<ListBoxItem>().First();
+        var p=first.TranslatePoint(new Point(20,10),s.Window)!.Value;
+        s.Window.MouseDown(p,MouseButton.Left); s.Window.MouseUp(p,MouseButton.Left); Pump(s.Window);
+        Assert.Equal(25,s.Page.Requests.Count); Assert.Same(s.Page.Groups[0],s.Page.SelectedGroup);
+        s.Click("未确定");
         M2Fixture.Evidence("layout","UI05",new {invalidPreserved=true,unknownRows=s.Page.Requests.Count,coverage=s.Page.Result!.Coverage});
     });
     [Fact] public Task UI06MaskAndReset()=>Run(async s=>

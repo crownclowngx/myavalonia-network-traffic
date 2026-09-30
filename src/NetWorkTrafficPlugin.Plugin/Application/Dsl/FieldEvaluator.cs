@@ -40,7 +40,10 @@ public sealed class FieldEvaluator(DslProgram program, IFieldSource source, Eval
     public async ValueTask<FieldValue> FieldAsync(string name)
     {
         if (_values.TryGetValue(name, out var value)) return value;
-        return _values[name] = await EvaluateAsync(_fields[name].Expression);
+        value = await EvaluateAsync(_fields[name].Expression);
+        // 未知状态没有载荷，类型应取字段的绑定结果；例如first(缺失列表)仍是String字段。
+        // 保留状态、原因和来源，只修正类型，避免界面把调用者标识误显示为List。
+        return _values[name] = value.State == ValueState.Value ? value : value with { Type = program.FieldTypes[name] };
     }
     public async ValueTask<FieldValue> EvaluateAsync(DslExpr expression)
     {

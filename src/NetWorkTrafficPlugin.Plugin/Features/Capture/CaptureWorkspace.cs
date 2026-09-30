@@ -112,7 +112,9 @@ public sealed partial class CaptureWorkspace : ObservableObject, IDisposable
     partial void OnStatusCodeFilterChanged(string value) { if (!string.IsNullOrWhiteSpace(value)) StatusIndex = 0; QueryChanged(); }
     partial void OnSelectedChanged(TrafficSummary? value)
     {
+        OnPropertyChanged(nameof(ListSelected));
         if (_updatingRows) return;
+        if (value?.RecordId != _analysisDetailId) _analysisDetailId = null;
         if (value is not null && value.Sequence < LatestSequence) ListReading.Pause(LatestSequence);
         EventReading.Resume(0); EventReading.Reset();
         _renderedBody = null;
@@ -210,7 +212,8 @@ public sealed partial class CaptureWorkspace : ObservableObject, IDisposable
         if (selectedId is { } id && _rows.TryGetValue(id, out var updated)) Selected = updated;
         }
         finally { _updatingRows = false; }
-        if (selectedId is { } removed && !_rows.ContainsKey(removed))
+        OnPropertyChanged(nameof(ListSelected));
+        if (selectedId is { } removed && !_rows.ContainsKey(removed) && _analysisDetailId != removed)
         { Message = "选中记录已不在当前范围。"; if (Selected is null) OnSelectedChanged(null); else Selected = null; }
     }
     public async Task LoadDetailsAsync(Guid id, long revision)
@@ -225,7 +228,12 @@ public sealed partial class CaptureWorkspace : ObservableObject, IDisposable
         try
         {
             var record = await session.ReadAsync(id, cancellation.Token);
-            if (record is null || !IsCurrent()) return;
+            if (!IsCurrent()) return;
+            if (record is null)
+            {
+                if (_analysisDetailId == id) { _analysisDetailId = null; Selected = null; Message = "从分组打开的记录已被淘汰。"; }
+                return;
+            }
             _record = record; RenderFields(record);
             var body = RequestSelected ? record.RequestBody : record.ResponseBody;
             BodyStatus = $"{body.Transport} / {body.Capture} · 已观察 {body.ObservedBytes:N0} B · 已保存 {body.CommittedBytes:N0} B · 总长 {(body.ExpectedBytes?.ToString("N0") ?? "未知")}\n{body.Reason}";

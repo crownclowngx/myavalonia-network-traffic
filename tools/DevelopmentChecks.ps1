@@ -56,6 +56,12 @@ function Get-SourceHash([string] $Root) {
     return [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes(($rows -join [char]10))))
 }
 
+function Get-DocumentationHash([string] $Root) {
+    # 文档可在资源测量时补齐事实，分别记录起止摘要；只有行为源码要求全程不变。
+    $rows=@(& git -C $Root ls-files --cached --others --exclude-standard | Sort-Object -Unique | Where-Object { $_.EndsWith('.md') } |
+        ForEach-Object { $path=Join-Path $Root $_; if(Test-Path -LiteralPath $path -PathType Leaf) { "$_=$((Get-FileHash -LiteralPath $path).Hash)" } })
+    return [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes(($rows -join [char]10))))
+}
 function Read-CheckedTrx([string] $Path, [DateTimeOffset] $Since) {
     Assert-Check (Test-Path -LiteralPath $Path) "缺少 TRX：$Path"
     $xml = [xml][IO.File]::ReadAllText($Path)

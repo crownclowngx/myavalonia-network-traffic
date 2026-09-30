@@ -34,7 +34,7 @@
        <TextBlock Text="请求" VerticalAlignment="Center" FontWeight="SemiBold"/>
        <Button Grid.Column="1" Content="清空本页" Command="{Binding ClearViewCommand}" ToolTip.Tip="仅改变本页范围，活动请求继续显示"/>
       </Grid>
-      <ListBox x:Name="TrafficList" Grid.Row="1" AutoScrollToSelectedItem="False" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" Background="Transparent">
+      <ListBox x:Name="TrafficList" Grid.Row="1" AutoScrollToSelectedItem="False" ItemsSource="{Binding Rows}" SelectedItem="{Binding ListSelected}" Background="Transparent">
        <ListBox.ItemsPanel><ItemsPanelTemplate><VirtualizingStackPanel/></ItemsPanelTemplate></ListBox.ItemsPanel>
        <ListBox.ItemTemplate><DataTemplate x:DataType="model:TrafficSummary">
         <Grid RowDefinitions="20,18" ColumnDefinitions="46,*,44,66" ColumnSpacing="4" ToolTip.Tip="{Binding TimingText}">

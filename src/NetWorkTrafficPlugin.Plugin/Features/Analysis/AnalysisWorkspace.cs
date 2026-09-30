@@ -40,6 +40,7 @@ public sealed partial class AnalysisWorkspace : ObservableObject, IDisposable
     [ObservableProperty] private bool _hasLibraryUpdates;
     [ObservableProperty] private string _status = "选择实时捕获或只读存档后，应用规则分析。", _previewText = "", _selectionText = "", _viewName = "调用过程";
     [ObservableProperty] private string _resultDescription = "";
+    [ObservableProperty] private string _paneTitle = "选择一个业务组";
     [ObservableProperty] private string _windowText = "", _sourcesText = "capture", _columnsText = "";
     [ObservableProperty] private TrafficGroup? _selectedGroup;
     [ObservableProperty] private AnalyzedRequest? _selectedRequest;
@@ -74,8 +75,8 @@ public sealed partial class AnalysisWorkspace : ObservableObject, IDisposable
         CancelCommand = new RelayCommand(() => { _generation++; _operation?.Cancel(); Status = "已取消，保留上次成功结果。"; });
         ClearCommand = new RelayCommand(Clear);
         OpenRequestCommand = new RelayCommand(() => { if (SelectedRequest is { } request && _result?.SourceId == _source?.InstanceId) OpenRequest?.Invoke(request); else Status = "记录已换源，请重新分析。"; });
-        ShowUnknownCommand = new RelayCommand(() => ShowRows(_result?.Unresolved ?? [], "未确定身份"));
-        ShowContextCommand = new RelayCommand(() => ShowRows(_result?.Context ?? [], "窗口前在途上下文（不计主统计）"));
+        ShowUnknownCommand = new RelayCommand(() => ShowSpecialRows(_result?.Unresolved ?? [], "未确定身份（不计业务组）"));
+        ShowContextCommand = new RelayCommand(() => ShowSpecialRows(_result?.Context ?? [], "窗口前在途上下文（不计主统计）"));
         GenerateFieldCommand = new RelayCommand(() => FormAction(false));
         InsertFieldCommand = new RelayCommand(() => FormAction(true));
     }
@@ -226,8 +227,15 @@ public sealed partial class AnalysisWorkspace : ObservableObject, IDisposable
         Status = "视图已载入草稿；点击应用后才分析。";
     }
     partial void OnSelectedGroupChanged(TrafficGroup? value) { if (value is not null) ShowRows(value.Requests, value.Description); }
+    private void ShowSpecialRows(IEnumerable<AnalyzedRequest> rows, string title)
+    {
+        // 特殊范围没有对应的正常组。清除旧选择，使再次点击原组也能触发选择变化。
+        SelectedGroup = null;
+        ShowRows(rows, title);
+    }
     private void ShowRows(IEnumerable<AnalyzedRequest> rows, string label)
     {
+        PaneTitle = label;
         Requests.Clear(); foreach (var row in rows) Requests.Add(row);
         // 共同时间轴只在组切换时计算一次；虚拟行绘制不得逐行重复扫描一万条请求。
         TimelineStart = Requests.Count == 0 ? DateTimeOffset.UnixEpoch : Requests.Min(r => r.StartedUtc);
@@ -247,7 +255,7 @@ public sealed partial class AnalysisWorkspace : ObservableObject, IDisposable
             string.Join("\n", row.Fields.Select(f => $"{f.Key}: {f.Value.Display(RevealValues)} [{f.Value.Type.Kind}/{f.Value.State}] · " +
                 string.Join(", ", (f.Value.Origins ?? []).Select(o => $"{o.Location}[{o.Path}]"))));
     }
-    private void ClearResult() { Groups.Clear(); Requests.Clear(); SelectedGroup = null; SelectedRequest = null; _result?.Dispose(); _result = null; SelectionText = ""; ResultDescription = ""; }
+    private void ClearResult() { Groups.Clear(); Requests.Clear(); SelectedGroup = null; SelectedRequest = null; _result?.Dispose(); _result = null; SelectionText = ""; ResultDescription = ""; PaneTitle = "选择一个业务组"; }
     private void Clear() { _generation++; _operation?.Cancel(); ClearResult(); RevealValues = false; PreviewText = ""; Status = "已清除本页分析结果，抓包继续。"; }
     public void Dispose() { if (_disposed) return; _disposed = true; _generation++; Editor.Dispose(); _closing.Cancel(); _operation?.Cancel(); ClearResult(); OpenRequest = null; }
 }

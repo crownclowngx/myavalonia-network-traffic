@@ -23,9 +23,10 @@
     </DataTemplate></ListBox.ItemTemplate>
    </ListBox>
    <Grid x:Name="TimelinePane" Grid.Column="1" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="4">
+    <StackPanel><TextBlock Text="{Binding PaneTitle}" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding PaneTitle}"/>
     <WrapPanel><Button Content="返回组列表" Click="Back"/><Button Content="打开请求详情" Command="{Binding OpenRequestCommand}" Margin="4,0"/>
      <CheckBox Content="显示本次原值" IsChecked="{Binding RevealValues}" VerticalAlignment="Center"/>
-    </WrapPanel>
+    </WrapPanel></StackPanel>
     <ListBox x:Name="TimelineList" Grid.Row="1" ItemsSource="{Binding Requests}" SelectedItem="{Binding SelectedRequest}">
      <ListBox.ItemTemplate><DataTemplate x:DataType="model:AnalyzedRequest">
       <StackPanel Margin="3,3">
