@@ -34,7 +34,7 @@ public sealed class M1CaptureUiTests
         public override void Initialize() => Styles.Add(new FluentTheme());
     }
     public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<TestApp>().UseHeadless(new() { UseHeadlessDrawing = false }).UseSkia();
-    private static readonly Lazy<HeadlessUnitTestSession> Ui = new(() => HeadlessUnitTestSession.StartNew(typeof(M1CaptureUiTests)));
+    internal static readonly Lazy<HeadlessUnitTestSession> Ui = new(() => HeadlessUnitTestSession.StartNew(typeof(M1CaptureUiTests)));
 
     [Theory]
     [InlineData(1200, 720, false, false)]
@@ -63,7 +63,7 @@ public sealed class M1CaptureUiTests
             var window = new Window { Width = width, Height = height, Content = view, RequestedThemeVariant = dark ? ThemeVariant.Dark : ThemeVariant.Light };
             try
             {
-                window.Show(); await model.RefreshAsync(); Pump(window);
+                window.Show(); await panel.StartCommand.ExecuteAsync(null); await model.RefreshAsync(); Pump(window);
                 var buttons = view.GetVisualDescendants().OfType<Button>().Where(b => b.IsEffectivelyVisible && Equals(b.Content, "停止代理")).ToArray();
                 Assert.NotEmpty(buttons); AssertInside(buttons[0], window);
                 if (!tool)
@@ -111,13 +111,14 @@ public sealed class M1CaptureUiTests
                 var list = view.FindControl<ListBox>("TrafficList")!; list.SelectedIndex = 0; Pump(window);
                 Assert.NotNull(model.Selected);
                 Click(window, view.FindControl<Button>("FollowButton")!); Assert.True(model.Follow);
-                var expander = view.GetVisualDescendants().OfType<Expander>().Single(); expander.IsExpanded = true; Pump(window);
                 model.ArchivePath = Path.Combine(fixture.Root, "ui-saved");
+                model.BeginFileOperation(WorkspaceFileKind.Save); Pump(window);
                 Click(window, view.FindControl<Button>("SaveButton")!);
-                if (model.SaveCommand.ExecutionTask is { } saving) await saving;
+                if (model.ExecuteFileCommand.ExecutionTask is { } saving) await saving;
                 Assert.True(File.Exists(Path.Combine(model.ArchivePath, "manifest.json")));
-                Click(window, view.FindControl<Button>("OpenButton")!);
-                if (model.OpenCommand.ExecutionTask is { } opening) await opening;
+                model.BeginFileOperation(WorkspaceFileKind.Open); Pump(window);
+                Click(window, view.FindControl<Button>("SaveButton")!);
+                if (model.ExecuteFileCommand.ExecutionTask is { } opening) await opening;
                 Assert.True(model.IsReadOnly); Assert.True(fixture.Session.Snapshot().IsRunning);
                 // 打开改变数据源后等待生产刷新，截图必须显示只读记录，不能截到上一帧实时投影。
                 using (var refreshed = new CancellationTokenSource(TimeSpan.FromSeconds(5)))
@@ -148,13 +149,13 @@ public sealed class M1CaptureUiTests
                 try
                 {
                     window.Show(); Pump(window);
-                    Assert.Equal(ProxyProtocolCapabilities.Http2IdleNotice, view.FindControl<TextBlock>("IdlePolicyNotice")!.Text);
+                    Assert.Equal(ProxyProtocolCapabilities.Http2IdleNotice, view.GetVisualDescendants().OfType<TextBlock>().Single(item => item.Name == "IdlePolicyNotice").Text);
                     Button Find(string text) => view.GetVisualDescendants().OfType<Button>().Single(b => Equals(b.Content, text));
                     Click(window, Find("启动代理")); if (panel.StartCommand.ExecutionTask is { } invalid) await invalid;
                     Assert.Contains("0～65535", panel.Message); Assert.Equal(ProxyState.Stopped, owner.Status.State);
                     panel.Port = "0"; Click(window, Find("启动代理")); await panel.StartCommand.ExecutionTask!; Pump(window);
                     Assert.Equal(ProxyState.Running, owner.Status.State); var address = panel.Address;
-                    Assert.Equal(ProxyProtocolCapabilities.Http2IdleNotice, view.FindControl<TextBlock>("IdlePolicyNotice")!.Text);
+                    Assert.Equal(ProxyProtocolCapabilities.Http2IdleNotice, view.GetVisualDescendants().OfType<TextBlock>().Single(item => item.Name == "IdlePolicyNotice").Text);
                     panel.Port = "12345"; panel.CaptureModeIndex = 2; Assert.Equal(address, panel.Address);
                     Assert.Contains("BEGIN CERTIFICATE", panel.CertificatePem); Assert.DoesNotContain("PRIVATE KEY", panel.CertificatePem);
                     Click(window, Find("复制代理地址")); Pump(window);
@@ -249,13 +250,13 @@ public sealed class M1CaptureUiTests
             Assert.Equal(0, store.ContentBudget.Reserved); return true;
         }, default);
     }
-    private static void Click(Window window, Button button)
+    internal static void Click(Window window, Button button)
     {
         button.BringIntoView(); Pump(window);
         var position = button.TranslatePoint(new Point(button.Bounds.Width / 2, button.Bounds.Height / 2), window)!.Value;
         window.MouseDown(position, MouseButton.Left); window.MouseUp(position, MouseButton.Left); Pump(window);
     }
-    private static void AssertInside(Control control, Window window)
+    internal static void AssertInside(Control control, Window window)
     {
         Assert.True(control.Bounds.Width > 0 && control.Bounds.Height > 0, $"{control.Name}: {control.Bounds}");
         var point = control.TranslatePoint(default, window)!.Value;

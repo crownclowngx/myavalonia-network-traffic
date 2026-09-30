@@ -51,9 +51,11 @@ public sealed class ProbeApp : Avalonia.Application
     private static async Task RunAsync(Window window, bool smoke)
     {
         var directory = Environment.GetEnvironmentVariable("NETWORK_TRAFFIC_TEST_ARTIFACTS") ?? throw new InvalidOperationException("缺少测量输出目录。");
+        Directory.CreateDirectory(directory);
         var seconds = smoke ? 5 : 600;
         var rootDirectory = TemporaryArtifacts.Create();
         var samples = new List<object>(); var latency = new List<double>(); var virtualized = new List<object>();
+        var anchors = new List<object>();
         var store = new CaptureSessionStore();
         await using var archive = new FileCaptureArchiveStore();
         var decoder = new BoundedImageDecoder(store.ContentBudget);
@@ -82,7 +84,17 @@ public sealed class ProbeApp : Avalonia.Application
                 var visible = containers.Count(c => c.TranslatePoint(default, list) is { } point && point.Y + c.Bounds.Height > 0 && point.Y < list.Bounds.Height);
                 Check(containers.Length <= visible * 3 + 20, "列表未虚拟化。"); virtualized.Add(new { index, containers = containers.Length, visible });
             }
+            // V4 在真实插入前后检查同身份坐标；输入是应用命令，明确不声称测过物理滚轮。
+            model.Follow = false; list.ScrollIntoView(model.Rows[5000]); window.UpdateLayout(); await view.RefreshUiAsync();
+            var insertionAnchor = view.CaptureListAnchor() ?? throw new InvalidOperationException("缺少插入前锚点。");
+            using (var inserted = await client.GetAsync(new Uri(origin.Address, "/empty?ux=insert"), token)) inserted.EnsureSuccessStatusCode();
+            await ProxyFixture.WaitUntilAsync(() => runtime.GetMetrics().ActiveRequests == 0);
+            await view.RefreshUiAsync(); window.UpdateLayout();
+            var insertedAnchor = view.CaptureListAnchor() ?? throw new InvalidOperationException("缺少插入后锚点。");
+            Check(insertionAnchor.RecordId == insertedAnchor.RecordId && Math.Abs(insertionAnchor.Offset - insertedAnchor.Offset) <= 2, $"真实插入打断阅读锚点：{insertionAnchor} -> {insertedAnchor}，修复次数 {view.ScrollRestorations}，误差 {view.LastAnchorError}，跟随 {model.Follow}。");
+            anchors.Add(new { kind = "insert", input = "Dispatcher command", before = insertionAnchor.RecordId, after = insertedAnchor.RecordId, offsetBefore = insertionAnchor.Offset, offsetAfter = insertedAnchor.Offset, error = Math.Abs(insertionAnchor.Offset - insertedAnchor.Offset) });
             var baseline = Process.GetCurrentProcess().PrivateMemorySize64;
+
             var pending = Enumerable.Range(0, 20).Select(i => client.GetAsync(new Uri(origin.Address, i < 5 ? $"/stream?i={i}" : $"/binary?size={16 << 20}&hold=1&i={i}"), HttpCompletionOption.ResponseHeadersRead, token)).ToArray();
             var responses = await Task.WhenAll(pending);
             Check(runtime.GetMetrics().ActiveRequests == 20, "混合负载未达到二十路。");
@@ -99,6 +111,8 @@ public sealed class ProbeApp : Avalonia.Application
             model.Selected = model.Rows.First(r => r.RecordId == streamIds[0]); await model.DetailTask;
             Check(model.Events.Count > 0, "首事件未进入生产视图模型。"); window.UpdateLayout(); var visibleUtc = DateTimeOffset.UtcNow;
             Check((visibleUtc - parsedUtc).TotalMilliseconds <= 1000, "首事件到界面超时。");
+            // 句柄以二十路连接和首个正文控件已经预热后的读数为基线，避免把线程池/连接池初始化当泄漏。
+            var baselineHandles = Process.GetCurrentProcess().HandleCount;
             var beforePause = store.Current.Stream(streamIds[0])!.Total; model.ToggleFollowCommand.Execute(null);
             var watch = Stopwatch.StartNew(); var rounds = 0; var pausedContinued = false;
             while (watch.Elapsed.TotalSeconds < seconds)
@@ -110,6 +124,16 @@ public sealed class ProbeApp : Avalonia.Application
                     // 流事件缓存由共享会话拥有；页面释放只归还其预览对象，不停止后台捕获。
                     model = new CaptureWorkspace(store, archive, decoder); view = new CaptureView { DataContext = model }; window.Content = view;
                     await model.RefreshAsync(); model.Selected = model.Rows.FirstOrDefault(r => r.RecordId == streamIds[0]); await model.DetailTask;
+                    // 每轮执行方向/呈现切换，再观察同一生产视图刷新。只暂停视口，流仍继续到达。
+                    model.RequestSelected = true; await model.DetailTask; model.Body.Mode = rounds % 3;
+                    model.RequestSelected = false; await model.DetailTask; model.EventReading.Pause(model.LatestEvent);
+                    model.Follow = false; list = view.FindControl<ListBox>("TrafficList")!;
+                    list.ScrollIntoView(model.Rows[Math.Min(50, model.Rows.Count - 1)]); window.UpdateLayout(); await view.RefreshUiAsync();
+                    var beforeAnchor = view.CaptureListAnchor() ?? throw new InvalidOperationException("缺少轮次锚点。");
+                    await view.RefreshUiAsync(); window.UpdateLayout();
+                    var afterAnchor = view.CaptureListAnchor() ?? throw new InvalidOperationException("缺少刷新后锚点。");
+                    Check(beforeAnchor.RecordId == afterAnchor.RecordId && Math.Abs(beforeAnchor.Offset - afterAnchor.Offset) <= 2, "轮次刷新打断阅读。");
+                    anchors.Add(new { kind = "revision", input = "Dispatcher command", before = beforeAnchor.RecordId, after = afterAnchor.RecordId, offsetBefore = beforeAnchor.Offset, offsetAfter = afterAnchor.Offset, error = Math.Abs(beforeAnchor.Offset - afterAnchor.Offset) });
                     rounds++;
                     if (rounds == 2)
                     {
@@ -139,6 +163,10 @@ public sealed class ProbeApp : Avalonia.Application
             model.Dispose(); window.Content = null; await model.DetailTask;
             var stopping = Stopwatch.StartNew(); await runtime.StopAsync(); await Task.WhenAll(streamReaders); var stopMs = stopping.Elapsed.TotalMilliseconds;
             foreach (var response in responses) response.Dispose();
+            client.Dispose();
+            await Task.Delay(100, token);
+            var stoppedHandles = Process.GetCurrentProcess().HandleCount;
+            Check(stoppedHandles - baselineHandles <= 32, $"退出后句柄增长超过 32：{baselineHandles} -> {stoppedHandles}。");
             Check(store.ContentBudget.Reserved == 0, "退出后内容租约未归还。"); Check(stopMs <= 10000, "退出超时。");
             var sorted = latency.Order().ToArray(); var p95 = sorted[(int)Math.Ceiling(sorted.Length * .95) - 1];
             var maxPrivate = samples.Select(s => JsonSerializer.SerializeToElement(s).GetProperty("privateBytes").GetInt64()).Max();
@@ -150,6 +178,9 @@ public sealed class ProbeApp : Avalonia.Application
                 seconds = watch.Elapsed.TotalSeconds, rounds, sampleCount = samples.Count, latency, p95, maximum = sorted[^1], baseline, maxPrivate,
                 contentPeak = store.ContentBudget.Peak, contentAfter = store.ContentBudget.Reserved, stopMs, virtualized, parsedUtc, visibleUtc,
                 pausedContinued, originReceipts = origin.Receipts.Count, curveSha256 = Convert.ToHexString(SHA256.HashData(await File.ReadAllBytesAsync(curve))) });
+            ProbeEvidence.Write("ux-performance", "sustained", new { anchors, baselineHandles, stoppedHandles,
+                rounds, sampleCount = samples.Count, seconds = watch.Elapsed.TotalSeconds, contentAfter = store.ContentBudget.Reserved,
+                curveSha256 = Convert.ToHexString(SHA256.HashData(await File.ReadAllBytesAsync(curve))), renderer = "Avalonia Desktop", realHost = false, physicalInput = false });
         }
         finally { model?.Dispose(); TemporaryArtifacts.Delete(rootDirectory); }
     }

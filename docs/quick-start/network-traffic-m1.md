@@ -1,6 +1,6 @@
-# V3 · M1 可用抓包快速开始
+# V4 · M1 工作台快速开始
 
-适用环境：Windows x64、.NET 10、PowerShell 7。本次仅运行本地 Debug 开发验证，不使用 AIFLOW、Windows CI、部署或发布门禁。完整边界见[当前运行说明](../reference/network-traffic-m1-runtime.md)，结果见[实施记录](../archive/2026-09-29-v3-m1-implementation.md)。
+适用环境：Windows x64、.NET 10、PowerShell 7。本次仅运行本地 Debug 开发验证，不使用 AIFLOW、Windows CI、部署或发布门禁。完整边界见[当前运行说明](../reference/network-traffic-m1-runtime.md)，结果见[实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)。
 
 ## 1. 启动并接入客户端
 
@@ -11,7 +11,7 @@ dotnet restore --locked-mode
 dotnet run --project src/NetWorkTrafficPlugin.Standalone -c Debug
 ```
 
-展开“代理配置与 HTTPS 接入诊断”，确认记录目录与策略。默认“有限内容”，每方向最多 1 MiB。端口 0 表示自动分配，点击“启动代理”后复制实际 `127.0.0.1:端口`。
+点击顶部“设置”，确认记录目录与策略。默认“有限内容”，每方向最多 1 MiB。端口 0 表示自动分配，点击“启动代理”后复制实际 `127.0.0.1:端口`。
 
 客户端需显式使用此代理；插件不修改系统设置。HTTP 不需证书。HTTPS 时展开公开根证书、复制 PEM 到本次测试文件，并让选定客户端仅信任该根。不要使用忽略所有证书错误的选项。每次重启根证书都会变化，需重新配置。
 
@@ -26,12 +26,12 @@ curl.exe --proxy http://127.0.0.1:实际端口 --noproxy "" --cacert ./m1-public
 ## 2. 查看、筛选和保存
 
 1. 在客户端发起请求，选择列表中的记录。宽屏并列显示详情，窄屏进入详情后可“返回列表”，也支持 Esc。
-2. 在正文页切换请求/响应；其他标签查看概览、Query、Header 和 Cookie。记录状态 Partial 表示只保存了一部分，不能当作完整 Body。
-3. SSE/NDJSON 逐事件显示；“暂停跟随”保持当前阅读位置，接收仍继续。压缩流首版只尝试解析保存前缀，不承诺实时首事件。
-4. 展开更多筛选，组合方法、状态、关键字、时间。清空当前视图不清共享数据，不影响另一页面。
-5. 输入捕获根之外的**全新目录路径**并点击“保存”。存档包含真实 Header/正文；界面遮罩不会改写文件。长流保存的是当时已提交的前缀。
-6. “打开”同一存档目录进入只读视图；“返回实时”回到当前捕获。打开存档不发起网络请求，正在运行的代理仍可继续捕获。
-7. 在导出页选择目标路径，导出已有正文前缀。路径必须未存在且在托管捕获根之外；不补下载未记录数据。
+2. 使用详情工具栏切换请求/响应；正文、概览、参数、Headers、Cookie 各司其职。JSON 可切格式化/树形/原文，Ctrl+F 查找当前有限文本。记录状态 Partial 表示只保存了一部分，不能当作完整 Body。
+3. SSE/NDJSON 逐事件显示；列表与事件各有跟随入口，互不联动；选择旧请求或滚离最新即暂停，点击新增提示回到最新，接收仍继续。压缩流首版只尝试解析保存前缀，不承诺实时首事件。
+4. 点击“筛选”组合方法、状态、关键字、时间。非法草稿不清空旧结果。清空本页不清共享数据；清除筛选不恢复已清范围，点击“仅看清空后”标签才能恢复。
+5. 点击顶部“保存快照”，浏览父目录后编辑**全新子目录路径**并确认。目标必须在捕获根之外；保存会话仍保留的全部记录，也包括筛选隐藏项。存档包含真实 Header/正文；界面遮罩不会改写文件。长流保存的是当时已提交的前缀。
+6. 在“打开 ▾”菜单选择“打开只读存档”，选择同一存档目录进入只读视图；“返回实时”回到当前捕获。打开存档不发起网络请求，正在运行的代理仍可继续捕获。
+7. 在详情工具栏点击“导出”并选择目标路径，导出已有正文前缀。路径必须未存在且在托管捕获根之外；不补下载未记录数据。
 
 关闭页面不等于停止代理。使用主页面/Tool 的“停止代理”结束运行；Standalone 退出也会收口运行。端口与策略改动在下一次启动生效。
 
@@ -41,20 +41,20 @@ curl.exe --proxy http://127.0.0.1:实际端口 --noproxy "" --cacert ./m1-public
 # 文档链接、锚点和空白，不代表业务验证。
 pwsh -NoProfile -File tools/verify-development.ps1 -Mode Docs
 
-# M1 完整开发验证，包含全部前置 M0、M1 资源和生产 UI 测量。
-pwsh -NoProfile -File tools/verify-development.ps1 -Mode M1
+# V4 完整开发验证，包含 M0/M1、40 项 UX 场景及生产 UI/资源测量。
+pwsh -NoProfile -File tools/verify-development.ps1 -Mode UX
 ```
 
-不传 Mode 时仍是 M0，避免旧入口静默改变范围。M1 含两组实际 600 秒持续测量及大资源传输，完整运行通常超过二十分钟；期间不要修改行为源码或并行运行其他负载测量。任何测试失败/跳过、证据缺失、预算越界或源码摘要变化都导致非零退出。
+不传 Mode 时仍是 M0，避免旧入口静默改变范围。UX 完整继承 M1 的两组实际 600 秒持续测量及大资源传输，完整运行通常超过二十分钟；期间不要修改行为源码或并行运行其他负载测量。任何测试失败/跳过、证据缺失、预算越界或源码摘要变化都导致非零退出。
 
 局部开发可先运行：
 
 ```powershell
 dotnet test tests/NetWorkTrafficPlugin.Tests -c Debug --filter 'Category!=ResourceProbe&Category!=M1ResourceProbe&Category!=NativeUiProbe'
-pwsh -NoProfile -File tools/TestM1DevelopmentGate.ps1
+pwsh -NoProfile -File tools/TestUXDevelopmentGate.ps1
 ```
 
-结果保留在 `TestResults/NetworkTrafficM1/<runId>`：verification、场景映射、TRX、协议/存档/生命周期 JSON、资源 CSV、生产 UI PNG、桌面原始采样与各命令日志。GateSelfTests 是明确的校验器夹具，不能拿来冒充业务结果。完整门禁通过仍不代表真实 Host、真实客户端、人工或发布通过。
+结果保留在 `TestResults/NetworkTrafficUX/<runId>`：verification、场景映射、TRX、协议/存档/生命周期 JSON、资源 CSV、生产 UI PNG、桌面原始采样与各命令日志。GateSelfTests 是明确的校验器夹具，不能拿来冒充业务结果。完整门禁通过仍不代表真实 Host、真实客户端、人工或发布通过。
 
 ## 4. 排错
 

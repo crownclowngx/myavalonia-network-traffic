@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:vm="using:NetWorkTrafficPlugin.Features.ProxyStatus"
+ x:Class="NetWorkTrafficPlugin.Features.ProxyStatus.ProxySettingsView" x:DataType="vm:ProxyPanelModel">
+ <StackPanel Spacing="8">
+  <TextBlock Text="监听与记录" FontWeight="SemiBold"/>
+  <Grid ColumnDefinitions="90,*" ColumnSpacing="8">
+   <TextBlock Text="监听端口" VerticalAlignment="Center"/><TextBox Grid.Column="1" Text="{Binding Port}" PlaceholderText="0：自动分配"/>
+  </Grid>
+  <TextBlock Text="记录策略"/><ComboBox ItemsSource="{Binding CaptureModes}" SelectedIndex="{Binding CaptureModeIndex}" HorizontalAlignment="Stretch"/>
+  <TextBlock Text="记录目录"/><TextBox Text="{Binding RecordDirectory}" PlaceholderText="本插件独立记录目录"/>
+  <TextBlock Text="{Binding EffectiveConfiguration}" TextWrapping="Wrap" FontSize="12"/>
+  <TextBlock Text="关闭页面会继续捕获。客户端须显式配置代理；不修改系统代理或安装系统证书。" TextWrapping="Wrap" FontSize="12"/>
+  <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+  <TextBlock x:Name="IdlePolicyNotice" Text="{Binding IdlePolicy}" TextWrapping="Wrap" FontSize="12"/>
+  <Expander Header="HTTPS 接入 / 公开根证书">
+   <StackPanel Spacing="6">
+    <TextBlock Text="每次重启会更换证书。仅导出公开证书；客户端信任状态须实际确认。" TextWrapping="Wrap"/>
+    <TextBlock Text="{Binding CertificateInfo}" TextWrapping="Wrap"/>
+    <Button Content="复制公开证书" Click="CopyCertificate"/>
+    <TextBox Text="{Binding CertificatePem, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="180"/>
+   </StackPanel>
+  </Expander>
+  <Expander Header="运行诊断">
+   <StackPanel Spacing="6">
+    <TextBlock Text="{Binding ProtocolPolicy}" TextWrapping="Wrap"/><TextBlock Text="{Binding MetricsText}" TextWrapping="Wrap"/>
+    <TextBlock Text="最近请求（仅元信息）" FontWeight="SemiBold"/><TextBlock Text="{Binding RecentText}" TextWrapping="Wrap"/>
+   </StackPanel>
+  </Expander>
+ </StackPanel>
+</UserControl>

@@ -56,12 +56,15 @@ public sealed class M1WorkspaceTests
         await a.RefreshAsync(); Assert.Equal(400, a.Rows.Count); await a.RefreshAsync(); Assert.Equal(501, a.Rows.Count);
         a.Selected = a.Rows[50]; var id = a.Selected.RecordId;
         await a.RefreshAsync(); Assert.Equal(id, a.Selected!.RecordId);
-        a.Keyword = "/500"; await a.RefreshAsync(); Assert.Empty(a.Rows);
-        // 明确检验 UI 的 200ms 消抖；解析及磁盘竞争测试不依赖此时延。
-        await Task.Delay(220); await a.RefreshAsync(); Assert.Single(a.Rows); Assert.Equal(200, b.Rows.Count);
+        a.Keyword = "/500"; await a.RefreshAsync(); Assert.Equal(501, a.Rows.Count);
+        // V4 保留最后有效结果到新查询应用。删除同样受每批 200 行约束，不再先清空整页。
+        await Task.Delay(220);
+        while (a.QueryPending) await a.RefreshAsync();
+        Assert.Single(a.Rows); Assert.Equal(200, b.Rows.Count);
         a.ClearViewCommand.Execute(null); await Task.Delay(220); await a.RefreshAsync(); Assert.Empty(a.Rows);
         Assert.Equal(501, f.Session.Snapshot().Total); Assert.Equal(200, b.Rows.Count);
-        a.ClearFilterCommand.Execute(null); await Task.Delay(220); await a.RefreshAsync(); Assert.Equal(200, a.Rows.Count);
+        a.ClearFilterCommand.Execute(null); await Task.Delay(220); await a.RefreshAsync(); Assert.Empty(a.Rows);
+        a.RemoveChipCommand.Execute("range"); await Task.Delay(220); await a.RefreshAsync(); Assert.Equal(200, a.Rows.Count);
     }
 
     [Fact]

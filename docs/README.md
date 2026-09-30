@@ -1,12 +1,12 @@
 # NetWorkTrafficPlugin 文档导航与开发快速开始
 
-> 更新日期：2026-09-30。V2 / M0 与 V3 / M1 已实现；V4 / M1 UX 执行文档已编写、代码待实施。当前行为、实际自动结果及人工未验项见以下专用文档。
+> 更新日期：2026-09-30。V2 / M0 与 V3 / M1 已实现；V4 / M1 UX 已接通，自动验证及人工待验见 [V4 实施记录](archive/2026-09-30-v4-m1-ux-implementation.md)。当前行为、实际自动结果及人工未验项见以下专用文档。
 
 ## 产品规划与当前状态
 
 | 阅读目的 | 入口 |
 | --- | --- |
-| V4-01～12：工作台紧凑化与阅读体验（待实施） | [V4 / M1 UX 执行计划](roadmap/network-traffic-v4-m1-ux-plan.md) |
+| V4-01～12：工作台紧凑化与阅读体验 | [V4 / M1 UX 执行计划](roadmap/network-traffic-v4-m1-ux-plan.md) |
 | UX 的 SOLID 职责、布局量尺、跟随/筛选/详情契约 | [V4 UX 专项设计](design/network-traffic-v4-m1-ux-design.md) |
 | 40 项 V4 业务场景、生产 UI、累计回归与门禁反例 | [V4 UX 专用验证矩阵](maintenance/network-traffic-v4-m1-ux-verification-plan.md) |
 | M1 当前能力、记录预算和产品降级 | [M1 运行说明](reference/network-traffic-m1-runtime.md) |
@@ -37,7 +37,7 @@ V2 / M0 首要满足 SOLID，设计模式朴素使用，关键实现与测试写
 
 V3 / M1 同样以 SOLID 为首要规定，单元测试、生产 UI、资源测量及门禁正反例随功能实现。完整入口为 `pwsh -NoProfile -File tools/verify-development.ps1 -Mode M1`，包含全部 M0 与专项测量，默认值仍为 M0；`-Mode Docs` 仅验证文档。
 
-V4 文档沿用上述工程规定，定义 V4-01～12 和 40 项业务场景，额外包括 SOLID/中文注释审查、10 组门禁自测及 4 项人工验证。`-Mode UX` 和专用映射/profile/检查器属于后续实施任务，**当前不可执行**；接通后在同轮继承 M0/M1，默认模式仍不改变。本次只有文档修改，运行 Docs 与空白检查即可，不运行 Windows CI 或发布门禁。
+V4 文档沿用上述工程规定，定义 V4-01～12 和 40 项业务场景，额外包括 SOLID/中文注释审查、10 组门禁自测及 4 项人工验证。`-Mode UX` 与专用映射/profile/检查器已实现，在同轮继承 M0/M1，默认模式仍为 M0。完整 UX 同时检查 40 项新场景、20 张专项截图和真实桌面锚点；不运行 Windows CI 或发布门禁。
 
 本解决方案用于开发 `myavalonia.plugin.network.traffic` Managed Plugin。它把真实插件、独立 Avalonia 开发窗口和
 自动化测试放在同一个解决方案中，使界面与业务代码既能快速预览，也能由 MyAvaloniaManagement Host

@@ -49,7 +49,7 @@ public static class ContentPreviewReader
                     var nodes = 0;
                     CountNodes(document.RootElement, ref nodes);
                     using var output = new MemoryStream();
-                    using (var writer = new Utf8JsonWriter(output, new JsonWriterOptions { Indented = true })) document.WriteTo(writer);
+                    using (var writer = new Utf8JsonWriter(output, new JsonWriterOptions { Indented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping })) document.WriteTo(writer);
                     if (output.Length > MaximumDecodedBytes) throw new InvalidDataException("JSON 格式化输出超过 1 MiB。");
                     return new("json", text, diagnostic, false, JsonTree: Encoding.UTF8.GetString(output.ToArray()));
                 }

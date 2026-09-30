@@ -5,7 +5,7 @@
 > 配套：[能力路线图与里程碑](network-traffic-capability-roadmap.md)、[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
 > 2026-09-29 补充：[V2 / M0 技术基线执行计划](network-traffic-v2-m0-technical-baseline-plan.md)、[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)及[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)已实施；当前行为及结论见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)，本产品方案保持 V1 编号。
 > 同日补充：[V3 / M1 可用抓包执行计划](network-traffic-v3-m1-capture-plan.md)、[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)和[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)已实施，当前行为和 HTTP/2 空闲降级见[M1 说明](../reference/network-traffic-m1-runtime.md)，验证结果见[V3 记录](../archive/2026-09-29-v3-m1-implementation.md)；V3 不改变 V1 文档编号或包版本。
-> 2026-09-30 补充：[V4 / M1 UX 执行计划](network-traffic-v4-m1-ux-plan.md)、[专项设计](../design/network-traffic-v4-m1-ux-design.md)与[专用验证矩阵](../maintenance/network-traffic-v4-m1-ux-verification-plan.md)已编写、待实施；围绕现有抓包列表、跟随阅读、详情和文件操作优化，不启动 M2，不改写 V1 编号或已有实现结论。
+> 2026-09-30 补充：[V4 / M1 UX 执行计划](network-traffic-v4-m1-ux-plan.md)、[专项设计](../design/network-traffic-v4-m1-ux-design.md)与[专用验证矩阵](../maintenance/network-traffic-v4-m1-ux-verification-plan.md)已接通实现，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)；围绕现有抓包列表、跟随阅读、详情和文件操作优化，不启动 M2，不改写 V1 编号或已有实现结论。
 
 V1 表示产品方案序号，M0–M6 表示能力里程碑，均不是插件包版本或交付日期。本文件整理本次产品讨论，并补充分阶段设计建议；编写规划不代表已开始实现、已通过验收或已发布。
 

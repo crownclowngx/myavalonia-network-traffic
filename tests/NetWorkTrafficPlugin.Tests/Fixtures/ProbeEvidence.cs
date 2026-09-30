@@ -22,6 +22,8 @@ public static class ProbeEvidence
                 runId = Environment.GetEnvironmentVariable("NETWORK_TRAFFIC_RUN_ID"),
                 sourceHash = Environment.GetEnvironmentVariable("NETWORK_TRAFFIC_SOURCE_HASH"),
                 profileHash = Environment.GetEnvironmentVariable("NETWORK_TRAFFIC_M1_PROFILE_HASH"),
+                uxProfileHash = Environment.GetEnvironmentVariable("NETWORK_TRAFFIC_UX_PROFILE_HASH"),
+                scenarioIds = entries.Keys.ToArray(),
                 recordedUtc = DateTimeOffset.UtcNow,
                 scenarios = entries
             }, new JsonSerializerOptions { WriteIndented = true }));

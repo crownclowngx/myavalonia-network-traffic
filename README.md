@@ -4,11 +4,11 @@ HTTP/HTTPS 流量工作台插件，规划强化 DSL 字段提取与分组、调�
 当前已实现 V2 / M0 代理技术基线与 V3 / M1 抓包工作台，显示名称为“HTTP 工作台”。真实 Host、真实客户端及人工验收待执行，自动结果见专用实施记录。
 M1 提供双向捕获、筛选、内容预览、SSE/NDJSON、受配额落盘、快照保存与只读回看。HTTP/2 空闲流按用户确认的范围降级为仅提示；保留客户端单流取消和全局停止。
 
-V4 / M1 工作台 UX 紧凑化与阅读体验已编写执行文档，任务为 V4-01～V4-12；当前尚未实现。重点是双行列表、紧凑工具栏、独立跟随、正文优先、分栏/窄屏导航和明确的快照操作，配套 40 项业务验证场景。V4 沿用 SOLID 首要规定、朴素设计和详细中文注释，仅安排本地 Debug 开发验证，不使用 AIFLOW、Windows CI 或发布门禁。
+V4 / M1 工作台 UX 紧凑化与阅读体验已实现，任务为 V4-01～V4-12；本轮验证和人工未验范围见 [V4 实施记录](docs/archive/2026-09-30-v4-m1-ux-implementation.md)。重点是双行列表、紧凑工具栏、独立跟随、正文优先、分栏/窄屏导航和明确的快照操作，配套 40 项业务验证场景。V4 沿用 SOLID 首要规定、朴素设计和详细中文注释，仅安排本地 Debug 开发验证，不使用 AIFLOW、Windows CI 或发布门禁。
 
 | 阅读目的 | 文档 |
 | --- | --- |
-| 按 V4-01～12 改善紧凑度与阅读体验（待实施） | [V4 / M1 UX 执行计划](docs/roadmap/network-traffic-v4-m1-ux-plan.md) |
+| V4-01～12 紧凑度与阅读体验 | [V4 / M1 UX 执行计划](docs/roadmap/network-traffic-v4-m1-ux-plan.md) |
 | 查看布局、跟随、筛选、详情与 SOLID 契约 | [V4 UX 专项设计](docs/design/network-traffic-v4-m1-ux-design.md) |
 | 查看 40 项 V4 场景及本地开发门禁设计 | [V4 UX 专用验证矩阵](docs/maintenance/network-traffic-v4-m1-ux-verification-plan.md) |
 | M1 当前能力、预算和限制 | [M1 运行说明](docs/reference/network-traffic-m1-runtime.md) |
@@ -33,9 +33,9 @@ V4 / M1 工作台 UX 紧凑化与阅读体验已编写执行文档，任务为 V
 
 V2 / M0 生产代理、最小诊断、单元/协议测试和本地开发门禁已实现，完整本地开发门禁已通过，结果见实施记录。M0 以 SOLID 为首要规定，采用朴素设计和详细中文注释；仅安排本地开发验证，不使用 AIFLOW、Windows CI 或发布门禁。下方打包/部署命令保留为通用工程参考，不属于本轮实施或 M0 开发门禁。
 
-V3 / M1 按 V3-01～14 实施，补齐单元测试、失败注入、生产 UI 和资源测量。当前检查入口支持 `-Mode Docs` / `-Mode M0` / `-Mode M1`，默认仍为 M0；M1 完整继承 M0 后运行专项资源与桌面 UI 检查。只执行本地 Debug 开发门禁，发布门禁留到正式发布时使用。
+V3 / M1 按 V3-01～14 实施，补齐单元测试、失败注入、生产 UI 和资源测量。当前检查入口支持 `-Mode Docs` / `-Mode M0` / `-Mode M1` / `-Mode UX`，默认仍为 M0；M1 完整继承 M0 后运行专项资源与桌面 UI 检查。只执行本地 Debug 开发门禁，发布门禁留到正式发布时使用。
 
-V4 计划在实施阶段增加 `-Mode UX`，同轮完整继承 M0/M1 后校验 V4；**当前脚本尚不支持 UX**。本次文档变更只运行 `-Mode Docs`，不将文档通过当作界面或业务通过。
+V4 使用 `pwsh -NoProfile -File tools/verify-development.ps1 -Mode UX`，同轮完整继承 M0/M1 后校验 40 项 V4 场景、20 张专项截图、阅读锚点与桌面资源。默认仍为 M0；Docs 只检查文档。
 
 > 第一次开始开发前，请先阅读 [项目文档与快速开始](docs/README.md)。其中说明了插件、Standalone、测试与技术探针宿主和
 > Standalone 窗口的职责、接入真实 Host 的边界，以及临时部署和正式 ZIP 发布流程。

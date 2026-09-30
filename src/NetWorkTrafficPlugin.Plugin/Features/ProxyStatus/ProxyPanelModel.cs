@@ -13,6 +13,8 @@ public sealed partial class ProxyPanelModel : ObservableObject, IDisposable
     private readonly ProxySessionCoordinator _owner;
     private readonly CancellationTokenSource _closing = new();
     private bool _disposed;
+    // 共享协调器只有通用故障，页面保留本次操作阶段，定时刷新不能抹掉“停止未完成”等可行动说明。
+    private string? _operationFailure;
     [ObservableProperty] private string _port = "0";
     [ObservableProperty] private string _statusText = "已停止";
     [ObservableProperty] private string _address = "尚未监听";
@@ -26,6 +28,11 @@ public sealed partial class ProxyPanelModel : ObservableObject, IDisposable
     [ObservableProperty] private string _certificateInfo = "客户端信任状态未知。";
     public string[] CaptureModes { get; } = ["仅元信息", "有限内容（每方向 1 MiB）", "受配额落盘（每方向 1 GiB）"];
     public string IdlePolicy => ProxyProtocolCapabilities.Http2IdleNotice;
+    public bool StartVisible => _owner.Status.State is ProxyState.Stopped or ProxyState.Faulted;
+    public bool StopVisible => !StartVisible || _owner.Status.State == ProxyState.Faulted;
+    public bool HasAddress => _owner.Status.Runtime is not null;
+    public string EffectiveConfiguration => _owner.Status.Runtime is { } runtime
+        ? $"本次监听 {runtime.Port}；配置修改下次启动生效。" : "配置仅在点击启动后生效。";
 
     public ProxyPanelModel(ProxySessionCoordinator owner)
     {
@@ -40,23 +47,26 @@ public sealed partial class ProxyPanelModel : ObservableObject, IDisposable
     private async Task StartAsync()
     {
         if (_disposed) return;
+        _operationFailure = null;
         if (!int.TryParse(Port, out var port) || port is < 0 or > 65535) { Message = "端口应为 0～65535；0 表示分配可用端口。"; return; }
         try
         {
             var mode = CaptureModeIndex switch { 0 => CaptureMode.MetadataOnly, 1 => CaptureMode.BoundedBody, 2 => CaptureMode.Disk, _ => throw new ArgumentException("记录策略无效。") };
-            await _owner.StartAsync(new(Port: port, Capture: mode, RecordDirectory: RecordDirectory, Limits: CaptureLimits.M1(mode)), _closing.Token);
+            var starting = _owner.StartAsync(new(Port: port, Capture: mode, RecordDirectory: RecordDirectory, Limits: CaptureLimits.M1(mode)), _closing.Token);
+            Refresh();
+            await starting;
             if (!_disposed) Message = "代理已运行。关闭页面会继续捕获；停止按钮或应用退出才结束运行。";
         }
         catch (OperationCanceledException) { }
-        catch (Exception exception) { if (!_disposed) Message = $"启动失败（{exception.GetType().Name}），请检查端口和运行状态。"; }
+        catch (Exception exception) { if (!_disposed) Message = _operationFailure = $"启动失败（{exception.GetType().Name}），请检查端口和运行状态。"; }
         finally { Refresh(); }
     }
     private async Task StopAsync()
     {
         if (_disposed) return;
-        try { await _owner.StopAsync(_closing.Token); if (!_disposed) Message = "代理已停止，监听和在途任务已收口。"; }
+        try { _operationFailure = null; var stopping = _owner.StopAsync(_closing.Token); Refresh(); await stopping; if (!_disposed) Message = "代理已停止，监听和在途任务已收口。"; }
         catch (OperationCanceledException) { }
-        catch (Exception exception) { if (!_disposed) Message = $"停止未完成（{exception.GetType().Name}），不能视为已释放。"; }
+        catch (Exception exception) { if (!_disposed) Message = _operationFailure = $"停止未完成（{exception.GetType().Name}），不能视为已释放。"; }
         finally { Refresh(); }
     }
 
@@ -65,6 +75,7 @@ public sealed partial class ProxyPanelModel : ObservableObject, IDisposable
         if (_disposed) return;
         var status = _owner.Status;
         StartCommand.NotifyCanExecuteChanged(); StopCommand.NotifyCanExecuteChanged();
+        OnPropertyChanged(nameof(StartVisible)); OnPropertyChanged(nameof(StopVisible)); OnPropertyChanged(nameof(HasAddress)); OnPropertyChanged(nameof(EffectiveConfiguration));
         StatusText = status.State switch
         {
             ProxyState.Stopped => "已停止", ProxyState.Starting => "正在启动", ProxyState.Running => "运行中",
@@ -83,7 +94,7 @@ public sealed partial class ProxyPanelModel : ObservableObject, IDisposable
         // 诊断页仅显示最近 8 条元信息；不是 M1 的完整列表或正文查看器。
         RecentText = metrics.Recent.Count == 0 ? "尚无请求" : string.Join(Environment.NewLine,
             metrics.Recent.TakeLast(8).Select(r => $"{r.Method} {SafeTarget(r.Route.EffectiveUri)} · {r.StatusCode} · {r.Body.TransportState} / {r.Body.CaptureState}"));
-        if (status.Failure is not null) Message = status.Failure;
+        if (status.Failure is not null) Message = _operationFailure ?? status.Failure;
     }
     private static string SafeTarget(string address)
     {

@@ -37,6 +37,21 @@ public sealed record TrafficSummary(Guid RecordId, Guid SessionId, long Sequence
     public string SizeText => $"{ObservedBytes:N0} / {StoredBytes:N0} B";
     public string StateText => $"{Transport} / {Capture}" + (MetadataPartial ? " · 元信息不全" : "");
     public string TimingText => $"#{Sequence} · {StartedUtc.LocalDateTime:HH:mm:ss.fff} · {ElapsedMilliseconds:N0} ms · Captured";
+    // 只为可读性还原路径里的中文；请求和导出继续使用原始 URI。换行等控制字符不进入双行摘要。
+    public string DisplayPath => Uri.UnescapeDataString(Path).Replace("\r", "\\r").Replace("\n", "\\n").Replace("\t", "\\t");
+    public string CompactTiming => $"{ElapsedMilliseconds:N0} ms";
+    public string CompactSize => StoredBytes >= 1048576 ? $"已存 {StoredBytes / 1048576d:N1} MiB" :
+        StoredBytes >= 1024 ? $"已存 {StoredBytes / 1024d:N1} KiB" : $"已存 {StoredBytes:N0} B";
+    // 摘要字节来自双向合计。HTTP 状态与传输/保存事实分开，200 不能掩盖正文只有前缀。
+    public string CompactState => (Transport switch
+    {
+        TransportState.Receiving => "接收中", TransportState.Failed => "传输失败",
+        TransportState.Cancelled => "已取消", _ => ""
+    }) + (Capture switch
+    {
+        CaptureState.Partial => " · 部分保存", CaptureState.MetadataOnly => " · 仅元信息",
+        CaptureState.Failed => " · 保存失败", _ => ""
+    }) + (MetadataPartial ? " · 元信息不全" : "");
 }
 
 public sealed record CaptureSnapshot(Guid SessionId, long Revision, bool IsRunning, long Total,

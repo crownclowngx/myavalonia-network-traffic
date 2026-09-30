@@ -2,97 +2,161 @@
  xmlns:vm="using:NetWorkTrafficPlugin.Features.Capture" xmlns:model="using:NetWorkTrafficPlugin.Application.Capture"
  xmlns:content="using:NetWorkTrafficPlugin.Application.Content"
  x:Class="NetWorkTrafficPlugin.Features.Capture.CaptureView" x:DataType="vm:CaptureWorkspace">
- <UserControl.Styles><Style Selector="TabItem"><Setter Property="FontSize" Value="13" /><Setter Property="Padding" Value="7,4" /><Setter Property="MinHeight" Value="28" /></Style></UserControl.Styles>
- <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12" RowSpacing="8">
-  <StackPanel Spacing="6" IsVisible="{Binding ShowFilters}">
-   <WrapPanel>
-    <TextBox x:Name="FilterBox" Text="{Binding Keyword}" PlaceholderText="域名 / 路径关键字" Width="180" Margin="0,0,6,4" />
-    <Button x:Name="FollowButton" Content="{Binding FollowLabel}" Command="{Binding ToggleFollowCommand}" />
-   </WrapPanel>
-   <Expander Header="更多筛选与保存 / 打开记录">
-    <ScrollViewer MaxHeight="180"><StackPanel Spacing="6">
-     <WrapPanel>
-      <ComboBox ItemsSource="{Binding MethodChoices}" SelectedIndex="{Binding MethodIndex}" Width="110" Margin="0,0,6,4" />
-      <ComboBox ItemsSource="{Binding StatusChoices}" SelectedIndex="{Binding StatusIndex}" Width="110" Margin="0,0,6,4" />
-      <CheckBox Content="接收中" IsChecked="{Binding OnlyReceiving}" Margin="0,0,8,0" />
-      <CheckBox Content="失败" IsChecked="{Binding OnlyFailed}" Margin="0,0,8,0" />
-      <Button Content="清除筛选" Command="{Binding ClearFilterCommand}" Margin="0,0,6,4" />
-      <Button Content="清空本页" Command="{Binding ClearViewCommand}" Margin="0,0,6,4" />
-     </WrapPanel>
-     <WrapPanel><TextBox Text="{Binding MethodFilter}" PlaceholderText="方法集合，如 GET,POST" Width="210" Margin="0,0,6,4" /><TextBox Text="{Binding StatusCodeFilter}" PlaceholderText="精确状态码" Width="110" /><TextBlock Text="来源：Captured" VerticalAlignment="Center" Margin="8,0,0,0" /></WrapPanel>
-     <WrapPanel><TextBox Text="{Binding FromText}" PlaceholderText="开始时间（含）" Width="210" Margin="0,0,6,0" /><TextBox Text="{Binding ToText}" PlaceholderText="结束时间（不含）" Width="210" /></WrapPanel>
-     <TextBox x:Name="ArchivePathBox" Text="{Binding ArchivePath}" PlaceholderText="存档目录；保存使用新目录名" />
-     <WrapPanel>
-      <Button x:Name="SaveButton" Content="保存快照" Command="{Binding SaveCommand}" Margin="0,0,6,0" />
-      <Button Content="取消保存" Command="{Binding CancelSaveCommand}" IsEnabled="{Binding Saving}" Margin="0,0,6,0" />
-      <Button x:Name="OpenButton" Content="打开存档" Command="{Binding OpenCommand}" Margin="0,0,6,0" />
-      <Button Content="恢复工作日志" Command="{Binding RecoverCommand}" Margin="0,0,6,0" />
-      <Button Content="返回实时" Command="{Binding LiveCommand}" />
-     </WrapPanel>
-     <TextBlock Text="保存已提交正文与元信息，包含真实请求内容；达到限额的部分不会补下载。" TextWrapping="Wrap" Opacity="0.7" />
-    </StackPanel></ScrollViewer>
-   </Expander>
-  </StackPanel>
-  <TextBlock Grid.Row="1" Text="{Binding Status}" TextWrapping="Wrap" />
-  <Grid x:Name="MainGrid" Grid.Row="2" ColumnDefinitions="*,8,1.2*">
-   <Border x:Name="ListPane" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" CornerRadius="6">
-    <Grid RowDefinitions="Auto,*">
-     <TextBlock Text="方法 / 地址 · 状态 · 观察 / 保存" Margin="10" FontWeight="SemiBold" />
-     <ListBox x:Name="TrafficList" Grid.Row="1" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}">
-      <ListBox.ItemsPanel><ItemsPanelTemplate><VirtualizingStackPanel /></ItemsPanelTemplate></ListBox.ItemsPanel>
-      <ListBox.ItemTemplate><DataTemplate x:DataType="model:TrafficSummary">
-       <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,58" Margin="2,4">
-        <TextBlock Text="{Binding Method}" FontWeight="SemiBold" />
-        <TextBlock Grid.Column="1" Text="{Binding StatusText}" HorizontalAlignment="Right" />
-        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Host}" TextTrimming="CharacterEllipsis" />
-        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Path}" TextTrimming="CharacterEllipsis" Opacity="0.7" />
-        <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding SizeText}" FontSize="11" TextTrimming="CharacterEllipsis" />
-        <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding StateText}" FontSize="11" TextTrimming="CharacterEllipsis" />
-        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding TimingText}" FontSize="11" TextTrimming="CharacterEllipsis" />
-       </Grid>
-      </DataTemplate></ListBox.ItemTemplate>
-     </ListBox>
-    </Grid>
-   </Border>
-   <Border x:Name="DetailsPane" Grid.Column="2" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" CornerRadius="6" Padding="8">
-    <Grid RowDefinitions="Auto,*" RowSpacing="6">
-     <WrapPanel>
-      <Button Content="返回列表" Command="{Binding BackCommand}" IsVisible="{Binding IsCompact}" Margin="0,0,8,0" />
-      <CheckBox Content="显示原值" IsChecked="{Binding RevealSensitive}" />
-     </WrapPanel>
-     <TabControl Grid.Row="1" x:Name="DetailsTabs">
-      <TabControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></TabControl.ItemsPanel>
-      <TabItem Header="正文">
-       <ScrollViewer x:Name="BodyScroll"><StackPanel Spacing="6">
-        <CheckBox Content="查看请求正文（否则为响应）" IsChecked="{Binding RequestSelected}" />
-        <TextBlock Text="{Binding BodyStatus}" TextWrapping="Wrap" Opacity="0.8" />
-         <StackPanel Spacing="6">
-          <Image Source="{Binding ImageSource}" IsVisible="{Binding HasImage}" MaxHeight="512" Stretch="Uniform" />
-          <TreeView ItemsSource="{Binding JsonNodes}" IsVisible="{Binding HasJson}">
-           <TreeView.ItemTemplate><TreeDataTemplate x:DataType="vm:JsonPreviewNode" ItemsSource="{Binding Children}"><TextBlock Text="{Binding Label}" TextWrapping="Wrap" /></TreeDataTemplate></TreeView.ItemTemplate>
-          </TreeView>
-          <TextBox x:Name="BodyTextBox" Text="{Binding BodyText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="80" />
-          <TextBlock Text="{Binding StreamStatus}" IsVisible="{Binding HasStream}" TextWrapping="Wrap" />
-          <ItemsControl ItemsSource="{Binding Events}" IsVisible="{Binding HasStream}">
-           <ItemsControl.ItemTemplate><DataTemplate x:DataType="content:StreamEvent">
-            <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" Padding="4">
-             <StackPanel><TextBlock Text="{Binding Type}" FontWeight="SemiBold" /><TextBlock Text="{Binding Data}" TextWrapping="Wrap" /><TextBlock Text="{Binding Error}" TextWrapping="Wrap" /></StackPanel>
-            </Border>
-           </DataTemplate></ItemsControl.ItemTemplate>
-          </ItemsControl>
+ <UserControl.Styles>
+  <Style Selector="Button"><Setter Property="MinHeight" Value="28"/><Setter Property="Padding" Value="8,3"/></Style>
+  <Style Selector="TextBox"><Setter Property="MinHeight" Value="28"/><Setter Property="Padding" Value="7,3"/></Style>
+  <Style Selector="ComboBox"><Setter Property="MinHeight" Value="28"/><Setter Property="Padding" Value="7,3"/></Style>
+  <Style Selector="TabItem"><Setter Property="FontSize" Value="13"/><Setter Property="Padding" Value="7,4"/><Setter Property="MinHeight" Value="28"/></Style>
+  <Style Selector="ListBoxItem"><Setter Property="Padding" Value="8,3"/><Setter Property="MinHeight" Value="48"/><Setter Property="Height" Value="48"/></Style>
+ </UserControl.Styles>
+ <Grid>
+  <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" Margin="8,4,8,8" RowSpacing="4">
+   <Grid ColumnDefinitions="*,104,100,Auto" ColumnSpacing="6" IsVisible="{Binding ShowFilters}">
+    <TextBox x:Name="FilterBox" Text="{Binding Keyword}" PlaceholderText="搜索域名 / 路径" AutomationProperties.Name="搜索请求"/>
+    <ComboBox Grid.Column="1" ItemsSource="{Binding MethodChoices}" SelectedIndex="{Binding MethodIndex}" HorizontalAlignment="Stretch" AutomationProperties.Name="请求方法"/>
+    <ComboBox Grid.Column="2" ItemsSource="{Binding StatusChoices}" SelectedIndex="{Binding StatusIndex}" HorizontalAlignment="Stretch" AutomationProperties.Name="HTTP 状态"/>
+    <Button Grid.Column="3" Content="筛选" Command="{Binding ToggleAdvancedCommand}" AutomationProperties.Name="更多筛选"/>
+   </Grid>
+   <StackPanel Grid.Row="1" Spacing="3" IsVisible="{Binding ShowFilters}">
+    <ItemsControl ItemsSource="{Binding Chips}" IsVisible="{Binding HasChips}">
+     <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+     <ItemsControl.ItemTemplate><DataTemplate x:DataType="vm:FilterChip">
+      <Button Content="{Binding Label}" Tag="{Binding Key}" Click="RemoveFilterChip" Margin="0,0,4,0" ToolTip.Tip="点击移除此条件"/>
+     </DataTemplate></ItemsControl.ItemTemplate>
+    </ItemsControl>
+    <TextBlock Text="{Binding FilterError}" IsVisible="{Binding HasFilterError}" TextWrapping="Wrap"/>
+    <TextBlock Text="筛选正在更新…" IsVisible="{Binding QueryPending}" FontSize="12" Opacity="0.65"/>
+   </StackPanel>
+   <Grid x:Name="MainGrid" Grid.Row="2" ColumnDefinitions="2*,6,3*">
+    <Border x:Name="ListPane" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" CornerRadius="4">
+     <Grid RowDefinitions="28,*,Auto">
+      <Grid ColumnDefinitions="*,Auto" Margin="8,0">
+       <TextBlock Text="请求" VerticalAlignment="Center" FontWeight="SemiBold"/>
+       <Button Grid.Column="1" Content="清空本页" Command="{Binding ClearViewCommand}" ToolTip.Tip="仅改变本页范围，活动请求继续显示"/>
+      </Grid>
+      <ListBox x:Name="TrafficList" Grid.Row="1" AutoScrollToSelectedItem="False" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" Background="Transparent">
+       <ListBox.ItemsPanel><ItemsPanelTemplate><VirtualizingStackPanel/></ItemsPanelTemplate></ListBox.ItemsPanel>
+       <ListBox.ItemTemplate><DataTemplate x:DataType="model:TrafficSummary">
+        <Grid RowDefinitions="20,18" ColumnDefinitions="46,*,44,66" ColumnSpacing="4" ToolTip.Tip="{Binding TimingText}">
+         <TextBlock Text="{Binding Method}" FontWeight="SemiBold" FontSize="13"/>
+         <TextBlock Grid.Column="1" Text="{Binding DisplayPath}" ToolTip.Tip="{Binding Path}" TextTrimming="CharacterEllipsis" FontSize="13"/>
+         <TextBlock Grid.Column="2" Text="{Binding StatusText}" TextTrimming="CharacterEllipsis" FontSize="13" HorizontalAlignment="Right"/>
+         <TextBlock Grid.Column="3" Text="{Binding CompactTiming}" FontSize="12" HorizontalAlignment="Right"/>
+         <Grid Grid.Row="1" Grid.ColumnSpan="4" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="6">
+          <TextBlock Text="{Binding Host}" TextTrimming="CharacterEllipsis" FontSize="12" Opacity="0.7"/>
+          <TextBlock Grid.Column="1" Text="{Binding CompactState}" MaxWidth="130" TextTrimming="CharacterEllipsis" FontSize="12" ToolTip.Tip="{Binding StateText}"/>
+          <TextBlock Grid.Column="2" Text="{Binding CompactSize}" FontSize="12" ToolTip.Tip="请求与响应合计的已保存字节"/>
+         </Grid>
+        </Grid>
+       </DataTemplate></ListBox.ItemTemplate>
+      </ListBox>
+      <TextBlock Grid.Row="1" Text="{Binding EmptyText}" IsVisible="{Binding IsEmpty}" Margin="14" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+      <Button x:Name="FollowButton" Grid.Row="2" Content="{Binding FollowLabel}" Command="{Binding ToggleFollowCommand}" IsVisible="{Binding IsLive}" HorizontalAlignment="Stretch" AutomationProperties.Name="列表跟随"/>
+     </Grid>
+    </Border>
+    <GridSplitter x:Name="PaneSplitter" Grid.Column="1" Width="6" HorizontalAlignment="Stretch" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" AutomationProperties.Name="调整列表和详情宽度"/>
+    <Border x:Name="DetailsPane" Grid.Column="2" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" CornerRadius="4" Padding="6">
+     <Grid RowDefinitions="Auto,Auto,*" RowSpacing="4">
+      <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="4">
+       <Button Content="返回" Command="{Binding BackCommand}" IsVisible="{Binding IsCompact}" AutomationProperties.Name="返回列表"/>
+       <TextBlock Grid.Column="1" Text="{Binding SelectedTitle}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Overview}" FontWeight="SemiBold"/>
+       <Button Grid.Column="2" Content="↑" Command="{Binding PreviousCommand}" AutomationProperties.Name="上一条请求" ToolTip.Tip="上一条请求"/>
+       <Button Grid.Column="3" Content="↓" Command="{Binding NextCommand}" AutomationProperties.Name="下一条请求" ToolTip.Tip="下一条请求"/>
+      </Grid>
+      <Grid Grid.Row="1" ColumnDefinitions="84,96,*,Auto,Auto" ColumnSpacing="4" IsVisible="{Binding HasSelection}">
+       <ComboBox x:Name="DirectionBox" ItemsSource="{Binding DirectionChoices}" SelectedIndex="{Binding DirectionIndex}" HorizontalAlignment="Stretch" AutomationProperties.Name="请求响应方向"/>
+       <ComboBox Grid.Column="1" x:Name="BodyModeBox" ItemsSource="{Binding Body.Modes}" SelectedIndex="{Binding Body.Mode}" IsVisible="{Binding HasJson}" HorizontalAlignment="Stretch" AutomationProperties.Name="正文显示模式"/>
+       <Button Grid.Column="3" Content="查找" Click="ShowFind" AutomationProperties.Name="查找正文"/>
+       <Button Grid.Column="4" Content="导出" Click="BeginExport" AutomationProperties.Name="导出已保存正文"/>
+      </Grid>
+      <TabControl Grid.Row="2" x:Name="DetailsTabs">
+       <TabControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></TabControl.ItemsPanel>
+       <TabItem Header="正文">
+        <Grid RowDefinitions="Auto,Auto,Auto,*" RowSpacing="4">
+         <StackPanel Spacing="2">
+          <TextBlock Text="{Binding BodySummary}" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding BodyStatus}" FontSize="12" Opacity="0.75"/>
+          <TextBlock Text="{Binding BodyWarning}" IsVisible="{Binding HasBodyWarning}" MaxHeight="38" TextWrapping="Wrap" ToolTip.Tip="{Binding BodyWarning}" FontSize="12"/>
          </StackPanel>
-       </StackPanel></ScrollViewer>
-      </TabItem>
-      <TabItem Header="概览"><TextBox Text="{Binding Overview, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
-      <TabItem Header="Query"><TextBox Text="{Binding QueryText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
-      <TabItem Header="请求头"><TextBox Text="{Binding RequestHeadersText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
-      <TabItem Header="响应头"><TextBox Text="{Binding ResponseHeadersText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
-      <TabItem Header="Cookie"><TextBox Text="{Binding CookiesText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" /></TabItem>
-      <TabItem Header="导出"><StackPanel Spacing="8"><TextBox Text="{Binding ExportPath}" PlaceholderText="导出到新文件" /><Button Content="导出已保存正文" Command="{Binding ExportCommand}" /><TextBlock Text="只复制当前方向已经保存的字节；部分内容仍为部分，不会重新下载。" TextWrapping="Wrap" /></StackPanel></TabItem>
-     </TabControl>
-    </Grid>
-   </Border>
+         <StackPanel Grid.Row="1" IsVisible="{Binding Body.FindVisible}" Spacing="2">
+          <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="4">
+           <TextBox x:Name="BodyFindBox" Text="{Binding Body.Query}" MaxLength="256" PlaceholderText="查找当前有限预览"/>
+           <Button Grid.Column="1" Content="下一处" Command="{Binding FindNextCommand}"/>
+           <CheckBox Grid.Column="2" Content="换行" IsChecked="{Binding Body.Wrap}" MinHeight="28"/>
+           <Button Grid.Column="3" Content="×" Click="CloseFind" AutomationProperties.Name="关闭正文查找"/>
+          </Grid>
+          <TextBlock Text="{Binding Body.FindStatus}" FontSize="12"/>
+         </StackPanel>
+         <Grid Grid.Row="2" ColumnDefinitions="*,Auto" IsVisible="{Binding HasStream}">
+          <TextBlock Text="{Binding StreamStatus}" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding StreamStatus}" FontSize="12" VerticalAlignment="Center"/>
+          <Button Grid.Column="1" x:Name="EventFollowButton" Content="{Binding EventFollowLabel}" Command="{Binding ToggleEventsCommand}" IsVisible="{Binding IsLive}"/>
+         </Grid>
+         <ScrollViewer Grid.Row="3" x:Name="BodyScroll">
+          <StackPanel Spacing="4">
+           <Image Source="{Binding ImageSource}" IsVisible="{Binding HasImage}" MaxHeight="512" Stretch="Uniform"/>
+           <TreeView ItemsSource="{Binding JsonNodes}" IsVisible="{Binding ShowJsonTree}">
+            <TreeView.ItemTemplate><TreeDataTemplate x:DataType="vm:JsonPreviewNode" ItemsSource="{Binding Children}"><TextBlock Text="{Binding Label}" TextWrapping="Wrap" FontFamily="Consolas"/></TreeDataTemplate></TreeView.ItemTemplate>
+           </TreeView>
+           <TextBox x:Name="BodyTextBox" Text="{Binding Body.Text, Mode=OneWay}" IsVisible="{Binding ShowBodyText}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="140" BorderThickness="0" Background="Transparent" FontFamily="Consolas" FontSize="13"/>
+           <StackPanel IsVisible="{Binding HasStream}" Spacing="4">
+            <ItemsControl x:Name="StreamEvents" ItemsSource="{Binding Events}">
+             <ItemsControl.ItemTemplate><DataTemplate x:DataType="content:StreamEvent">
+              <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" Padding="4,3">
+               <StackPanel><TextBlock Text="{Binding Type}" FontWeight="SemiBold" FontSize="12"/><SelectableTextBlock Text="{Binding Data}" TextWrapping="Wrap" FontFamily="Consolas"/><TextBlock Text="{Binding Error}" TextWrapping="Wrap"/></StackPanel>
+              </Border>
+             </DataTemplate></ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="{Binding BodyText}" IsVisible="{Binding HasFragment}" TextWrapping="Wrap" Opacity="0.7" ToolTip.Tip="尚未组成完整事件的片段"/>
+           </StackPanel>
+          </StackPanel>
+         </ScrollViewer>
+        </Grid>
+       </TabItem>
+       <TabItem Header="概览">
+        <Grid RowDefinitions="Auto,*"><Button Content="复制地址" Click="CopyAddress"/><TextBox Grid.Row="1" Text="{Binding Overview, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/></Grid>
+       </TabItem>
+       <TabItem Header="参数">
+        <Grid RowDefinitions="Auto,*"><CheckBox Content="显示敏感字段（请求 Query）" IsChecked="{Binding RevealSensitive}"/><TextBox Grid.Row="1" Text="{Binding QueryText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/></Grid>
+       </TabItem>
+       <TabItem Header="Headers">
+        <Grid RowDefinitions="Auto,*"><CheckBox Content="显示敏感字段" IsChecked="{Binding RevealSensitive}"/><TextBox Grid.Row="1" Text="{Binding HeadersText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/></Grid>
+       </TabItem>
+       <TabItem Header="Cookie">
+        <Grid RowDefinitions="Auto,*"><CheckBox Content="显示敏感字段" IsChecked="{Binding RevealSensitive}"/><TextBox Grid.Row="1" Text="{Binding CookiesText, Mode=OneWay}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/></Grid>
+       </TabItem>
+      </TabControl>
+     </Grid>
+    </Border>
+   </Grid>
+   <Grid Grid.Row="3" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="6">
+    <TextBlock Text="{Binding Status}" FontSize="12" Opacity="0.7" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Status}" VerticalAlignment="Center"/>
+    <Button Grid.Column="1" Content="返回实时" Command="{Binding LiveCommand}" IsVisible="{Binding IsReadOnly}"/>
+    <Button Grid.Column="2" Content="取消保存" Command="{Binding CancelSaveCommand}" IsVisible="{Binding Saving}"/>
+   </Grid>
+   <Grid x:Name="FeedbackBar" Grid.Row="4" ColumnDefinitions="*,Auto" IsVisible="{Binding HasMessage}" PointerEntered="HoldFeedback" PointerExited="ReleaseFeedback">
+    <SelectableTextBlock Text="{Binding Message}" TextWrapping="Wrap" MaxHeight="48" ToolTip.Tip="{Binding Message}"/>
+    <Button Grid.Column="1" Content="×" Command="{Binding DismissMessageCommand}" AutomationProperties.Name="关闭反馈"/>
+   </Grid>
   </Grid>
-  <TextBlock Grid.Row="3" Text="{Binding Message}" TextWrapping="Wrap" MaxHeight="60" />
+  <Border IsVisible="{Binding AdvancedVisible}" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" Padding="12" HorizontalAlignment="Right" VerticalAlignment="Top" Width="330" Margin="8" CornerRadius="4">
+   <StackPanel Spacing="8">
+    <Grid ColumnDefinitions="*,Auto"><TextBlock Text="更多筛选" FontWeight="SemiBold"/><Button Grid.Column="1" Content="×" Command="{Binding ToggleAdvancedCommand}" AutomationProperties.Name="关闭更多筛选"/></Grid>
+    <TextBox x:Name="AdvancedMethods" Text="{Binding MethodFilter}" PlaceholderText="方法集合，如 GET,POST"/>
+    <TextBox Text="{Binding StatusCodeFilter}" PlaceholderText="精确 HTTP 状态码（替代状态类）"/>
+    <ComboBox ItemsSource="{Binding TransportChoices}" SelectedIndex="{Binding TransportIndex}" HorizontalAlignment="Stretch"/>
+    <TextBox Text="{Binding FromText}" PlaceholderText="开始时间（含）"/><TextBox Text="{Binding ToText}" PlaceholderText="结束时间（不含）"/>
+    <Button Content="清除筛选" Command="{Binding ClearFilterCommand}"/>
+   </StackPanel>
+  </Border>
+  <Border IsVisible="{Binding FileDialogVisible}" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" Padding="14" MaxWidth="520" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="14">
+   <StackPanel Spacing="10">
+    <Grid ColumnDefinitions="*,Auto"><TextBlock Text="{Binding FileDialogTitle}" FontWeight="SemiBold"/><Button Grid.Column="1" Content="×" Click="CloseFile" AutomationProperties.Name="关闭文件操作"/></Grid>
+    <TextBlock Text="{Binding FileDialogHint}" TextWrapping="Wrap"/>
+    <TextBox x:Name="ArchivePathBox" Text="{Binding FileDialogPath}" PlaceholderText="完整路径"/>
+    <WrapPanel>
+     <Button Content="浏览…" Click="BrowseFile" IsEnabled="{Binding !PickingFile}" Margin="0,0,6,0"/>
+     <Button x:Name="SaveButton" Content="{Binding FileDialogTitle}" Command="{Binding ExecuteFileCommand}" IsEnabled="{Binding !PickingFile}"/>
+    </WrapPanel>
+   </StackPanel>
+  </Border>
  </Grid>
 </UserControl>

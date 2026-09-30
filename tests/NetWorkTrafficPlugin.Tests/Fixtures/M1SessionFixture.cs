@@ -20,10 +20,11 @@ public sealed class M1SessionFixture : IAsyncDisposable
         Recorder = new(limits, new FileBodyRecordSink(directory, true), directory, budget);
         Session = new(directory, limits, Recorder, budget);
     }
-    public async Task<(Guid Id, BoundedBodyRecorder.Entry Response)> AddAsync(byte[] bytes, bool finish = true, string type = "text/plain", string uri = "https://example.test/api?a=1&a=2", CaptureMode mode = CaptureMode.BoundedBody)
+    public async Task<(Guid Id, BoundedBodyRecorder.Entry Response)> AddAsync(byte[] bytes, bool finish = true, string type = "text/plain", string uri = "https://example.test/api?a=1&a=2", CaptureMode mode = CaptureMode.BoundedBody, byte[]? requestBytes = null)
     {
         var id = Guid.NewGuid(); var response = Recorder.Begin(id, finish ? bytes.Length : null, mode);
-        Session.Begin(id, "GET", new(uri, uri, false, 0), "1.1", [new("X-Test", "value"), new("Cookie", "synthetic=1")], 0, mode, response);
+        Session.Begin(id, "GET", new(uri, uri, false, 0), "1.1", [new("X-Test", "value"), new("Cookie", "synthetic=1")], requestBytes?.Length ?? 0, mode, response);
+        if (requestBytes is not null) Session.RequestBytes(id, requestBytes);
         Session.Response(id, 200, "1.1", [new("Content-Type", type), new("Set-Cookie", "a=1"), new("Set-Cookie", "b=2")]);
         Recorder.Observe(response, bytes); Session.ResponseBytes(id, bytes);
         if (finish) { Recorder.Complete(response, TransportState.Completed); Session.Complete(id, TransportState.Completed, null); }

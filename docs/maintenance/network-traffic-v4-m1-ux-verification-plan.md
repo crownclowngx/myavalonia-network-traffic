@@ -1,6 +1,6 @@
 # V4 · M1 UX 专用验证矩阵与本地开发门禁
 
-> 编写日期：2026-09-30。状态：**验证规范；V4 专项测试、UX 模式及证据尚未实现或产生**。
+> 编写日期：2026-09-30。状态：**验证规范已接通测试与 UX 模式；本轮结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)**。
 > 配套：[V4 执行计划](../roadmap/network-traffic-v4-m1-ux-plan.md)、[V4 专项设计](../design/network-traffic-v4-m1-ux-design.md)。
 > 继承：[M0 专用矩阵](network-traffic-v2-m0-verification-plan.md)、[M1 专用矩阵](network-traffic-v3-m1-verification-plan.md)。
 
@@ -120,7 +120,7 @@ V4 新增锚点采样包含输入来源、前后身份、偏移和新数据修�
 
 ## 7. 开发门禁实施清单与运行顺序
 
-下列 UX 文件/模式为**后续实施交付**，目前不能当作可执行入口：
+下列 UX 文件/模式已实现，正式运行时仍须全部证据齐备才能通过：
 
 | 入口/文件 | 要求 |
 | --- | --- |
@@ -137,17 +137,17 @@ V4 新增锚点采样包含输入来源、前后身份、偏移和新数据修�
 
 建议 UX 整轮截止 4800 秒，各步使用自身截止与整轮剩余时间较小者：全部自测合计 300 秒，restore/build 各 300 秒，普通测试 900 秒，M0/M1 资源各 1200 秒，Desktop 1200 秒。原 Docs/M0/M1 截止保持；任何超时返回非零，记录日志，仅终止本轮创建的子进程树，不按名称清理其他任务。
 
-当前文档阶段可执行：
+仅文档变更入口：
 
 ```powershell
 pwsh -NoProfile -File tools/verify-development.ps1 -Mode Docs
 git diff --check
 ```
 
-后续 UX 分支及全部生产证据接通后才可执行：
+完整 UX 入口：
 
 ```powershell
-# 待 V4-11 实现；目前脚本尚不接受 UX。
+# 同一轮继承 M0/M1 并验证 V4。
 pwsh -NoProfile -File tools/verify-development.ps1 -Mode UX
 ```
 
@@ -155,7 +155,7 @@ pwsh -NoProfile -File tools/verify-development.ps1 -Mode UX
 
 ## 8. 同轮证据、身份与报告
 
-后续产物保存到忽略目录 `TestResults/NetworkTrafficUX/<runId>/`。全部数据来自真实断言后的观察，失败也保存失败原因；不能预填通过、提交真实账号正文或把 GateSelfTests 文件混入业务目录。
+产物保存到忽略目录 `TestResults/NetworkTrafficUX/<runId>/`。全部数据来自真实断言后的观察，失败也保存失败原因；不能预填通过、提交真实账号正文或把 GateSelfTests 文件混入业务目录。
 
 | 产物 | 必要内容 |
 | --- | --- |
@@ -171,7 +171,7 @@ pwsh -NoProfile -File tools/verify-development.ps1 -Mode UX
 | `artifacts.json` | 必需文件、长度、SHA-256；校验文件存在、内容可解析、身份和摘要一致 |
 | 实际日期的实施记录 | 任务状态、A 依据、自动结果及源身份、H 项、差异与限制；不得由 automaticPassed 自动填成人工通过 |
 
-新 UX JSON 统一含 schemaVersion、runId、sourceHash、profileHash、uxProfileHash、recordedUtc、scenarioIds；旧 M1 证据格式按原契约保留，关联相同 runId/sourceHash/profileHash。`NETWORK_TRAFFIC_UX_PROFILE_HASH` 为后续新增环境变量，沿用 M1 变量并在退出时恢复，不能覆盖 M1 身份字段让旧检查失效。
+新 UX JSON 统一含 schemaVersion、runId、sourceHash、profileHash、uxProfileHash、recordedUtc、scenarioIds；旧 M1 证据格式按原契约保留，关联相同 runId/sourceHash/profileHash。`NETWORK_TRAFFIC_UX_PROFILE_HASH` 为 V4 新增环境变量，沿用 M1 变量并在退出时恢复，不能覆盖 M1 身份字段让旧检查失效。
 
 行为摘要覆盖源文件、测试、脚本、profile、项目/锁及未跟踪行为文件，开始与结束相同。额外记录文档清单摘要用于追溯规范版本，不把修改收尾文字误报为改了行为代码。实际测试时间必须落在本轮阶段窗口，所有旧文件、错类型、缺字段和不匹配身份都失败。
 

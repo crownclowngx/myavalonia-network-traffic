@@ -1,0 +1,872 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {
+      "id": "V4-U01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.行摘要保留双向范围和成功响应下的不完整事实",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.UXProxyTests.主动作在启停故障期间符合实际能力且多页共享一个代理",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.UXProxyTests.停止失败保留故障和恢复入口",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.ProxyCoordinatorTests.停止使迟到的启动失效并清理旧实例",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.草稿组合消抖和非法条件保留最后结果且维度唯一",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.组合筛选时间半开区间及清空游标不排除正在接收",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.草稿组合消抖和非法条件保留最后结果且维度唯一",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.迟到查询不提交集合标签或清掉新查询忙碌状态",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.万条真实摘要选择导航清空和恢复范围互不混淆",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.万条真实摘要选择导航清空和恢复范围互不混淆",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.跟随计数按当前保留集计算且两个阅读区域独立",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.八种行为截图来自生产操作且阅读锚点不跳动",
+          "rows": [
+            "(behavior: \"invalid-filter\")",
+            "(behavior: \"json-formatted\")",
+            "(behavior: \"json-tree\")",
+            "(behavior: \"list-paused\")",
+            "(behavior: \"partial\")",
+            "(behavior: \"readonly\")",
+            "(behavior: \"settings-fault\")",
+            "(behavior: \"stream-paused\")"
+          ],
+          "results": 8
+        }
+      ]
+    },
+    {
+      "id": "V4-U09",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.跟随计数按当前保留集计算且两个阅读区域独立",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.八种行为截图来自生产操作且阅读锚点不跳动",
+          "rows": [
+            "(behavior: \"invalid-filter\")",
+            "(behavior: \"json-formatted\")",
+            "(behavior: \"json-tree\")",
+            "(behavior: \"list-paused\")",
+            "(behavior: \"partial\")",
+            "(behavior: \"readonly\")",
+            "(behavior: \"settings-fault\")",
+            "(behavior: \"stream-paused\")"
+          ],
+          "results": 8
+        }
+      ]
+    },
+    {
+      "id": "V4-U10",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.跟随计数按当前保留集计算且两个阅读区域独立",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U11",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.跟随计数按当前保留集计算且两个阅读区域独立",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.八种行为截图来自生产操作且阅读锚点不跳动",
+          "rows": [
+            "(behavior: \"invalid-filter\")",
+            "(behavior: \"json-formatted\")",
+            "(behavior: \"json-tree\")",
+            "(behavior: \"list-paused\")",
+            "(behavior: \"partial\")",
+            "(behavior: \"readonly\")",
+            "(behavior: \"settings-fault\")",
+            "(behavior: \"stream-paused\")"
+          ],
+          "results": 8
+        }
+      ]
+    },
+    {
+      "id": "V4-U12",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.正文模式字段方向和无变化刷新保留当前阅读对象",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.双页面筛选和清空独立且每次批量不超过两百行",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.保存筛选外记录重开不联网且方向导出保持原字节",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U13",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.正文模式字段方向和无变化刷新保留当前阅读对象",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1ContentTests.文本编码与JSON预算不改变保存状态",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.全局内容额度并发竞争及归还不出现负数或超额",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.正文查看流式资源配额和图片使用生产渲染且释放租约",
+          "rows": [
+            "(kind: \"image\")",
+            "(kind: \"quota\")",
+            "(kind: \"resource\")",
+            "(kind: \"sse\")"
+          ],
+          "results": 4
+        }
+      ]
+    },
+    {
+      "id": "V4-U14",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.正文模式字段方向和无变化刷新保留当前阅读对象",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.保存筛选外记录重开不联网且方向导出保持原字节",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U15",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.A迟到不覆盖B且关闭后的结果不复活预览",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.正文模式字段方向和无变化刷新保留当前阅读对象",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U16",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.查找只用有限当前文本且反馈代次和假时钟不相互覆盖",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.各保存阶段取消不发布目标且释放读取租约",
+          "rows": [
+            "(point: \"body\")",
+            "(point: \"commit\")",
+            "(point: \"manifest\")",
+            "(point: \"records\")",
+            "(point: \"snapshot\")"
+          ],
+          "results": 5
+        }
+      ]
+    },
+    {
+      "id": "V4-U17",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.正文模式字段方向和无变化刷新保留当前阅读对象",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.快捷键逐层关闭宽窄切换以及重新附着保留选择和模式",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U18",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.选择器取消异常换源及关闭迟到均不执行文件操作",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.A迟到不覆盖B且关闭后的结果不复活预览",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.二十轮页面读取释放归还内容预算且不停止共享捕获",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-U19",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.选择器取消异常换源及关闭迟到均不执行文件操作",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.根目录历史占用参与并发预留且不能将导出藏入工作目录",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.各保存阶段失败不会发布半成品或残留租约",
+          "rows": [
+            "(point: \"body\")",
+            "(point: \"commit\")",
+            "(point: \"manifest\")",
+            "(point: \"records\")",
+            "(point: \"snapshot\")"
+          ],
+          "results": 5
+        }
+      ]
+    },
+    {
+      "id": "V4-U20",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.查找只用有限当前文本且反馈代次和假时钟不相互覆盖",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.快捷键逐层关闭宽窄切换以及重新附着保留选择和模式",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-I01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.万条真实摘要选择导航清空和恢复范围互不混淆",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-I02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.八种行为截图来自生产操作且阅读锚点不跳动",
+          "rows": [
+            "(behavior: \"invalid-filter\")",
+            "(behavior: \"json-formatted\")",
+            "(behavior: \"json-tree\")",
+            "(behavior: \"list-paused\")",
+            "(behavior: \"partial\")",
+            "(behavior: \"readonly\")",
+            "(behavior: \"settings-fault\")",
+            "(behavior: \"stream-paused\")"
+          ],
+          "results": 8
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1SessionTests.正文额度耗尽仍观察流事件且预览丢块明确标缺口",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-I03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.保存筛选外记录重开不联网且方向导出保持原字节",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.保存冻结水位不包含冻结后的追加且不等待流结束",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.各保存阶段失败不会发布半成品或残留租约",
+          "rows": [
+            "(point: \"body\")",
+            "(point: \"commit\")",
+            "(point: \"manifest\")",
+            "(point: \"records\")",
+            "(point: \"snapshot\")"
+          ],
+          "results": 5
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.各保存阶段取消不发布目标且释放读取租约",
+          "rows": [
+            "(point: \"body\")",
+            "(point: \"commit\")",
+            "(point: \"manifest\")",
+            "(point: \"records\")",
+            "(point: \"snapshot\")"
+          ],
+          "results": 5
+        }
+      ]
+    },
+    {
+      "id": "V4-I04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.选择器取消异常换源及关闭迟到均不执行文件操作",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.实际按钮选择筛选暂停保存和重开不触发代理",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.快捷键逐层关闭宽窄切换以及重新附着保留选择和模式",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-I05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.UXProxyTests.主动作在启停故障期间符合实际能力且多页共享一个代理",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Proxy.UXProxyTests.停止失败保留故障和恢复入口",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.生产控件启动停止端口错误和公开证书入口可操作",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-I06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.双页面筛选和清空独立且每次批量不超过两百行",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.A迟到不覆盖B且关闭后的结果不复活预览",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1WorkspaceTests.二十轮页面读取释放归还内容预算且不停止共享捕获",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-UI01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.十二种生产布局按实际坐标测量密度和正文空间",
+          "rows": [
+            "(width: 1200, height: 720, dark: False, tool: False)",
+            "(width: 1200, height: 720, dark: True, tool: False)",
+            "(width: 280, height: 420, dark: False, tool: True)",
+            "(width: 280, height: 420, dark: True, tool: True)",
+            "(width: 420, height: 600, dark: False, tool: True)",
+            "(width: 420, height: 600, dark: True, tool: True)",
+            "(width: 520, height: 420, dark: False, tool: False)",
+            "(width: 520, height: 420, dark: True, tool: False)",
+            "(width: 800, height: 600, dark: False, tool: False)",
+            "(width: 800, height: 600, dark: True, tool: False)",
+            "(width: 900, height: 600, dark: False, tool: False)",
+            "(width: 900, height: 600, dark: True, tool: False)"
+          ],
+          "results": 12
+        }
+      ]
+    },
+    {
+      "id": "V4-UI02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.八种行为截图来自生产操作且阅读锚点不跳动",
+          "rows": [
+            "(behavior: \"invalid-filter\")",
+            "(behavior: \"json-formatted\")",
+            "(behavior: \"json-tree\")",
+            "(behavior: \"list-paused\")",
+            "(behavior: \"partial\")",
+            "(behavior: \"readonly\")",
+            "(behavior: \"settings-fault\")",
+            "(behavior: \"stream-paused\")"
+          ],
+          "results": 8
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.生产控件启动停止端口错误和公开证书入口可操作",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-UI03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.十二种生产布局按实际坐标测量密度和正文空间",
+          "rows": [
+            "(width: 1200, height: 720, dark: False, tool: False)",
+            "(width: 1200, height: 720, dark: True, tool: False)",
+            "(width: 280, height: 420, dark: False, tool: True)",
+            "(width: 280, height: 420, dark: True, tool: True)",
+            "(width: 420, height: 600, dark: False, tool: True)",
+            "(width: 420, height: 600, dark: True, tool: True)",
+            "(width: 520, height: 420, dark: False, tool: False)",
+            "(width: 520, height: 420, dark: True, tool: False)",
+            "(width: 800, height: 600, dark: False, tool: False)",
+            "(width: 800, height: 600, dark: True, tool: False)",
+            "(width: 900, height: 600, dark: False, tool: False)",
+            "(width: 900, height: 600, dark: True, tool: False)"
+          ],
+          "results": 12
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-UI04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.八种行为截图来自生产操作且阅读锚点不跳动",
+          "rows": [
+            "(behavior: \"invalid-filter\")",
+            "(behavior: \"json-formatted\")",
+            "(behavior: \"json-tree\")",
+            "(behavior: \"list-paused\")",
+            "(behavior: \"partial\")",
+            "(behavior: \"readonly\")",
+            "(behavior: \"settings-fault\")",
+            "(behavior: \"stream-paused\")"
+          ],
+          "results": 8
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.键盘选择关键词输入和Esc返回列表保持请求身份",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-UI05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.八种行为截图来自生产操作且阅读锚点不跳动",
+          "rows": [
+            "(behavior: \"invalid-filter\")",
+            "(behavior: \"json-formatted\")",
+            "(behavior: \"json-tree\")",
+            "(behavior: \"list-paused\")",
+            "(behavior: \"partial\")",
+            "(behavior: \"readonly\")",
+            "(behavior: \"settings-fault\")",
+            "(behavior: \"stream-paused\")"
+          ],
+          "results": 8
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.正文查看流式资源配额和图片使用生产渲染且释放租约",
+          "rows": [
+            "(kind: \"image\")",
+            "(kind: \"quota\")",
+            "(kind: \"resource\")",
+            "(kind: \"sse\")"
+          ],
+          "results": 4
+        }
+      ]
+    },
+    {
+      "id": "V4-UI06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.快捷键逐层关闭宽窄切换以及重新附着保留选择和模式",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-UI07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.快捷键逐层关闭宽窄切换以及重新附着保留选择和模式",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-UI08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.八种行为截图来自生产操作且阅读锚点不跳动",
+          "rows": [
+            "(behavior: \"invalid-filter\")",
+            "(behavior: \"json-formatted\")",
+            "(behavior: \"json-tree\")",
+            "(behavior: \"list-paused\")",
+            "(behavior: \"partial\")",
+            "(behavior: \"readonly\")",
+            "(behavior: \"settings-fault\")",
+            "(behavior: \"stream-paused\")"
+          ],
+          "results": 8
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.实际按钮选择筛选暂停保存和重开不触发代理",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.快捷键逐层关闭宽窄切换以及重新附着保留选择和模式",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-UI09",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.十二种生产布局按实际坐标测量密度和正文空间",
+          "rows": [
+            "(width: 1200, height: 720, dark: False, tool: False)",
+            "(width: 1200, height: 720, dark: True, tool: False)",
+            "(width: 280, height: 420, dark: False, tool: True)",
+            "(width: 280, height: 420, dark: True, tool: True)",
+            "(width: 420, height: 600, dark: False, tool: True)",
+            "(width: 420, height: 600, dark: True, tool: True)",
+            "(width: 520, height: 420, dark: False, tool: False)",
+            "(width: 520, height: 420, dark: True, tool: False)",
+            "(width: 800, height: 600, dark: False, tool: False)",
+            "(width: 800, height: 600, dark: True, tool: False)",
+            "(width: 900, height: 600, dark: False, tool: False)",
+            "(width: 900, height: 600, dark: True, tool: False)"
+          ],
+          "results": 12
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.快捷键逐层关闭宽窄切换以及重新附着保留选择和模式",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-UI10",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.UXCaptureUiTests.快捷键逐层关闭宽窄切换以及重新附着保留选择和模式",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1CaptureUiTests.正文查看流式资源配额和图片使用生产渲染且释放租约",
+          "rows": [
+            "(kind: \"image\")",
+            "(kind: \"quota\")",
+            "(kind: \"resource\")",
+            "(kind: \"sse\")"
+          ],
+          "results": 4
+        }
+      ]
+    },
+    {
+      "id": "V4-P01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-P02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M1NativeUiProbeTests.独立桌面生产视图一万摘要五流十分钟和二十轮页面挂卸满足预算",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-R01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.UXWorkspaceTests.万条真实摘要选择导航清空和恢复范围互不混淆",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    },
+    {
+      "id": "V4-R02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.ProxyProtocolTests.双端严格证书验证拒绝错误名称和不信任根",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        },
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Capture.M1StorageTests.混合记录保存重开保持重复头身份完整性并可导出",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ]
+    }
+  ]
+}

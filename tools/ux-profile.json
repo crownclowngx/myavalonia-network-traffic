@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "layouts": [
+    {
+      "key": "document-light-1200",
+      "width": 1200,
+      "height": 720,
+      "tool": false,
+      "dark": false
+    },
+    {
+      "key": "document-light-900",
+      "width": 900,
+      "height": 600,
+      "tool": false,
+      "dark": false
+    },
+    {
+      "key": "document-light-800",
+      "width": 800,
+      "height": 600,
+      "tool": false,
+      "dark": false
+    },
+    {
+      "key": "document-light-520",
+      "width": 520,
+      "height": 420,
+      "tool": false,
+      "dark": false
+    },
+    {
+      "key": "document-dark-1200",
+      "width": 1200,
+      "height": 720,
+      "tool": false,
+      "dark": true
+    },
+    {
+      "key": "document-dark-900",
+      "width": 900,
+      "height": 600,
+      "tool": false,
+      "dark": true
+    },
+    {
+      "key": "document-dark-800",
+      "width": 800,
+      "height": 600,
+      "tool": false,
+      "dark": true
+    },
+    {
+      "key": "document-dark-520",
+      "width": 520,
+      "height": 420,
+      "tool": false,
+      "dark": true
+    },
+    {
+      "key": "tool-light-420",
+      "width": 420,
+      "height": 600,
+      "tool": true,
+      "dark": false
+    },
+    {
+      "key": "tool-light-280",
+      "width": 280,
+      "height": 420,
+      "tool": true,
+      "dark": false
+    },
+    {
+      "key": "tool-dark-420",
+      "width": 420,
+      "height": 600,
+      "tool": true,
+      "dark": true
+    },
+    {
+      "key": "tool-dark-280",
+      "width": 280,
+      "height": 420,
+      "tool": true,
+      "dark": true
+    }
+  ],
+  "behaviors": [
+    "list-paused",
+    "stream-paused",
+    "json-formatted",
+    "json-tree",
+    "partial",
+    "invalid-filter",
+    "readonly",
+    "settings-fault"
+  ],
+  "topMax": 104,
+  "rowMin": 44,
+  "rowMax": 52,
+  "minFullRows": 8,
+  "bodyMin": 160,
+  "anchorMax": 2,
+  "findLimit": 256,
+  "maxPrivateDeltaBytes": 268435456,
+  "maxContentBytes": 33554432,
+  "maxQueueBytes": 4194304,
+  "maxStopMilliseconds": 10000,
+  "maxHandlesAfterStop": 32,
+  "uiP95Milliseconds": 200,
+  "uiMaxMilliseconds": 1000,
+  "streamSeconds": 600,
+  "pageCycles": 20,
+  "uiSamples": 200
+}
