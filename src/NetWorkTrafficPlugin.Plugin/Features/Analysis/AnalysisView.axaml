@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:vm="using:NetWorkTrafficPlugin.Features.Analysis" xmlns:model="using:NetWorkTrafficPlugin.Application.Analysis"
+ xmlns:dsl="using:NetWorkTrafficPlugin.Application.Dsl" xmlns:rules="using:NetWorkTrafficPlugin.Application.Rules"
+ x:Class="NetWorkTrafficPlugin.Features.Analysis.AnalysisView" x:DataType="vm:AnalysisWorkspace">
+ <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="8" RowSpacing="6">
+  <WrapPanel>
+   <Button Content="规则" Click="ToggleEditor" Margin="0,0,4,0"/>
+   <Button x:Name="ApplyButton" Content="应用/刷新" Command="{Binding ApplyCommand}" Margin="0,0,4,0"/>
+   <Button Content="取消" Command="{Binding CancelCommand}" IsVisible="{Binding Busy}" Margin="0,0,4,0"/>
+   <Button Content="未确定" Command="{Binding ShowUnknownCommand}" Margin="0,0,4,0"/>
+   <Button Content="上下文" Command="{Binding ShowContextCommand}" Margin="0,0,4,0"/>
+   <Button Content="清除结果" Command="{Binding ClearCommand}"/>
+   <TextBlock Text="源数据已更新" IsVisible="{Binding HasUpdates}" Margin="8,4"/>
+  </WrapPanel>
+  <Grid Grid.Row="1" ColumnDefinitions="Auto,*" ColumnSpacing="6">
+   <TextBlock Text="窗口覆盖" VerticalAlignment="Center"/>
+   <TextBox Grid.Column="1" Text="{Binding WindowText}" PlaceholderText="留空使用 DSL 窗口；例如 last(30m)" AutomationProperties.Name="分析窗口覆盖"/>
+  </Grid>
+  <Grid x:Name="AnalysisPanes" Grid.Row="2" ColumnDefinitions="230,*" ColumnSpacing="8">
+   <ListBox x:Name="GroupList" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}">
+    <ListBox.ItemTemplate><DataTemplate x:DataType="model:TrafficGroup">
+     <StackPanel Margin="3,5"><TextBlock Text="{Binding Description}" TextWrapping="Wrap"/><TextBlock Text="{Binding FirstStarted}" FontSize="11"/></StackPanel>
+    </DataTemplate></ListBox.ItemTemplate>
+   </ListBox>
+   <Grid x:Name="TimelinePane" Grid.Column="1" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="4">
+    <WrapPanel><Button Content="返回组列表" Click="Back"/><Button Content="打开请求详情" Command="{Binding OpenRequestCommand}" Margin="4,0"/>
+     <CheckBox Content="显示本次原值" IsChecked="{Binding RevealValues}" VerticalAlignment="Center"/>
+    </WrapPanel>
+    <ListBox x:Name="TimelineList" Grid.Row="1" ItemsSource="{Binding Requests}" SelectedItem="{Binding SelectedRequest}">
+     <ListBox.ItemTemplate><DataTemplate x:DataType="model:AnalyzedRequest">
+      <StackPanel Margin="3,3">
+       <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis"/>
+       <vm:TimelineStrip Height="12" Record="{Binding}" ToolTip.Tip="条带显示相对开始与已观察耗时；开放端表示快照时仍接收"/>
+      </StackPanel>
+     </DataTemplate></ListBox.ItemTemplate>
+    </ListBox>
+    <TextBox Grid.Row="2" Text="{Binding SelectionText}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="140" AutomationProperties.Name="分析字段与来源"/>
+    <TextBlock Grid.Row="3" Text="按开始时间排序；并行重叠不代表因果。" FontSize="11"/>
+   </Grid>
+  </Grid>
+  <StackPanel Grid.Row="3" MaxHeight="90">
+   <TextBlock Text="{Binding ResultDescription}" TextWrapping="Wrap" FontSize="11" ToolTip.Tip="{Binding ResultDescription}"/>
+   <TextBlock Text="{Binding Status}" TextWrapping="Wrap" FontSize="11" ToolTip.Tip="{Binding Status}"/>
+  </StackPanel>
+  <Border Grid.RowSpan="4" IsVisible="{Binding ShowEditor}" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" Padding="8">
+   <Grid RowDefinitions="Auto,*,Auto,Auto" RowSpacing="5">
+    <WrapPanel>
+     <Button Content="返回分组" Click="ToggleEditor"/>
+     <Button Content="验证" Command="{Binding ValidateCommand}" Margin="4,0"/>
+     <Button Content="样本预览" Command="{Binding PreviewCommand}"/>
+     <Button Content="保存视图" Command="{Binding SaveCommand}" Margin="4,0"/>
+     <Button Content="另存视图" Command="{Binding SaveAsCommand}" Margin="0,0,4,0"/>
+     <Button Content="加载视图库" Command="{Binding ReloadCommand}"/>
+     <Button Content="取消分析" Command="{Binding CancelCommand}" IsVisible="{Binding Busy}"/>
+    </WrapPanel>
+    <Grid Grid.Row="1" RowDefinitions="*,Auto">
+     <TextBox x:Name="DslText" Text="{Binding Editor.Text}" AcceptsReturn="True" TextWrapping="NoWrap" FontFamily="Consolas" MinHeight="100" AutomationProperties.Name="DSL规则文本"/>
+     <ListBox x:Name="DiagnosticList" Grid.Row="1" ItemsSource="{Binding Editor.Diagnostics}" MaxHeight="64" SelectionChanged="SelectDiagnostic">
+      <ListBox.ItemTemplate><DataTemplate x:DataType="dsl:DslDiagnostic"><TextBlock Text="{Binding Display}" TextWrapping="Wrap" ToolTip.Tip="{Binding Display}"/></DataTemplate></ListBox.ItemTemplate>
+     </ListBox>
+    </Grid>
+    <ScrollViewer Grid.Row="2" MaxHeight="190">
+     <StackPanel Spacing="5">
+      <TextBlock Text="{Binding Editor.Status}" TextWrapping="Wrap"/>
+      <TextBlock Text="规则库已更新，请加载后再保存。" IsVisible="{Binding HasLibraryUpdates}"/>
+      <Expander Header="字段辅助 / 视图选项">
+       <StackPanel Spacing="5">
+        <WrapPanel>
+         <TextBox Text="{Binding Editor.FieldName}" Width="110" PlaceholderText="字段名" AutomationProperties.Name="业务字段名"/>
+         <ComboBox ItemsSource="{Binding Editor.Locations}" SelectedItem="{Binding Editor.Location}" Width="105"/>
+         <TextBox Text="{Binding Editor.Argument}" Width="150" PlaceholderText="键 / JSON路径 / 下标" AutomationProperties.Name="提取位置参数"/>
+         <ComboBox ItemsSource="{Binding Editor.Selections}" SelectedItem="{Binding Editor.Selection}" Width="75"/>
+         <ComboBox ItemsSource="{Binding Editor.Conversions}" SelectedItem="{Binding Editor.Conversion}" Width="100"/>
+         <Button Content="生成片段" Command="{Binding GenerateFieldCommand}"/><Button Content="插入片段" Command="{Binding InsertFieldCommand}"/>
+        </WrapPanel>
+        <TextBox Text="{Binding Editor.Fragment}" IsReadOnly="True"/>
+        <TextBox Text="{Binding SourcesText}" PlaceholderText="来源 capture,manual,replay,unknown" AutomationProperties.Name="分析来源"/>
+        <TextBox Text="{Binding ColumnsText}" PlaceholderText="显示字段，以逗号分隔；留空使用DSL定义" AutomationProperties.Name="分析显示列"/>
+        <WrapPanel><CheckBox Content="包含窗口前上下文" IsChecked="{Binding IncludeContext}"/><CheckBox Content="按请求数排序" IsChecked="{Binding SortByCount}"/></WrapPanel>
+       </StackPanel>
+      </Expander>
+      <Grid ColumnDefinitions="*,*,Auto" ColumnSpacing="4">
+       <TextBox Text="{Binding ViewName}" PlaceholderText="视图名称" AutomationProperties.Name="保存视图名称"/>
+       <ComboBox Grid.Column="1" ItemsSource="{Binding SavedViews}" SelectedItem="{Binding SelectedView}">
+        <ComboBox.ItemTemplate><DataTemplate x:DataType="rules:SavedView"><TextBlock Text="{Binding Name}"/></DataTemplate></ComboBox.ItemTemplate>
+       </ComboBox>
+       <Button Grid.Column="2" Content="载入草稿" Command="{Binding LoadViewCommand}"/>
+      </Grid>
+      <Button Content="删除选中视图" Command="{Binding DeleteViewCommand}"/>
+      <TextBox Text="{Binding PreviewText}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="160" AutomationProperties.Name="样本预览结果"/>
+     </StackPanel>
+    </ScrollViewer>
+    <TextBlock Grid.Row="3" Text="{Binding Status}" TextWrapping="Wrap" MaxHeight="48" FontSize="11"/>
+   </Grid>
+  </Border>
+ </Grid>
+</UserControl>

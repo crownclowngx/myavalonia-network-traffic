@@ -218,11 +218,12 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
     public async Task<CaptureLease> FreezeAsync(CancellationToken token)
     {
         var lease = AcquireReadLease();
-        TrafficRecord[] frozen; CaptureSnapshot snapshot;
+        TrafficRecord[] frozen; CaptureSnapshot snapshot; DateTimeOffset frozenUtc;
         // 在同一锁下固定头缓存和日志位置；后续摘要淘汰不会使已冻结的记录消失。
         Dictionary<Guid, (long Offset, int Length)> positions;
         lock (_sync)
         {
+            frozenUtc = DateTimeOffset.UtcNow;
             frozen = _entries.Values.Select(e => _details.TryGetValue(e.Record.RecordId, out var cached)
                 ? Current(e) with { RequestHeaders = cached.RequestHeaders, ResponseHeaders = cached.ResponseHeaders } : Current(e)).ToArray();
             snapshot = Snapshot(); positions = _journal.Positions();
@@ -238,7 +239,7 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
                 if (details is not null) frozen[i] = frozen[i] with { RequestHeaders = details.RequestHeaders, ResponseHeaders = details.ResponseHeaders };
                 else frozen[i] = frozen[i] with { MetadataPartial = true };
             }
-            return new(snapshot, frozen, lease.Dispose);
+            return new(snapshot, frozen, lease.Dispose, frozenUtc);
         }
         catch { lease.Dispose(); throw; }
     }

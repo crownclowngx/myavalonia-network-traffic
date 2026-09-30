@@ -47,7 +47,7 @@ function Get-SourceHash([string] $Root) {
     Assert-Check ($LASTEXITCODE -eq 0) '不能枚举源码。'
     $rows = foreach ($path in $paths) {
         # 文档允许在测量期间补充结果；所有影响行为的源码、构建配置、锁、门禁/profile 均进入摘要。
-        if ($path -match '^(src|tests|tools)/' -or $path -match '^[^/]+\.(props|targets|slnx|json)$') {
+        if ($path -match '^(src|tests|tools)/' -or $path -match '^docs/examples/m2/.*\.dsl$' -or $path -match '^[^/]+\.(props|targets|slnx|json)$') {
             $full = Join-Path $Root $path
             if (Test-Path -LiteralPath $full -PathType Leaf) { "$path=$((Get-FileHash -LiteralPath $full -Algorithm SHA256).Hash)" }
         }

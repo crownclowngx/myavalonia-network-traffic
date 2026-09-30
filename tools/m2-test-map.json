@@ -1,0 +1,901 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {
+      "id": "V5-E01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E01QuerySemantics",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E01"
+    },
+    {
+      "id": "V5-E02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E02HeadersAndCookies",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E02"
+    },
+    {
+      "id": "V5-E03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E03JsonPathsAndTypes",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E03"
+    },
+    {
+      "id": "V5-E04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E04ThreeValuedLogicAndFallback",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E04"
+    },
+    {
+      "id": "V5-E05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E05FormAndPath",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E05"
+    },
+    {
+      "id": "V5-E06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E06CompletenessAndIoFailures",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E06"
+    },
+    {
+      "id": "V5-E07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E07BodyAndJsonBudgets",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E07"
+    },
+    {
+      "id": "V5-E08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E08MimeAndResponseIndependence",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E08"
+    },
+    {
+      "id": "V5-E09",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E09ConversionAndValueLimits",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E09"
+    },
+    {
+      "id": "V5-E10",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E10SharedBodyAndOrigins",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E10"
+    },
+    {
+      "id": "V5-E11",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E11MetadataGaps",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E11"
+    },
+    {
+      "id": "V5-E12",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.FieldExtractionTests.E12SensitivityAndNoBodyReads",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-E12"
+    },
+    {
+      "id": "V5-I01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2IntegrationTests.I01RealCaptureSixLocations",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-lifetime.json",
+      "observation": "V5-I01"
+    },
+    {
+      "id": "V5-I02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2IntegrationTests.I02FreezeWatermarkAndLease",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-lifetime.json",
+      "observation": "V5-I02"
+    },
+    {
+      "id": "V5-I03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2IntegrationTests.I03ArchiveRecomputePreservesBytes",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-lifetime.json",
+      "observation": "V5-I03"
+    },
+    {
+      "id": "V5-I04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2IntegrationTests.I04IndependentPagesAndSharedSlots",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-lifetime.json",
+      "observation": "V5-I04"
+    },
+    {
+      "id": "V5-I05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2IntegrationTests.I05LateSourceCannotCommit",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-lifetime.json",
+      "observation": "V5-I05"
+    },
+    {
+      "id": "V5-I06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2IntegrationTests.I06DetailsUseIdentityAndClosingDoesNotStopCapture",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-lifetime.json",
+      "observation": "V5-I06"
+    },
+    {
+      "id": "V5-L01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L01ValidPrograms",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L01"
+    },
+    {
+      "id": "V5-L02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L02InvalidLexicalInput",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L02"
+    },
+    {
+      "id": "V5-L03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L03PrecedenceAndReservedNames",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L03"
+    },
+    {
+      "id": "V5-L04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L04TypesAndKeys",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L04"
+    },
+    {
+      "id": "V5-L05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L05FunctionWhitelist",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L05"
+    },
+    {
+      "id": "V5-L06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L06DependencyCycles",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L06"
+    },
+    {
+      "id": "V5-L07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L07CompilerLimits",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L07"
+    },
+    {
+      "id": "V5-L08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L08CancellationAndWorkLimits",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L08"
+    },
+    {
+      "id": "V5-L09",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L09DiagnosticSpansAndRecovery",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L09"
+    },
+    {
+      "id": "V5-L10",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Dsl.DslCompilerTests.L10InvariantConversions",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-language.json",
+      "observation": "V5-L10"
+    },
+    {
+      "id": "V5-P01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2ResourceProbeTests.P01TenThousandRecordsAndThirtyTwoFields",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-performance.json",
+      "observation": "V5-P01"
+    },
+    {
+      "id": "V5-P02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2ResourceProbeTests.P02BodyBudgetsAndDecompression",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-performance.json",
+      "observation": "V5-P02"
+    },
+    {
+      "id": "V5-P03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2ResourceProbeTests.P03DesktopCaptureAndAnalysisForTenMinutes",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-performance.json",
+      "observation": "V5-P03"
+    },
+    {
+      "id": "V5-P04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2ResourceProbeTests.P04CancellationAndPageLifetime",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-performance.json",
+      "observation": "V5-P04"
+    },
+    {
+      "id": "V5-Q01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.GroupingTests.Q01TwoGroupingsHaveExactMembers",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-Q01"
+    },
+    {
+      "id": "V5-Q02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.GroupingTests.Q02TypedKeysDoNotCollide",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-Q02"
+    },
+    {
+      "id": "V5-Q03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.GroupingTests.Q03CoverageConservesAllRecords",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-Q03"
+    },
+    {
+      "id": "V5-Q04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.GroupingTests.Q04DuplicateBusinessRequestsRemain",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-Q04"
+    },
+    {
+      "id": "V5-Q05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.GroupingTests.Q05UnknownSourcesExcludedByDefault",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-Q05"
+    },
+    {
+      "id": "V5-Q06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.GroupingTests.Q06ColumnsAndStableSorting",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-Q06"
+    },
+    {
+      "id": "V5-Q07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.GroupingTests.Q07InterfaceAndErrorDefinitions",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-Q07"
+    },
+    {
+      "id": "V5-Q08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.GroupingTests.Q08LimitsRejectWholeCandidate",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-grouping.json",
+      "observation": "V5-Q08"
+    },
+    {
+      "id": "V5-R01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2RegressionTests.R01PredecessorScenarioSetsAndBudgetsRemain",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-regression.json",
+      "observation": "V5-R01"
+    },
+    {
+      "id": "V5-R02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Integration.M2RegressionTests.R02AnalysisKeepsCaptureContentAndReadingState",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-regression.json",
+      "observation": "V5-R02"
+    },
+    {
+      "id": "V5-S01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Rules.RuleLibraryTests.S01DraftPreviewAndAppliedAreIndependent",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-rules-storage.json",
+      "observation": "V5-S01"
+    },
+    {
+      "id": "V5-S02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Rules.RuleLibraryTests.S02FormNeverReformatsDraft",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-rules-storage.json",
+      "observation": "V5-S02"
+    },
+    {
+      "id": "V5-S03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Rules.RuleLibraryTests.S03ImmutableRevisionHash",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-rules-storage.json",
+      "observation": "V5-S03"
+    },
+    {
+      "id": "V5-S04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Rules.RuleLibraryTests.S04SavedViewRestoresPinnedRevision",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-rules-storage.json",
+      "observation": "V5-S04"
+    },
+    {
+      "id": "V5-S05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Rules.RuleLibraryTests.S05AtomicFailureAndCancellation",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-rules-storage.json",
+      "observation": "V5-S05"
+    },
+    {
+      "id": "V5-S06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Rules.RuleLibraryTests.S06ConcurrentGenerationConflict",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-rules-storage.json",
+      "observation": "V5-S06"
+    },
+    {
+      "id": "V5-S07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Rules.RuleLibraryTests.S07CorruptLibraryNeverBecomesEmpty",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-rules-storage.json",
+      "observation": "V5-S07"
+    },
+    {
+      "id": "V5-S08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Rules.RuleLibraryTests.S08LimitsAndExplicitDeletion",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-rules-storage.json",
+      "observation": "V5-S08"
+    },
+    {
+      "id": "V5-T01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.TimelineTests.T01HalfOpenWindow",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-timeline.json",
+      "observation": "V5-T01"
+    },
+    {
+      "id": "V5-T02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.TimelineTests.T02StableStartOrder",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-timeline.json",
+      "observation": "V5-T02"
+    },
+    {
+      "id": "V5-T03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.TimelineTests.T03ObservedDurationAndStates",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-timeline.json",
+      "observation": "V5-T03"
+    },
+    {
+      "id": "V5-T04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.TimelineTests.T04ContextNeverInflatesGroups",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-timeline.json",
+      "observation": "V5-T04"
+    },
+    {
+      "id": "V5-T05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.TimelineTests.T05SnapshotDoesNotMoveWithNewData",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-timeline.json",
+      "observation": "V5-T05"
+    },
+    {
+      "id": "V5-T06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Analysis.TimelineTests.T06ArchiveAnchorIsRepeatable",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-timeline.json",
+      "observation": "V5-T06"
+    },
+    {
+      "id": "V5-UI01",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M2UiTests.UI01EditorInputAndDiagnostic",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-layout.json",
+      "observation": "V5-UI01"
+    },
+    {
+      "id": "V5-UI02",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M2UiTests.UI02FormAndPreview",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-layout.json",
+      "observation": "V5-UI02"
+    },
+    {
+      "id": "V5-UI03",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M2UiTests.UI03SaveAndLoadFromControls",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-layout.json",
+      "observation": "V5-UI03"
+    },
+    {
+      "id": "V5-UI04",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M2UiTests.UI04TimelineAndIdentityNavigation",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-layout.json",
+      "observation": "V5-UI04"
+    },
+    {
+      "id": "V5-UI05",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M2UiTests.UI05InvalidWindowAndUnknownRange",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-layout.json",
+      "observation": "V5-UI05"
+    },
+    {
+      "id": "V5-UI06",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M2UiTests.UI06MaskAndReset",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-layout.json",
+      "observation": "V5-UI06"
+    },
+    {
+      "id": "V5-UI07",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M2UiTests.UI07AttachAndPageSwitch",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-layout.json",
+      "observation": "V5-UI07"
+    },
+    {
+      "id": "V5-UI08",
+      "tests": [
+        {
+          "method": "NetWorkTrafficPlugin.Tests.Ui.M2UiTests.UI08LayoutsAndScreenshots",
+          "rows": [
+            ""
+          ],
+          "results": 1
+        }
+      ],
+      "evidenceFile": "m2-layout.json",
+      "observation": "V5-UI08"
+    }
+  ]
+}

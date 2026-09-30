@@ -104,11 +104,13 @@ public sealed class CaptureReadLease(Action release) : IDisposable
 }
 
 /// <summary>快照拥有源文件读取租约；保存取消/失败同样需要归还，防止删除正在复制的文件。</summary>
-public sealed class CaptureLease(CaptureSnapshot snapshot, TrafficRecord[] records, Action release) : IDisposable
+public sealed class CaptureLease(CaptureSnapshot snapshot, TrafficRecord[] records, Action release, DateTimeOffset? frozenUtc = null) : IDisposable
 {
     private Action? _release = release;
     public CaptureSnapshot Snapshot { get; } = snapshot;
     public TrafficRecord[] Records { get; } = records;
+    // 分析窗口必须对应记录冻结时刻；旧存档没有这个事实，保持 null 而不是用打开时间补造。
+    public DateTimeOffset? FrozenUtc { get; } = frozenUtc;
     public void Dispose() => Interlocked.Exchange(ref _release, null)?.Invoke();
 }
 

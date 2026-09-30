@@ -28,7 +28,7 @@ internal static class Program
 /// 独立桌面 Avalonia 进程承载生产 CaptureView，窗口移到屏幕外避免打断用户。
 /// 测量的是应用输入投递/处理延迟，不声称测过物理键鼠或真实 Host；Headless 布局截图另有测试。
 /// </summary>
-public sealed class ProbeApp : Avalonia.Application
+public sealed partial class ProbeApp : Avalonia.Application
 {
     public override void Initialize() => Styles.Add(new FluentTheme());
     public override void OnFrameworkInitializationCompleted()
@@ -40,7 +40,12 @@ public sealed class ProbeApp : Avalonia.Application
             window.Opened += async (_, _) =>
             {
                 var code = 0;
-                try { await RunAsync(window, desktop.Args?.Contains("--smoke") == true); Console.WriteLine("M1 生产 UI 测量结束。"); }
+                try
+                {
+                    if (desktop.Args?.Contains("--m2") == true) await RunM2Async(window, desktop.Args.Contains("--smoke"));
+                    else await RunAsync(window, desktop.Args?.Contains("--smoke") == true);
+                    Console.WriteLine("生产 UI 测量结束。");
+                }
                 catch (Exception ex) { Console.Error.WriteLine(ex); code = 1; }
                 finally { desktop.Shutdown(code); }
             };

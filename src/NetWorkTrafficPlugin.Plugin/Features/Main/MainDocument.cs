@@ -3,6 +3,9 @@ using NetWorkTrafficPlugin.Constants;
 using MyAvaloniaManagement.PluginSdk;
 using NetWorkTrafficPlugin.Features.ProxyStatus;
 using NetWorkTrafficPlugin.Features.Capture;
+using NetWorkTrafficPlugin.Features.Analysis;
+using NetWorkTrafficPlugin.Application.Analysis;
+using NetWorkTrafficPlugin.Application.Capture;
 
 namespace NetWorkTrafficPlugin.Features.Main;
 
@@ -11,10 +14,40 @@ public sealed partial class MainDocument :
     IPluginDocument,
     IWorkbenchDocumentCommandTarget, IDisposable
 {
-    public MainDocument(ProxyPanelModel proxy, CaptureWorkspace? capture = null) { Proxy = proxy; Capture = capture; }
+    private readonly Func<ICaptureSession, IAnalysisSource>? _analysisFactory;
+    private ICaptureSession? _analysisSession;
+    private IAnalysisSource? _analysisSource;
+    public MainDocument(ProxyPanelModel proxy, CaptureWorkspace? capture = null, AnalysisWorkspace? analysis = null,
+        Func<ICaptureSession, IAnalysisSource>? analysisFactory = null)
+    {
+        Proxy = proxy; Capture = capture; Analysis = analysis; _analysisFactory = analysisFactory;
+        if (analysis is not null) analysis.OpenRequest += OpenAnalyzedRequest;
+    }
     public ProxyPanelModel Proxy { get; }
     public CaptureWorkspace? Capture { get; }
-    public void Dispose() { Capture?.Dispose(); Proxy.Dispose(); }
+    public AnalysisWorkspace? Analysis { get; }
+    public bool HasAnalysis => Analysis is not null;
+    [ObservableProperty] private bool _analysisVisible;
+    public void SyncAnalysisSource()
+    {
+        if (Analysis is null || _analysisFactory is null) return;
+        var session = Capture?.Session;
+        if (!ReferenceEquals(session, _analysisSession))
+        { _analysisSession = session; _analysisSource = session is null ? null : _analysisFactory(session); }
+        Analysis.SetSource(_analysisSource, session?.Snapshot().Revision ?? 0);
+    }
+    private async void OpenAnalyzedRequest(AnalyzedRequest request)
+    {
+        if (Capture is null || _analysisSession is null) return;
+        try
+        {
+            if (await Capture.OpenAnalyzedRecordAsync(_analysisSession, request.RecordId)) AnalysisVisible = false;
+            else if (Analysis is not null) Analysis.Status = "记录已不在当前源，无法打开原请求。";
+        }
+        catch (Exception ex) when (ex is IOException or OperationCanceledException)
+        { if (Analysis is not null) Analysis.Status = "无法读取原请求：" + ex.GetType().Name; }
+    }
+    public void Dispose() { Analysis?.Dispose(); Capture?.Dispose(); Proxy.Dispose(); }
     private DocumentPresentationState _presentation = new("HTTP 工作台");
     private int _workbenchMessageApplied;
 

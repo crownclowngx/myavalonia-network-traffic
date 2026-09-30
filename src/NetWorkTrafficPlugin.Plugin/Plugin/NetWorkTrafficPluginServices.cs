@@ -7,6 +7,11 @@ using NetWorkTrafficPlugin.Application.Capture;
 using NetWorkTrafficPlugin.Features.Capture;
 using NetWorkTrafficPlugin.Infrastructure.Capture;
 using NetWorkTrafficPlugin.Infrastructure.Content;
+using NetWorkTrafficPlugin.Application.Analysis;
+using NetWorkTrafficPlugin.Application.Rules;
+using NetWorkTrafficPlugin.Infrastructure.Analysis;
+using NetWorkTrafficPlugin.Infrastructure.Rules;
+using NetWorkTrafficPlugin.Features.Analysis;
 
 namespace NetWorkTrafficPlugin.Plugin;
 
@@ -24,6 +29,14 @@ public static class NetWorkTrafficPluginServices
         services.TryAddSingleton<ICaptureArchive>(p => p.GetRequiredService<FileCaptureArchiveStore>());
         services.TryAddSingleton(p => new BoundedImageDecoder(p.GetRequiredService<CaptureSessionStore>().ContentBudget));
         services.TryAddTransient<CaptureWorkspace>();
+        // 规则库与额度容器共享，草稿/结果按Document独立；分析适配器只取得只读捕获端口。
+        services.TryAddSingleton<AnalysisResources>();
+        services.TryAddTransient<AnalysisQueryEngine>();
+        services.TryAddSingleton<IRuleLibraryStore>(_ => new FileRuleLibraryStore(Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MyAvalonia", "NetworkTraffic", "Rules")));
+        services.TryAddTransient<AnalysisWorkspace>();
+        services.TryAddSingleton<Func<ICaptureSession, IAnalysisSource>>(provider =>
+            session => new CaptureAnalysisSource(session, provider.GetRequiredService<CaptureSessionStore>().ContentBudget));
         return services;
     }
 }

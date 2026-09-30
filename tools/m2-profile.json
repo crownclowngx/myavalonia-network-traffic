@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "limits": {
+    "SourceBytes": 65536,
+    "Tokens": 8192,
+    "Depth": 32,
+    "Fields": 32,
+    "Diagnostics": 50,
+    "ValueCharacters": 4096,
+    "CollectionItems": 128,
+    "JsonDepth": 32,
+    "JsonTokens": 16384,
+    "PathSegments": 16,
+    "BodyBytes": 262144,
+    "RecordOperations": 10000,
+    "QueryOperations": 5000000,
+    "Records": 10000,
+    "Groups": 5000,
+    "QueryBodyBytes": 33554432,
+    "AnalysisBytes": 67108864
+  },
+  "streamSeconds": 600,
+  "pageCycles": 20,
+  "uiSamples": 200,
+  "concurrent": 20,
+  "streams": 5,
+  "refreshes": 50,
+  "successes": 45,
+  "warmups": 2,
+  "repetitions": 10,
+  "p95QueryMilliseconds": 2000,
+  "maxPrivateDeltaBytes": 268435456,
+  "maxContentBytes": 33554432,
+  "maxAnalysisBytes": 67108864,
+  "maxQueueBytes": 4194304,
+  "maxStopMilliseconds": 10000,
+  "maxHandlesAfterStop": 32,
+  "uiP95Milliseconds": 200,
+  "uiMaxMilliseconds": 1000,
+  "cancelMilliseconds": 1000,
+  "layouts": [
+    {
+      "key": "analysis-light-1200",
+      "width": 1200,
+      "height": 720,
+      "editor": false,
+      "dark": false
+    },
+    {
+      "key": "analysis-light-800",
+      "width": 800,
+      "height": 600,
+      "editor": false,
+      "dark": false
+    },
+    {
+      "key": "analysis-light-520",
+      "width": 520,
+      "height": 420,
+      "editor": false,
+      "dark": false
+    },
+    {
+      "key": "analysis-dark-1200",
+      "width": 1200,
+      "height": 720,
+      "editor": false,
+      "dark": true
+    },
+    {
+      "key": "analysis-dark-800",
+      "width": 800,
+      "height": 600,
+      "editor": false,
+      "dark": true
+    },
+    {
+      "key": "analysis-dark-520",
+      "width": 520,
+      "height": 420,
+      "editor": false,
+      "dark": true
+    },
+    {
+      "key": "editor-light-1200",
+      "width": 1200,
+      "height": 720,
+      "editor": true,
+      "dark": false
+    },
+    {
+      "key": "editor-light-800",
+      "width": 800,
+      "height": 600,
+      "editor": true,
+      "dark": false
+    },
+    {
+      "key": "editor-light-520",
+      "width": 520,
+      "height": 420,
+      "editor": true,
+      "dark": false
+    },
+    {
+      "key": "editor-dark-1200",
+      "width": 1200,
+      "height": 720,
+      "editor": true,
+      "dark": true
+    },
+    {
+      "key": "editor-dark-800",
+      "width": 800,
+      "height": 600,
+      "editor": true,
+      "dark": true
+    },
+    {
+      "key": "editor-dark-520",
+      "width": 520,
+      "height": 420,
+      "editor": true,
+      "dark": true
+    }
+  ],
+  "behaviors": [
+    "diagnostic",
+    "unresolved",
+    "archive",
+    "parallel"
+  ]
+}

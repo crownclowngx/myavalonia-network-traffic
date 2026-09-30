@@ -15,7 +15,7 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-        _timer.Tick += (_, _) => (DataContext as MainDocument)?.Proxy.Refresh();
+        _timer.Tick += (_, _) => { if (DataContext is MainDocument document) { document.Proxy.Refresh(); document.SyncAnalysisSource(); } };
         AddHandler(KeyDownEvent, (_, args) =>
         {
             if (args.Key == Key.Escape && SettingsOverlay.IsVisible)
@@ -23,7 +23,7 @@ public partial class MainView : UserControl
         }, RoutingStrategies.Tunnel);
         KeyDown += (_, args) =>
         {
-            if (!SettingsOverlay.IsVisible) CaptureWorkspaceView.RoutePageKey(args);
+            if (!SettingsOverlay.IsVisible && (DataContext as MainDocument)?.AnalysisVisible != true) CaptureWorkspaceView.RoutePageKey(args);
         };
     }
     private void ToggleSettings(object? sender, RoutedEventArgs args)
