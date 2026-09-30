@@ -1,6 +1,6 @@
 # V4 · M1 UX 专用验证矩阵与本地开发门禁
 
-> 编写日期：2026-09-30。状态：**验证规范已接通测试与 UX 模式；本轮结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)**。
+> 编写日期：2026-09-30。状态：**测试与 UX 模式已实现，172 个唯一测试及 143 项同轮场景通过；人工待验，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)**。
 > 配套：[V4 执行计划](../roadmap/network-traffic-v4-m1-ux-plan.md)、[V4 专项设计](../design/network-traffic-v4-m1-ux-design.md)。
 > 继承：[M0 专用矩阵](network-traffic-v2-m0-verification-plan.md)、[M1 专用矩阵](network-traffic-v3-m1-verification-plan.md)。
 

@@ -1,6 +1,6 @@
 # V4 · M1 工作台 UX 紧凑化与阅读体验执行计划
 
-> 编写日期：2026-09-30。状态：**V4 实现已接通，自动结果和人工边界见 [2026-09-30 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)**。
+> 编写日期：2026-09-30。状态：**V4 已实现并通过同轮完整 UX 本地开发门禁；H01～H04 人工待验，结果见 [2026-09-30 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)**。
 > 承接：[V3 / M1 执行计划](network-traffic-v3-m1-capture-plan.md)、[M1 当前行为](../reference/network-traffic-m1-runtime.md)、[V3 实施记录](../archive/2026-09-29-v3-m1-implementation.md)。
 > 配套：[V4 专项设计](../design/network-traffic-v4-m1-ux-design.md)、[V4 单元测试、验证矩阵与本地开发门禁](../maintenance/network-traffic-v4-m1-ux-verification-plan.md)。
 
