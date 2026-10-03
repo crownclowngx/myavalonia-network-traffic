@@ -14,8 +14,13 @@ V6 / M3 已实现共享表达式前端、v2 编译/纯规划、独立修订库�
 
 V7 / M4 已接入无规则手工请求、可靠旧快照提取、变量/环境、离线预览、一次发送、取消、模板/历史与双向有界对比。**完整M4未完成**：原始/有效双快照与应用规则依赖M3，600秒混合负载及全部80项/累计359项尚未闭合。`-Mode M4Foundation`验证已实现分项，`-Mode M4`当前明确失败并报告前置缺口；实际命令与结果见[V7实施记录](docs/archive/2026-10-03-v7-m4-implementation.md)。SOLID、朴素模式和中文注释贯穿实现；未使用AIFLOW、Windows CI或发布门禁。
 
+V8 / M5 文档辅助已编写 **V8-01～V8-18 执行方案**，代码和专项门禁尚未实现。首版规划 OpenAPI 3.0.3 JSON 子集、网页链接与人工摘录、纯手工说明、接口关联、更新差异和请求草稿辅助；手工修订独立保留。配套72项新业务场景，完整累计431项仍是验收要求，依赖M3/完整M4闭合。SOLID为首要规定，朴素模式和详细中文注释；仅本地Debug开发验证，不使用AIFLOW、Windows CI或发布门禁。
+
 | 阅读目的 | 文档 |
 | --- | --- |
+| V8-01～18：M5文档辅助的任务、依赖、交付与完成条件 | [V8 / M5 执行计划](docs/roadmap/network-traffic-v8-m5-documentation-plan.md) |
+| 格式子集、来源获取、接口匹配、手工保护、草稿转换与预算 | [V8 文档辅助专项设计](docs/design/network-traffic-v8-m5-documentation-design.md) |
+| 72项新增场景、431项累计要求、单测与门禁正反例 | [V8 M5 专用验证矩阵](docs/maintenance/network-traffic-v8-m5-verification-plan.md) |
 | M4当前能力、限制和资源/安全语义 | [请求调试当前实现](docs/reference/network-traffic-m4-request-debugging.md) |
 | 手工、提取、模板/环境与本地检查 | [M4快速开始](docs/quick-start/network-traffic-m4.md) |
 | V7分项进度、SOLID审阅和实际验证 | [V7实施记录](docs/archive/2026-10-03-v7-m4-implementation.md) |

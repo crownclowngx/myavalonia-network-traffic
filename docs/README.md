@@ -6,10 +6,15 @@
 > 本期完整M2兼容回归通过：316个测试（新增80）、207项同轮场景、445个门禁拒绝检查；这不是完整M3验收。
 > V7 / M4 无规则请求调试已接入，完整M4未完成。`M4Foundation`验证已实现分项，`M4`入口当前拒绝完整通过；80项/累计359项与M3前置仍待闭合，详见[V7实施记录](archive/2026-10-03-v7-m4-implementation.md)。不使用AIFLOW、Windows CI或发布门禁。
 
+> V8 / M5 文档辅助执行方案已编写，代码与专项门禁尚未实现。V8-01～18细化结构化导入、网页/手工说明、关联、修订保护和请求草稿辅助；72项新场景、431项累计要求均未验证，完整验收依赖M3/完整M4闭合。仅本地Debug，不使用AIFLOW、Windows CI或发布门禁。
+
 ## 产品规划与当前状态
 
 | 阅读目的 | 入口 |
 | --- | --- |
+| V8-01～18：M5文档辅助的实现顺序、文件交付与前置边界 | [V8 / M5 执行计划](roadmap/network-traffic-v8-m5-documentation-plan.md) |
+| SOLID、OpenAPI子集、来源/匹配、手工覆盖、草稿和资源契约 | [V8 文档辅助专项设计](design/network-traffic-v8-m5-documentation-design.md) |
+| 72项新场景、431项累计要求、单测分层、门禁自测与人工验收 | [V8 M5 专用验证矩阵](maintenance/network-traffic-v8-m5-verification-plan.md) |
 | 当前可用请求调试、限制与开发命令 | [M4当前实现](reference/network-traffic-m4-request-debugging.md)、[快速开始](quick-start/network-traffic-m4.md)、[合成样例](examples/m4/README.md) |
 | V7-01～18：手工请求、编辑重发、环境/模板、历史与对比 | [V7 / M4 执行计划](roadmap/network-traffic-v7-m4-request-debugging-plan.md) |
 | SOLID、预览一致性、正文完整性、发送/取消、来源和资源所有权 | [V7 请求调试专项设计](design/network-traffic-v7-m4-request-debugging-design.md) |
