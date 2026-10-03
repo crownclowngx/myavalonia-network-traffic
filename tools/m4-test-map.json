@@ -1,0 +1,710 @@
+{
+  "schemaVersion": 1,
+  "scope": "M4Foundation",
+  "tests": [
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Integration.M4ResourceTests.大响应流式消费且正文保存和内存有界",
+      "rows": [
+        "(size: 1073741824)",
+        "(size: 134217728)"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Integration.M4ResourceTests.二十次取消与容器关闭归还正文租约连接任务和调试缓存",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Integration.M4TransportTests.别名自代理拒绝而普通回环服务可用",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Integration.M4TransportTests.错误证书不能因测试根注入而绕过名称检查",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Integration.M4TransportTests.认证挑战与保持方法重定向不隐式重发",
+      "rows": [
+        "(status: 307)",
+        "(status: 308)",
+        "(status: 401)",
+        "(status: 407)"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Integration.M4TransportTests.首事件在结束前可读取消后真正关闭连接",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Integration.M4TransportTests.真实目标协议转义和正文与冻结输入一致",
+      "rows": [
+        "(https: False)",
+        "(https: True)"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Integration.M4TransportTests.重定向和发送后断开都不会产生第二次请求",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestBudgetTests.代理调试与文件共享根预算并发预留不突破上限",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestBudgetTests.文件预算拒绝发生在复制前且失败不占用共享余额",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestComparisonTests.大量差异与长行保持输出有界并响应取消",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestComparisonTests.缺口敏感值编码不同和损坏JSON不宣称全文相同",
+      "rows": [
+        "(kind: \"encoding\")",
+        "(kind: \"invalid-json\")",
+        "(kind: \"metadata\")",
+        "(kind: \"partial\")",
+        "(kind: \"sensitive\")"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestComparisonTests.同时比较请求响应且JSON属性无序数组有序数字不损精度",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestExampleTests.文档样例经真实库校验和离线预览解析",
+      "rows": [
+        "(environment: 0, host: \"a.example.test\")",
+        "(environment: 1, host: \"b.example.test\")"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestExecutionTests.发送意图持久化失败保持未发送并释放后台所有权",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestExecutionTests.敏感请求不进入临时日志或正文文件",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestExecutionTests.收头与正文空闲期限进入超时并保留已知状态",
+      "rows": [
+        "(body: False)",
+        "(body: True)"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestExecutionTests.四个并发独立意图允许但第五个立即拒绝无后台排队",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestExecutionTests.同令牌不能重复接纳取消后释放真实任务和预算",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestExecutionTests.预览失效环境变化和期限都在发送前拒绝",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestExecutionTests.真实执行记录独立来源且不覆盖抓包会话",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestLibraryTests.两页修订冲突与临时写入失败保留旧库",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestLibraryTests.模板保存未解析输入且敏感变量不落盘",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestLibraryTests.损坏与未来库不会被空保存覆盖",
+      "rows": [
+        "(content: \"{\\\"SchemaVersion\\\":999,\\\"Revision\\\":0,\\\"Templates\\\"···)",
+        "(content: \"broken\")"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPersistenceTests.并发历史提交保留所有身份且损坏历史不被覆盖",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPersistenceTests.模板文件资产先于索引持久化并可在新容器校验恢复",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPersistenceTests.删除模板延迟回收在途文件最后租约归还才删除",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPersistenceTests.索引提交失败撤销新固定资产且旧库字节不变",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPersistenceTests.重启历史中断保留调度事实与已知状态且不重发",
+      "rows": [
+        "(dispatch: DispatchStarted)",
+        "(dispatch: NotSent)",
+        "(dispatch: ResponseHeadersReceived)"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPersistenceTests.资产篡改长度相同仍拒绝且中途取消不留下临时文件",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPreparationTests.变量按作用域和上下文单次替换且保留原Query",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPreparationTests.方法保持原值且不产生隐式正文",
+      "rows": [
+        "(method: \"CUSTOM\")",
+        "(method: \"DELETE\")",
+        "(method: \"GET\")",
+        "(method: \"HEAD\")",
+        "(method: \"OPTIONS\")",
+        "(method: \"PATCH\")",
+        "(method: \"POST\")",
+        "(method: \"PUT\")"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPreparationTests.非法或协议保护头不能进入冻结请求",
+      "rows": [
+        "(name: \"Connection\", value: \"close\")",
+        "(name: \"Content-Type\", value: \"text/plain\")",
+        "(name: \"Expect\", value: \"100-continue\")",
+        "(name: \"Host\", value: \"other\")",
+        "(name: \"Proxy-Authorization\", value: \"secret\")",
+        "(name: \"X-Test\", value: \"a\\r\\nb\")"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPreparationTests.敏感标记不可由普通覆盖降级且预览不输出值",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPreparationTests.文件冻结后原文件变化不改变发送且租约防删除",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPreparationTests.无效地址在准备期被拒绝并归还额度",
+      "rows": [
+        "(input: \"file:///tmp/x\")",
+        "(input: \"https://example.test/\\r\\nx\")",
+        "(input: \"https://example.test/#part\")",
+        "(input: \"https://example.test/%zz\")",
+        "(input: \"https://example.test/a b\")",
+        "(input: \"https://user:pass@example.test/\")"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPreparationTests.正文上限与未知规则拒绝不泄漏租约",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPreparationTests.JSON插值不注入结构数字不经浮点转换",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestPreparationTests.JSON严格格式和插值位置被验证",
+      "rows": [
+        "(body: \"﻿{}\")",
+        "(body: \"{\\\"${key}\\\":1}\")",
+        "(body: \"{\\\"x\\\":${number}}\")",
+        "(body: \"{\\\"x\\\":1,}\")",
+        "(body: \"{\\\"x\\\":1,\\\"x\\\":2}\")"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestSnapshotTests.不完整来源或不可靠有效快照阻止提取",
+      "rows": [
+        "(kind: \"encoded\")",
+        "(kind: \"mapped\")",
+        "(kind: \"metadata\")",
+        "(kind: \"partial\")",
+        "(kind: \"unknown-empty\")"
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestSnapshotTests.冻结事实去协议头和身份值同时保留来源修订",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Requests.RequestSnapshotTests.完整二进制大于编辑上限以文件资产提取且源流关闭后仍可读取",
+      "rows": [
+        ""
+      ]
+    },
+    {
+      "method": "NetWorkTrafficPlugin.Tests.Ui.M4RequestUiTests.生产编辑预览发送和结果三视图六种布局",
+      "rows": [
+        "(width: 1200, height: 720, dark: False)",
+        "(width: 1200, height: 720, dark: True)",
+        "(width: 520, height: 420, dark: False)",
+        "(width: 520, height: 420, dark: True)",
+        "(width: 800, height: 600, dark: False)",
+        "(width: 800, height: 600, dark: True)"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "V7-A01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-A02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-A03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-A04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-A05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-A06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-A07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-A08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-E01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-E02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-E03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-E04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-E05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-E06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-E07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-E08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-B01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-B02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-B03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-B04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-B05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-B06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-B07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-B08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-S01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-S02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-S03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-S04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-S05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-S06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-S07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-S08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-X01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-X02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-X03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-X04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-X05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-X06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-X07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-X08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-H01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-H02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-H03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-H04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-H05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-H06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-H07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-H08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-D01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-D02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-D03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-D04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-D05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-D06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-D07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-D08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-U01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-U02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-U03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-U04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-U05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-U06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-U07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-U08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-R01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-R02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-R03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-R04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-R05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-R06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-R07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-R08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-C01",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-C02",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-C03",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-C04",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-C05",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-C06",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-C07",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    },
+    {
+      "id": "V7-C08",
+      "status": "not-accepted",
+      "reason": "完整场景按V7矩阵验收；分项方法通过不等于全场景闭合。"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ using Xunit;
 
 namespace NetWorkTrafficPlugin.Tests.Integration;
 
+[Collection("ProxyProtocol")]
 public sealed class ProxyProtocolTests
 {
     [Theory]

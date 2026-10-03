@@ -4,12 +4,13 @@
 > V5 / M2 DSL 分组已实现，完整M2本地开发门禁通过（236个测试、207项同轮场景、445个拒绝检查）；实际结果与人工未验见 [V5 实施记录](archive/2026-09-30-v5-m2-implementation.md)。
 > V6 / M3 共享前端、v2编译/纯规划、修订库和快照协调基础已实现；实际发送、UI、存档和完整M3门禁受 [V6-02能力缺口](maintenance/network-traffic-v6-body-capability.md)阻断。见 [本期记录](archive/2026-10-03-v6-m3-foundation.md)与 [DSL第四章](dsl/04-rewrite-foundation.md)。产品页面仍使用v1，72/279是未完成的业务场景要求。
 > 本期完整M2兼容回归通过：316个测试（新增80）、207项同轮场景、445个门禁拒绝检查；这不是完整M3验收。
-> V7 / M4 请求调试执行方案已编写，代码未实施；18项任务、80项新增业务场景及完整359项累计要求见下方专用文档。完整M4依赖M3闭合，当前没有M3/M4开发入口；不使用AIFLOW、Windows CI或发布门禁。
+> V7 / M4 无规则请求调试已接入，完整M4未完成。`M4Foundation`验证已实现分项，`M4`入口当前拒绝完整通过；80项/累计359项与M3前置仍待闭合，详见[V7实施记录](archive/2026-10-03-v7-m4-implementation.md)。不使用AIFLOW、Windows CI或发布门禁。
 
 ## 产品规划与当前状态
 
 | 阅读目的 | 入口 |
 | --- | --- |
+| 当前可用请求调试、限制与开发命令 | [M4当前实现](reference/network-traffic-m4-request-debugging.md)、[快速开始](quick-start/network-traffic-m4.md)、[合成样例](examples/m4/README.md) |
 | V7-01～18：手工请求、编辑重发、环境/模板、历史与对比 | [V7 / M4 执行计划](roadmap/network-traffic-v7-m4-request-debugging-plan.md) |
 | SOLID、预览一致性、正文完整性、发送/取消、来源和资源所有权 | [V7 请求调试专项设计](design/network-traffic-v7-m4-request-debugging-design.md) |
 | 80项M4场景、359项累计要求、单测与门禁正反例 | [V7 M4 专用验证矩阵](maintenance/network-traffic-v7-m4-verification-plan.md) |
@@ -41,7 +42,7 @@
 | M1 的 53 项业务场景、单测、UI、故障注入与开发门禁 | [V3 / M1 专用验证矩阵](maintenance/network-traffic-v3-m1-verification-plan.md) |
 | 协议、规则、资源、UI、Host 的分阶段验证 | [专用验证计划](maintenance/network-traffic-verification-plan.md) |
 
-当前源码包含 Titanium 7.0.13 生产适配、共享协调器、双向有界捕获、生产 Document/Tool、内容预览、原生存档、受控协议/资源/UI 测试和本地门禁。HTTP/2 空闲流仅提示，不自动取消；M2 的 DSL 分组已实现，M3仅基础代码已落地、实际接入未完成，M4–M6仍为后续规划。
+当前源码包含 Titanium 7.0.13 生产适配、共享协调器、双向有界捕获、生产 Document/Tool、内容预览、原生存档、受控协议/资源/UI 测试和本地门禁。HTTP/2 空闲流仅提示，不自动取消；M2 的 DSL 分组已实现，M3仅基础代码已落地、实际接入未完成；M4独立无规则部分已接通，完整M4和M5–M6仍待推进。
 正式工程及插件身份保持不变，V3 采用“HTTP 工作台”。V1 是产品方案，V2 是 M0 执行方案，V3 是 M1 执行方案，V4 是现有 M1 的 UX 优化方案，V5 是 M2 DSL 分组方案，V6 是正在实施的 M3 DSL 改写方案，均不是包版本。V4 未启动 M2 DSL；实现与开发自动结果、真实 Host、真实客户端和人工验收分别登记。
 
 DSL 教程、语法手册和设计意图集中放入 `dsl`。规划放入 `roadmap`，专项设计放入 `design`，可复用验证方法放入 `maintenance`。已新增当前行为 `reference`、使用步骤

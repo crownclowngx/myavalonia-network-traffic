@@ -1,13 +1,13 @@
 # HTTP 流量工作台：产品与规划方案
 
 > 对象：`myavalonia-network-traffic` / `myavalonia.plugin.network.traffic`。
-> 编写日期：2026-09-28。方案编号：V1；状态：V1产品规划；V2/M0、V3/M1已实施，V5/M2已实现，V6/M3基础代码已落地但实际接入阻断，M4–M6待实施；人工验收另行登记。
+> 编写日期：2026-09-28。方案编号：V1；状态：V1产品规划；V2/M0、V3/M1已实施，V5/M2已实现，V6/M3基础代码已落地但实际接入阻断，V7/M4无规则独立部分已接通；完整M4与M5–M6待完成，人工验收另行登记。
 > 配套：[能力路线图与里程碑](network-traffic-capability-roadmap.md)、[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
 > 2026-09-29 补充：[V2 / M0 技术基线执行计划](network-traffic-v2-m0-technical-baseline-plan.md)、[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)及[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)已实施；当前行为及结论见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)，本产品方案保持 V1 编号。
 > 同日补充：[V3 / M1 可用抓包执行计划](network-traffic-v3-m1-capture-plan.md)、[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)和[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)已实施，当前行为和 HTTP/2 空闲降级见[M1 说明](../reference/network-traffic-m1-runtime.md)，验证结果见[V3 记录](../archive/2026-09-29-v3-m1-implementation.md)；V3 不改变 V1 文档编号或包版本。
 > 2026-09-30 补充：[V4 / M1 UX 执行计划](network-traffic-v4-m1-ux-plan.md)、[专项设计](../design/network-traffic-v4-m1-ux-design.md)与[专用验证矩阵](../maintenance/network-traffic-v4-m1-ux-verification-plan.md)已接通实现，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)；围绕现有抓包列表、跟随阅读、详情和文件操作优化，不启动 M2，不改写 V1 编号或已有实现结论。
 > 同日补充：[V5 / M2 DSL 分组执行计划](network-traffic-v5-m2-dsl-grouping-plan.md)、[专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)和[专用验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)已完成开发并通过完整M2本地门禁（236个测试、207项场景），实际结果与人工未验见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md)。V5 细化 M2 语言、字段、过滤分组、时间线、修订与保存视图，保持本产品方案 V1 编号；不使用 AIFLOW、Windows CI 或发布门禁。
-> 2026-10-03 补充：[V7 / M4 请求调试执行计划](network-traffic-v7-m4-request-debugging-plan.md)、[专项设计](../design/network-traffic-v7-m4-request-debugging-design.md)和[专用验证矩阵](../maintenance/network-traffic-v7-m4-verification-plan.md)已编写，代码未实施；沿用SOLID首要规定、朴素模式和详细中文注释，只安排本地Debug开发验证，不使用AIFLOW、Windows CI或发布门禁。本产品方案保持V1编号。
+> 2026-10-03 补充：[V7 / M4 请求调试执行计划](network-traffic-v7-m4-request-debugging-plan.md)、[专项设计](../design/network-traffic-v7-m4-request-debugging-design.md)和[专用验证矩阵](../maintenance/network-traffic-v7-m4-verification-plan.md)已开始实施；当前行为见[请求调试说明](../reference/network-traffic-m4-request-debugging.md)，结果见[V7实施记录](../archive/2026-10-03-v7-m4-implementation.md)。沿用SOLID首要规定、朴素模式和详细中文注释，只做本地Debug，不使用AIFLOW、Windows CI或发布门禁。本产品方案保持V1编号。
 
 V1 表示产品方案序号，M0–M6 表示能力里程碑，均不是插件包版本或交付日期。本文件整理本次产品讨论，并补充分阶段设计建议；编写规划不代表已开始实现、已通过验收或已发布。
 
@@ -169,7 +169,7 @@ view "CGate 调用轨迹" {
 
 ## 9. 请求改写与重发
 
-M3 的实施契约以 [V6 专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)为准；语言/纯规划/修订基础已实现，实际代理接入仍受 [V6-02能力缺口](../maintenance/network-traffic-v6-body-capability.md)阻断。首版采用独立 DSL v2 改写程序，同协议 origin 映射、路径/Query/Header 与有界 JSON 修改；固定原始输入求值、首条命中路由、其他写冲突整次拒绝，失败固定 block。改写运行在启动前选择 HTTP/1.1 模式，不承诺固定代理库的原生 h2 跨 authority 改写；普通捕获 h2 保持。以下重发内容由V7细化，仍未实现。
+M3 的实施契约以 [V6 专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)为准；语言/纯规划/修订基础已实现，实际代理接入仍受 [V6-02能力缺口](../maintenance/network-traffic-v6-body-capability.md)阻断。首版采用独立 DSL v2 改写程序，同协议 origin 映射、路径/Query/Header 与有界 JSON 修改；固定原始输入求值、首条命中路由、其他写冲突整次拒绝，失败固定 block。改写运行在启动前选择 HTTP/1.1 模式，不承诺固定代理库的原生 h2 跨 authority 改写；普通捕获 h2 保持。以下重发内容由V7细化；无规则独立部分已接通，规则与双快照闭环仍未完成。
 
 请求改写先支持精确域名条件和目标映射，再扩展条件化路径、Query、Header 和有界 JSON 修改。默认保留未声明修改的业务输入；目标连接、HTTP Host/authority、TLS SNI 与目标证书校验需要共同验证。Cookie、Origin/Referer、签名或身份对环境的依赖单独表达，域名替换不保证业务身份自动跨环境通用。
 

@@ -10,8 +10,11 @@ public sealed class CaptureDiskBudget
     private readonly object _sync = new();
     private readonly long _existing, _sessionLimit, _rootLimit;
     private long _reserved;
-    public CaptureDiskBudget(string root, long sessionLimit, long rootLimit = RootLimit)
+    private readonly ManagedDiskBudget? _shared;
+    private readonly string _root;
+    public CaptureDiskBudget(string root, long sessionLimit, long rootLimit = RootLimit, ManagedDiskBudget? shared = null)
     {
+        _root = Path.GetFullPath(root); _shared = shared;
         Directory.CreateDirectory(root);
         EnsureRegular(root);
         if (sessionLimit < 0 || sessionLimit > 2L << 30 || rootLimit < 0 || rootLimit > RootLimit) throw new ArgumentOutOfRangeException(nameof(sessionLimit));
@@ -22,6 +25,7 @@ public sealed class CaptureDiskBudget
             if (!File.Exists(Path.Combine(directory, ".network-traffic-session"))) continue;
             foreach (var path in Directory.EnumerateFiles(directory)) { EnsureRegular(path); _existing = checked(_existing + new FileInfo(path).Length); }
         }
+        _shared?.Register(_root, _existing);
     }
     public long Reserved { get { lock (_sync) return _reserved; } }
     public int Reserve(int wanted)
@@ -30,10 +34,11 @@ public sealed class CaptureDiskBudget
         {
             if (wanted < 0) throw new ArgumentOutOfRangeException(nameof(wanted));
             var allowed = (int)Math.Max(0, Math.Min(wanted, Math.Min(_sessionLimit - _reserved, _rootLimit - _existing - _reserved)));
+            if (_shared is not null) allowed = _shared.Reserve(_root, allowed);
             _reserved += allowed; return allowed;
         }
     }
-    public void ReleaseReservation(int bytes) { lock (_sync) { if (bytes < 0 || bytes > _reserved) throw new ArgumentOutOfRangeException(nameof(bytes)); _reserved -= bytes; } }
+    public void ReleaseReservation(int bytes) { lock (_sync) { if (bytes < 0 || bytes > _reserved) throw new ArgumentOutOfRangeException(nameof(bytes)); _shared?.Release(_root, bytes); _reserved -= bytes; } }
     public static void EnsureRegular(string path)
     {
         for (var current = Path.GetFullPath(path); !string.IsNullOrEmpty(current); current = Path.GetDirectoryName(current))

@@ -4,7 +4,7 @@ namespace NetWorkTrafficPlugin.Application.Capture;
 
 public enum BodyDirection { Request, Response }
 public enum BodyRepresentation { EncodedEntity, DecodedEntity, Unknown }
-public enum TrafficSource { Captured }
+public enum TrafficSource { Captured, Manual, Replay }
 public sealed record HeaderField(string Name, string Value);
 public sealed record CaptureFailure(string Stage, string Kind, string Message);
 
@@ -31,12 +31,12 @@ public sealed record TrafficRecord(Guid RecordId, Guid SessionId, long Sequence,
 /// <summary>列表只使用短摘要，不为一万条记录各创建正文、JSON 树或图片；详情由 ID 按需读取。</summary>
 public sealed record TrafficSummary(Guid RecordId, Guid SessionId, long Sequence, long Revision,
     DateTimeOffset StartedUtc, string Method, string Host, string Path, int? StatusCode, double ElapsedMilliseconds,
-    long ObservedBytes, long StoredBytes, TransportState Transport, CaptureState Capture, bool MetadataPartial)
+    long ObservedBytes, long StoredBytes, TransportState Transport, CaptureState Capture, bool MetadataPartial, TrafficSource Source = TrafficSource.Captured)
 {
     public string StatusText => StatusCode?.ToString() ?? (Transport == TransportState.Receiving ? "接收中" : "无响应");
     public string SizeText => $"{ObservedBytes:N0} / {StoredBytes:N0} B";
     public string StateText => $"{Transport} / {Capture}" + (MetadataPartial ? " · 元信息不全" : "");
-    public string TimingText => $"#{Sequence} · {StartedUtc.LocalDateTime:HH:mm:ss.fff} · {ElapsedMilliseconds:N0} ms · Captured";
+    public string TimingText => $"#{Sequence} · {StartedUtc.LocalDateTime:HH:mm:ss.fff} · {ElapsedMilliseconds:N0} ms · {Source}";
     // 只为可读性还原路径里的中文；请求和导出继续使用原始 URI。换行等控制字符不进入双行摘要。
     public string DisplayPath => Uri.UnescapeDataString(Path).Replace("\r", "\\r").Replace("\n", "\\n").Replace("\t", "\\t");
     public string CompactTiming => $"{ElapsedMilliseconds:N0} ms";
@@ -96,6 +96,12 @@ public interface ICaptureSession : ICaptureReader
     bool IsArchive { get; }
 }
 
+/// <summary>完整正文的顺序读取能力单独暴露，普通列表和预览无需实现。调用方在冻结租约内使用并释放流。</summary>
+public interface ICaptureBodyStreamReader
+{
+    Task<Stream> OpenBodyAsync(BodyDescriptor body, CancellationToken token);
+}
+
 /// <summary>租约只负责一次归还，不承担停止或删除会话的职责。</summary>
 public sealed class CaptureReadLease(Action release) : IDisposable
 {
@@ -115,9 +121,9 @@ public sealed class CaptureLease(CaptureSnapshot snapshot, TrafficRecord[] recor
 }
 
 /// <summary>每容器一个捕获入口，只发布当前只读数据源；页面关闭不拥有运行停止权。</summary>
-public sealed class CaptureSessionStore
+public sealed class CaptureSessionStore(NetWorkTrafficPlugin.Application.Content.ContentMemoryBudget? contentBudget = null)
 {
-    public NetWorkTrafficPlugin.Application.Content.ContentMemoryBudget ContentBudget { get; } = new();
+    public NetWorkTrafficPlugin.Application.Content.ContentMemoryBudget ContentBudget { get; } = contentBudget ?? new();
     private ICaptureSession? _current;
     public ICaptureSession? Current => Volatile.Read(ref _current);
     public void Publish(ICaptureSession session) => Volatile.Write(ref _current, session);

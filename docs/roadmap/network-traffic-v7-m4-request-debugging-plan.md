@@ -1,10 +1,10 @@
 # V7 · M4 请求调试执行计划
 
-> 编写日期：2026-10-03。状态：**执行方案已编写，M4 代码尚未实施；完整交付依赖 M3 能力闭合**。
+> 编写日期：2026-10-03。状态：**独立无规则请求调试已实施，完整交付尚未闭合**；逐项进度与结果见[实施记录](../archive/2026-10-03-v7-m4-implementation.md)，可用契约见[当前说明](../reference/network-traffic-m4-request-debugging.md)。
 > 承接：[能力路线图](network-traffic-capability-roadmap.md)、[产品方案](network-traffic-product-plan.md)、[V6 基础实施记录](../archive/2026-10-03-v6-m3-foundation.md)。
 > 配套：[V7 请求调试专项设计](../design/network-traffic-v7-m4-request-debugging-design.md)、[V7 单元测试与本地开发门禁矩阵](../maintenance/network-traffic-v7-m4-verification-plan.md)。
 
-本期顺延为 **V7**，执行项编号 **V7-01～V7-18**。V 是方案序号，M4 是能力里程碑；DSL、存档 schema、调试库存储 schema 和插件包版本独立管理。本次交付是可执行的实现文档，不表示已修改业务代码、跑通 M4 或完成发布。
+本期顺延为 **V7**，执行项编号 **V7-01～V7-18**。V 是方案序号，M4 是能力里程碑；DSL、存档 schema、调试库存储 schema 和插件包版本独立管理。本计划保留完整目标，实施分项不自动勾选全部完成；不表示完整M4或发布已通过。
 
 ## 1. 目标与首要规定
 
@@ -20,9 +20,9 @@
 
 优先次序：SOLID 和请求正确性 → 发送边界与完整性 → 资源及寿命 → 可追查结果 → 完整交互 → 编辑便利性。
 
-## 2. 已核对的实现起点
+## 2. 计划编写时核对的实现起点
 
-本次核对 HEAD：`20fbbaf1eeeb974db8c6c72f8e48d9404cae516d`；文档编辑前插件仓库工作树干净。仅阅读现有代码、文档和历史证据，没有重跑 M2/M3 业务验证。实施开始应重新记录 HEAD、dirty、sourceHash、profileHash，不能继承本次或历史记录的通过状态。
+计划编写时核对 HEAD：`20fbbaf1eeeb974db8c6c72f8e48d9404cae516d`；下表是实施前事实，不是当前状态。实施轮以计划提交`91a6a98`为起点，重新记录HEAD、dirty、sourceHash、profileHash；实际结果见专用实施记录，不继承历史通过状态。
 
 | 已有位置 | 当前事实 | V7 接入决定 |
 | --- | --- | --- |
@@ -212,7 +212,7 @@
 | `docs/archive/YYYY-MM-DD-v7-m4-implementation.md` | 开始实施后按真实日期新增，记源码、实际命令、分项进度、取舍、结果及待验 |
 | `docs/archive/YYYY-MM-DD-v7-m4-acceptance.md` | 真实验收发生时新增，分列客户端、Host、物理输入和用户确认 |
 
-尚未产生的文件以上述代码路径登记，不提前放置失效链接。原始 TRX/JSON/PNG 与旧记录不改写；新结果说明承接关系。部署发布文档不因为本期计划而启用其门禁。
+当前说明、快速开始、样例及[实施记录](../archive/2026-10-03-v7-m4-implementation.md)均已创建并进入导航；人工验收记录待真实验收发生后新增。原始 TRX/JSON/PNG 与旧记录不改写；新结果说明承接关系。部署发布文档不因为本期实施而启用门禁。
 
 ## 7. 完成清单
 
@@ -223,4 +223,4 @@
 - [ ] Manual/Replay 来源、历史、模板、对比、资源/取消及恢复语义完整，原记录不变。
 - [ ] M3 依赖真实闭合，80 项新增和359项累计场景同轮验证；J/G/H 分开登记。
 - [ ] 导航、当前契约、快速开始、样例、实施与人工验收记录同步。
-- [ ] 没有使用 AIFLOW、Windows CI 或发布门禁；真实 Host/人工未验时保持里程碑未完成。
+- [x] 没有使用 AIFLOW、Windows CI 或发布门禁；真实 Host/人工未验时保持里程碑未完成。

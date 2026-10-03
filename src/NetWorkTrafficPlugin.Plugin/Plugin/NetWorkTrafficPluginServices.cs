@@ -12,6 +12,9 @@ using NetWorkTrafficPlugin.Application.Rules;
 using NetWorkTrafficPlugin.Infrastructure.Analysis;
 using NetWorkTrafficPlugin.Infrastructure.Rules;
 using NetWorkTrafficPlugin.Features.Analysis;
+using NetWorkTrafficPlugin.Application.Requests;
+using NetWorkTrafficPlugin.Infrastructure.Requests;
+using NetWorkTrafficPlugin.Features.Requests;
 
 namespace NetWorkTrafficPlugin.Plugin;
 
@@ -23,7 +26,13 @@ public static class NetWorkTrafficPluginServices
         ArgumentNullException.ThrowIfNull(services);
         // 每插件容器一个协调器；每次运行才创建第三方代理。Tool/Document 贡献仍由 SDK 注册。
         services.TryAddSingleton<CaptureSessionStore>();
-        services.TryAddSingleton(provider => new ProxySessionCoordinator(() => new TitaniumProxyRuntime(captures: provider.GetRequiredService<CaptureSessionStore>())));
+        services.TryAddSingleton<ManagedDiskBudget>();
+        services.TryAddSingleton(provider => new ProxySessionCoordinator(() =>
+        {
+            // 先登记已有持久资产，代理不能把尚未加载的模板正文当作空闲根额度。
+            _ = provider.GetRequiredService<FileRequestBodyStore>();
+            return new TitaniumProxyRuntime(captures: provider.GetRequiredService<CaptureSessionStore>(), diskBudget: provider.GetRequiredService<ManagedDiskBudget>());
+        }));
         services.TryAddTransient<ProxyPanelModel>();
         services.TryAddSingleton<FileCaptureArchiveStore>();
         services.TryAddSingleton<ICaptureArchive>(p => p.GetRequiredService<FileCaptureArchiveStore>());
@@ -37,6 +46,29 @@ public static class NetWorkTrafficPluginServices
         services.TryAddTransient<AnalysisWorkspace>();
         services.TryAddSingleton<Func<ICaptureSession, IAnalysisSource>>(provider =>
             session => new CaptureAnalysisSource(session, provider.GetRequiredService<CaptureSessionStore>().ContentBudget));
+        // 主动请求与代理分别持有运行寿命；页面结果复用CaptureWorkspace，但绝不发布到真实抓包Current。
+        services.TryAddSingleton(RequestStorageOptions.Default);
+        services.TryAddSingleton<FileRequestBodyStore>(p => new(Path.Combine(p.GetRequiredService<RequestStorageOptions>().Root, "staging"), p.GetRequiredService<ManagedDiskBudget>()));
+        services.TryAddSingleton<IRequestBodyStore>(p => p.GetRequiredService<FileRequestBodyStore>());
+        services.TryAddSingleton<IRequestFileImporter>(p => p.GetRequiredService<FileRequestBodyStore>());
+        services.TryAddSingleton<IRequestLibraryStore>(p => new FileRequestLibraryStore(p.GetRequiredService<RequestStorageOptions>().Root,
+            bodies: p.GetRequiredService<FileRequestBodyStore>()));
+        services.TryAddSingleton<IRequestHistoryStore>(p => new FileRequestHistoryStore(p.GetRequiredService<RequestStorageOptions>().Root));
+        services.TryAddSingleton<IRequestTransport>(p => new HttpRequestTransport(() => p.GetRequiredService<ProxySessionCoordinator>().Status.Runtime?.Port));
+        services.TryAddSingleton<DebugCaptureStore>(p => new(Path.Combine(p.GetRequiredService<RequestStorageOptions>().Root, "capture"), p.GetRequiredService<CaptureSessionStore>().ContentBudget,
+            diskBudget: p.GetRequiredService<ManagedDiskBudget>()));
+        services.TryAddSingleton<IDebugRecordWriter>(p => p.GetRequiredService<DebugCaptureStore>());
+        services.TryAddSingleton<RequestPreparation>(p => new(p.GetRequiredService<CaptureSessionStore>().ContentBudget, p.GetRequiredService<IRequestBodyStore>()));
+        services.TryAddSingleton<RequestExecutionCoordinator>();
+        services.TryAddSingleton<RequestComparisonService>(p => new(p.GetRequiredService<CaptureSessionStore>().ContentBudget));
+        services.TryAddTransient<RequestWorkspace>(p =>
+        {
+            var debug = p.GetRequiredService<DebugCaptureStore>();
+            var results = new CaptureWorkspace(debug.ViewStore, p.GetRequiredService<ICaptureArchive>(), p.GetRequiredService<BoundedImageDecoder>());
+            return new(p.GetRequiredService<RequestPreparation>(), p.GetRequiredService<RequestExecutionCoordinator>(),
+                p.GetRequiredService<IRequestLibraryStore>(), p.GetRequiredService<IRequestFileImporter>(), debug.Session, results,
+                p.GetRequiredService<IRequestHistoryStore>(), p.GetRequiredService<RequestComparisonService>());
+        });
         return services;
     }
 }

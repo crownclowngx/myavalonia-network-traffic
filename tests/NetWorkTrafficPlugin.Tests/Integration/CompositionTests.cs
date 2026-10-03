@@ -17,13 +17,14 @@ public sealed class CompositionTests
     [InlineData(true)]
     public async Task 多页面和工具共享运行且两种容器释放路径回收监听(bool asynchronous)
     {
-        var services = new ServiceCollection().AddNetWorkTrafficPluginServices().AddTransient<MainDocument>()
+        var directory = TemporaryArtifacts.Create();
+        var services = new ServiceCollection().AddSingleton(new NetWorkTrafficPlugin.Infrastructure.Requests.RequestStorageOptions(Path.Combine(directory, "requests")))
+            .AddNetWorkTrafficPluginServices().AddTransient<MainDocument>()
             .AddTransient<ProxyStatusTool>().AddSingleton<NetWorkTrafficPluginLifecycle>().BuildServiceProvider();
         var owner = services.GetRequiredService<ProxySessionCoordinator>();
         Assert.Equal(ProxyState.Stopped, owner.Status.State);
         using var first = services.GetRequiredService<MainDocument>();
         using var second = services.GetRequiredService<MainDocument>();
-        var directory = TemporaryArtifacts.Create();
         first.Proxy.RecordDirectory = directory;
         Assert.NotSame(first.Proxy, second.Proxy);
         await first.Proxy.StartCommand.ExecuteAsync(null);
@@ -59,7 +60,11 @@ public sealed class CompositionTests
         using var occupied = new TcpListener(IPAddress.Loopback, 0);
         occupied.Start();
         var port = ((IPEndPoint)occupied.LocalEndpoint).Port;
-        await using var services = new ServiceCollection().AddNetWorkTrafficPluginServices().BuildServiceProvider();
+        var directory = TemporaryArtifacts.Create();
+        try
+        {
+        await using var services = new ServiceCollection().AddSingleton(new NetWorkTrafficPlugin.Infrastructure.Requests.RequestStorageOptions(directory))
+            .AddNetWorkTrafficPluginServices().BuildServiceProvider();
         var owner = services.GetRequiredService<ProxySessionCoordinator>();
         await Assert.ThrowsAnyAsync<Exception>(() => owner.StartAsync(new(Port: port)));
         Assert.Equal(ProxyState.Faulted, owner.Status.State);
@@ -67,6 +72,8 @@ public sealed class CompositionTests
         await socket.ConnectAsync(IPAddress.Loopback, port);
         await owner.StartAsync(new());
         Assert.Equal(ProxyState.Running, owner.Status.State);
+        }
+        finally { TemporaryArtifacts.Delete(directory); }
     }
 
     [Fact]

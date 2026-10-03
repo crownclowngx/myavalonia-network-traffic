@@ -1,10 +1,12 @@
 # V7 · M4 请求调试专用验证矩阵与本地开发门禁
 
-> 日期：2026-10-03。状态：**验证要求，尚未实现和执行；没有 V7 通过结果**。
+> 日期：2026-10-03。状态：**完整验证要求；独立分项已有实现和测试，80项完整业务验收尚未通过**。实际范围见[实施记录](../archive/2026-10-03-v7-m4-implementation.md)。
 > 对应：[V7-01～18 执行计划](../roadmap/network-traffic-v7-m4-request-debugging-plan.md)、[V7 专项设计](../design/network-traffic-v7-m4-request-debugging-design.md)。
-> 仅使用本地 Debug 开发验证，不使用 AIFLOW、Windows CI 或发布门禁。现有开发入口还没有 M3/M4 模式；M3 真实接入受 [V6-02](network-traffic-v6-body-capability.md)阻断。
+> 仅使用本地 Debug 开发验证，不使用 AIFLOW、Windows CI 或发布门禁。现有`M4Foundation`只检查独立分项，`M4`入口明确拒绝前置缺口；M3 真实接入受 [V6-02](network-traffic-v6-body-capability.md)阻断。
 
 ## 1. 分层、计数和通用断言
+
+当前`m4-test-map.json`登记87条参数行、43个方法，完整80项业务ID全部保留`not-accepted`。`TestM4DevelopmentGate.ps1`的12组25个拒绝反例验证当前分项检查器；下文G01～G12完整验收要求仍需随M3/359项接通补齐，不能宣称已逐条闭合。当前产物为`m4-send.json`、`m4-resource.json`、18张PNG及metadata、普通/资源TRX与汇总；其余拟产物保持待交付。
 
 本矩阵固定 **80 项自动业务场景**：A8 + E8 + B8 + S8 + X8 + H8 + D8 + U8 + R8 + C8。编号完整写作 V7-A01 等；J01～J05 为工程审阅，G01～G12 为门禁自测，H01～H06 为人工验收，均不计入80项业务场景。人工 H 不带 V7 前缀，与历史业务组 V7-H 明确区分。
 
@@ -178,11 +180,11 @@ C08 同时验证核心产品完成点；在 M3 未完成时必须登记未执行
 
 ### 13.1 新增文件和入口
 
-拟新增 `tools/m4-profile.json`、`tools/m4-test-map.json`、`tools/M4DevelopmentChecks.ps1`、`tools/TestM4DevelopmentGate.ps1`，扩展已有 `verify-development.ps1` 的 M4 分支。M3入口/映射/证据要先按V6完成，不能凭空引用不存在的M3脚本。
+已新增 `tools/m4-profile.json`、`tools/m4-test-map.json`、`tools/M4DevelopmentChecks.ps1`、`tools/TestM4DevelopmentGate.ps1`和分项执行脚本。现有 `verify-development.ps1` 的M4Foundation验证已实现分项，M4分支拒绝未满足的完整前置。后续M3入口/映射/证据仍要按V6完成，不能凭空引用不存在的M3脚本。
 
-测试拟放入 `tests/NetWorkTrafficPlugin.Tests/Requests/`、现有 `Integration/`、`Ui/` 和 `Fixtures/`；场景映射在真实方法实现后登记 FullyQualifiedName、参数化行数及执行分组。本次不生成只有空方法/假成功的map。
+当前真实测试已放入 `tests/NetWorkTrafficPlugin.Tests/Requests/`、`Integration/`、`Ui/` 和 `Fixtures/`，分项映射登记43个FullyQualifiedName及87条精确参数行。80项完整业务场景保持独立登记、尚未验收，不生成空方法/假成功映射。
 
-完整入口执行顺序：
+后续完整M4入口的目标执行顺序（当前分项不能代替）：
 
 1. 文档路径/锚点和差异格式检查；建立唯一runId及独立输出目录。
 2. 固定HEAD/dirty、行为sourceHash、文档摘要及全部profileHash；包含生产代码、测试、脚本、锁文件、可执行样例，排除输出目录。
@@ -199,7 +201,7 @@ C08 同时验证核心产品完成点；在 M3 未完成时必须登记未执行
 - 每个场景映射到真实方法及预期参数行数；必须实际执行且所有行Passed。Failed/Skipped/NotExecuted/零测试/缺方法/重复或多余执行身份都阻断。
 - 方法重构要同步map，但不能靠删场景缩小必需列表。必需ID由检查器固定，map不能自我声明“只需这些”。同方法可证明多个场景，需审阅实际断言，不得全映射到一个空成功方法。
 - 每轮检查继承场景并用阶段前缀区分，旧207项、M3的72项、新80项分别报告；方法数与参数行数去重统计，不能相加虚报测试数。
-- 拟产物：`m4-send.json`、`m4-snapshots.json`、`m4-library.json`、`m4-compare.json`、`m4-lifetime.json`、`m4-resource.json`、`m4-layout.json`、18张生产截图及对应metadata、TRX和汇总。尚未实际产生。
+- 完整目标产物：`m4-send.json`、`m4-snapshots.json`、`m4-library.json`、`m4-compare.json`、`m4-lifetime.json`、`m4-resource.json`、`m4-layout.json`、18张生产截图及metadata、TRX和汇总。当前已生成的分项产物见本页开头与实施记录，其余仍待交付。
 - 端点证据含目标/协议/脱敏测试关联、收头次数、Body摘要、发送阶段和计数；规则次数来自生产规划调用，不能写死1。
 - JSON包含schemaVersion、runId、sourceHash、profileHash、时间、观测值及计量单位，类型严格；字符串`"true"`不是布尔true。缺字段与0不同。
 - 图片须解码、尺寸/主题/viewKind校验、摘要匹配、生成时刻属于本轮；只检查文件存在不够。资源证据要求原始采样和profile重算结果一致。

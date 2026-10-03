@@ -15,7 +15,7 @@ namespace NetWorkTrafficPlugin.Infrastructure.Proxy;
 /// 唯一接触 Titanium 的适配器。每次运行创建独立库实例、证书及记录器；请求携带不可变路由，
 /// 不修改全局上游目的地。所有回调只做有界内存工作，磁盘由记录器后台完成。
 /// </summary>
-public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null, CaptureSessionStore? captures = null) : IProxyRuntime
+public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null, CaptureSessionStore? captures = null, ManagedDiskBudget? diskBudget = null) : IProxyRuntime
 {
     private sealed class Observation(Guid id, string method, RouteDecision route, string protocol, long connection, BoundedBodyRecorder.Entry entry)
     {
@@ -71,7 +71,7 @@ public sealed class TitaniumProxyRuntime(ILoggerFactory? diagnostics = null, Cap
             _rootLease = new FileStream(Path.Combine(root, ".capture.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
             if (File.Exists(marker) && (new FileInfo(marker).Length > 16 || File.ReadAllText(marker) != "V3/M1")) throw new IOException("工作根所有权标记冲突。");
             if (!File.Exists(marker)) File.WriteAllText(marker, "V3/M1");
-            disk = new(root, options.EffectiveLimits.DiskBytes);
+            disk = new(root, options.EffectiveLimits.DiskBytes, shared: diskBudget);
         }
         _recorder = new(options.EffectiveLimits, new FileBodyRecordSink(directory ?? Path.GetTempPath(), disk is not null), directory, disk);
         if (disk is not null)

@@ -1,6 +1,10 @@
-param([ValidateSet('Docs', 'M0', 'M1', 'UX', 'M2')][string] $Mode = 'M0')
+param([ValidateSet('Docs', 'M0', 'M1', 'UX', 'M2', 'M4Foundation', 'M4')][string] $Mode = 'M0')
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+if ($Mode -in @('M4Foundation', 'M4')) {
+    & (Join-Path $PSScriptRoot 'verify-m4-development.ps1') -Mode $Mode
+    exit $LASTEXITCODE
+}
 . (Join-Path $PSScriptRoot 'DevelopmentChecks.ps1')
 . (Join-Path $PSScriptRoot 'M1DevelopmentChecks.ps1')
 . (Join-Path $PSScriptRoot 'UXDevelopmentChecks.ps1')
@@ -62,7 +66,7 @@ try {
         $env:NETWORK_TRAFFIC_M2_PROFILE_HASH = $report.m2ProfileHash
         $ordinaryStarted = [DateTimeOffset]::UtcNow
         Run-Step 'ordinary-tests' 'dotnet' @('test', 'tests/NetWorkTrafficPlugin.Tests', '-c', 'Debug', '--no-build', '--no-restore',
-            '--filter', 'Category!=ResourceProbe&Category!=M1ResourceProbe&Category!=NativeUiProbe&Category!=M2ResourceProbe', '--logger', 'trx;LogFileName=ordinary.trx', '--results-directory', $directory) $(if ($Mode -in @('UX','M2')) { 900 } else { 600 })
+            '--filter', 'Category!=ResourceProbe&Category!=M1ResourceProbe&Category!=NativeUiProbe&Category!=M2ResourceProbe&Category!=M4ResourceProbe', '--logger', 'trx;LogFileName=ordinary.trx', '--results-directory', $directory) $(if ($Mode -in @('UX','M2')) { 900 } else { 600 })
         $ordinary = @(Read-CheckedTrx (Join-Path $directory 'ordinary.trx') $ordinaryStarted)
         $protocol = Read-CheckedEvidence (Join-Path $directory 'protocol-probes.json') $runId $sourceHash $ordinaryStarted
         $stream = Read-CheckedEvidence (Join-Path $directory 'stream-probes.json') $runId $sourceHash $ordinaryStarted

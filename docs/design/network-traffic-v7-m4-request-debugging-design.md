@@ -1,7 +1,7 @@
 # V7 · M4 请求调试专项设计
 
-> 日期：2026-10-03。状态：**目标设计，尚未实现**。配套：[执行计划](../roadmap/network-traffic-v7-m4-request-debugging-plan.md)、[验证矩阵](../maintenance/network-traffic-v7-m4-verification-plan.md)。
-> M3 生产改写仍受 [V6-02 能力缺口](../maintenance/network-traffic-v6-body-capability.md)阻断；本文不改变该事实，也不证明主动发送适配器已通过探针。
+> 日期：2026-10-03。状态：**完整目标设计；独立无规则部分已实现，未全量闭合**。配套：[执行计划](../roadmap/network-traffic-v7-m4-request-debugging-plan.md)、[验证矩阵](../maintenance/network-traffic-v7-m4-verification-plan.md)、[当前实现](../reference/network-traffic-m4-request-debugging.md)。
+> M3 生产改写仍受 [V6-02 能力缺口](../maintenance/network-traffic-v6-body-capability.md)阻断；主动发送探针和实际差距单列在[实施记录](../archive/2026-10-03-v7-m4-implementation.md)，不据此推导M3可用。
 
 ## 1. SOLID 与朴素设计
 

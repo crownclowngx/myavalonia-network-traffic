@@ -10,7 +10,7 @@ namespace NetWorkTrafficPlugin.Infrastructure.Capture;
 /// 活动记录最多二十条，已结束记录保留短元信息；完整头缓存按字节淘汰，再按日志偏移读取。
 /// 正文仍由共享记录器落盘，预览与正文磁盘额度互不等待。
 /// </summary>
-public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
+public sealed class LiveCaptureSession : ICaptureSession, ICaptureBodyStreamReader, IAsyncDisposable
 {
     private sealed class Entry(TrafficRecord record, BoundedBodyRecorder.Entry request, BoundedBodyRecorder.Entry response)
     {
@@ -46,18 +46,20 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
         _journal = new(directory, budget);
     }
     public Guid Begin(Guid id, string method, RouteDecision route, string protocol, HeaderField[] headers, long? expected,
-        CaptureMode mode, BoundedBodyRecorder.Entry response, bool requiresRequestTerminator = false)
+        CaptureMode mode, BoundedBodyRecorder.Entry response, bool requiresRequestTerminator = false,
+        TrafficSource source = TrafficSource.Captured, Guid? originRecordId = null, bool metadataPartial = false)
     {
         lock (_sync)
         {
             var requestId = Guid.NewGuid();
             var request = _recorder.Begin(requestId, expected, mode);
             var bounded = BoundHeaders(headers, out var partial);
-            var record = new TrafficRecord(id, SessionId, ++_sequence, ++_revision, TrafficSource.Captured,
+            partial |= metadataPartial;
+            var record = new TrafficRecord(id, SessionId, ++_sequence, ++_revision, source,
                 DateTimeOffset.UtcNow, null, 0, method, route.OriginalUri, route.EffectiveUri, protocol, null, null,
                 bounded, [], BodyDescriptor.Empty(requestId, BodyDirection.Request) with
                 { ContentType = Header(bounded, "Content-Type"), ContentEncoding = Header(bounded, "Content-Encoding") },
-                BodyDescriptor.Empty(id, BodyDirection.Response), partial, null);
+                BodyDescriptor.Empty(id, BodyDirection.Response), partial, null, originRecordId);
             var entry = new Entry(record, request, response) { Cost = 512 + 2L * (route.OriginalUri.Length + route.EffectiveUri.Length), RequiresRequestTerminator = requiresRequestTerminator };
             _entries.Add(id, entry); _summaryBytes += entry.Cost;
             if (!_journal.TryAppend(Current(entry))) entry.Record = record with { MetadataPartial = true };
@@ -165,7 +167,7 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
         return new(record.RecordId, record.SessionId, record.Sequence, record.Revision, record.StartedUtc, record.Method,
             uri?.Host ?? "未知", path.Length > 180 ? path[..180] + "…" : path, record.StatusCode, record.ElapsedMilliseconds,
             record.RequestBody.ObservedBytes + record.ResponseBody.ObservedBytes, record.RequestBody.CommittedBytes + record.ResponseBody.CommittedBytes,
-            record.ResponseBody.Transport, record.ResponseBody.Capture, record.MetadataPartial);
+            record.ResponseBody.Transport, record.ResponseBody.Capture, record.MetadataPartial, record.Source);
     }
     public CaptureSnapshot Snapshot()
     {
@@ -215,6 +217,7 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
         using var lease = AcquireReadLease();
         return await CaptureBodyReader.ReadAsync(_directory, body, maximumBytes, token).ConfigureAwait(false);
     }
+    public Task<Stream> OpenBodyAsync(BodyDescriptor body, CancellationToken token) => CaptureBodyReader.OpenAsync(_directory, body, token);
     public async Task<CaptureLease> FreezeAsync(CancellationToken token)
     {
         var lease = AcquireReadLease();
@@ -287,6 +290,18 @@ public sealed class LiveCaptureSession : ICaptureSession, IAsyncDisposable
 
 internal static class CaptureBodyReader
 {
+    public static Task<Stream> OpenAsync(string root, BodyDescriptor body, CancellationToken token)
+    {
+        token.ThrowIfCancellationRequested();
+        if (body.FilePath is null) throw new IOException("完整正文文件不存在。");
+        var path = Path.GetFullPath(body.FilePath);
+        if (!path.StartsWith(Path.GetFullPath(root).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+            throw new IOException("正文路径超出会话。");
+        CaptureDiskBudget.EnsureRegular(path);
+        var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous | FileOptions.SequentialScan);
+        if (file.Length != body.CommittedBytes) { file.Dispose(); throw new IOException("完整正文长度与冻结事实不一致。"); }
+        return Task.FromResult<Stream>(file);
+    }
     public static async Task<byte[]> ReadAsync(string root, BodyDescriptor body, int maximumBytes, CancellationToken token)
     {
         if (maximumBytes is < 0 or > 4194304) throw new ArgumentOutOfRangeException(nameof(maximumBytes));

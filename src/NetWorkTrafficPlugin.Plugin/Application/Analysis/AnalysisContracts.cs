@@ -18,7 +18,8 @@ public abstract class AnalysisSnapshot(CaptureSnapshot metadata, IReadOnlyList<T
     public CaptureSnapshot Metadata { get; } = metadata;
     public IReadOnlyList<TrafficRecord> Records { get; } = records;
     public DateTimeOffset Anchor { get; } = anchor;
-    public virtual string Source(TrafficRecord record) => record.Source == TrafficSource.Captured ? "capture" : "unknown";
+    public virtual string Source(TrafficRecord record) => record.Source switch
+    { TrafficSource.Captured => "capture", TrafficSource.Manual => "manual", TrafficSource.Replay => "replay", _ => "unknown" };
     public abstract IFieldSource OpenFields(TrafficRecord record, EvaluationBudget budget);
     public abstract void Dispose();
 }

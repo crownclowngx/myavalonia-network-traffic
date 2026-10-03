@@ -14,6 +14,7 @@ namespace NetWorkTrafficPlugin.Tests.Integration;
 /// V6-02 先验证真实库的公开读取接口。这里的固定候选只证明底层能力，后续必须由 DSL 规则链重跑业务场景。
 /// 端点计数在读取全部正文之前增加，因此能发现“已经发头、只是尚未发完 Body”的假零发送。
 /// </summary>
+[Collection("ProxyProtocol")]
 public sealed class M3BodyCapabilityTests
 {
     [Theory]

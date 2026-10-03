@@ -11,7 +11,7 @@
 
 2026-09-30 补充：[V6 / M3 专用矩阵](network-traffic-v6-m3-verification-plan.md)细化 T12～T15：72 项业务自动场景、4 项工程审查、12 组门禁自测及 4 项人工验收，配套[V6 执行计划](../roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md)与[专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)。2026-10-03已完成语言/纯规划/修订基础及缺口探针，实际发送与 `-Mode M3` 仍未接通，详见 [本期记录](../archive/2026-10-03-v6-m3-foundation.md)；未来完整入口要求同轮继承 207 项前置，共 279 项，不代表已经通过。M3 仅安排本地 Debug 开发验证，不使用 AIFLOW、Windows CI 或发布门禁。
 
-2026-10-03 补充：[V7 / M4 专用矩阵](network-traffic-v7-m4-verification-plan.md)细化T16～T19，定义80项新增业务场景、5项工程审阅、12组门禁自测及6项人工验收；配套[V7执行计划](../roadmap/network-traffic-v7-m4-request-debugging-plan.md)和[专项设计](../design/network-traffic-v7-m4-request-debugging-design.md)。代码及M4入口尚未实现，完整门禁须在M3闭合后同轮覆盖359项（207+72+80）；缺口复现通过不算M3能力可用。只安排本地Debug开发验证，不使用AIFLOW、Windows CI或发布门禁。
+2026-10-03 补充：[V7 / M4 专用矩阵](network-traffic-v7-m4-verification-plan.md)细化T16～T19，定义80项新增业务场景、5项工程审阅、12组门禁自测及6项人工验收；配套[V7执行计划](../roadmap/network-traffic-v7-m4-request-debugging-plan.md)和[专项设计](../design/network-traffic-v7-m4-request-debugging-design.md)。无规则独立代码与`M4Foundation`分项门禁已接通，结果见[V7实施记录](../archive/2026-10-03-v7-m4-implementation.md)。完整`M4`入口当前明确失败，须在M3闭合后同轮覆盖359项（207+72+80）；缺口复现通过不算M3能力可用。只做本地Debug，不使用AIFLOW、Windows CI或发布门禁。
 
 | 层次 | 验证内容 | 不能替代的结论 |
 | --- | --- | --- |

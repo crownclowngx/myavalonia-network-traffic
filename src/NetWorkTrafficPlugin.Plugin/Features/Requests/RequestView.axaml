@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:vm="using:NetWorkTrafficPlugin.Features.Requests" xmlns:capture="using:NetWorkTrafficPlugin.Features.Capture"
+ x:Class="NetWorkTrafficPlugin.Features.Requests.RequestView" x:DataType="vm:RequestWorkspace">
+ <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="8" RowSpacing="6">
+  <Grid ColumnDefinitions="90,*" ColumnSpacing="6">
+   <ComboBox x:Name="MethodInput" ItemsSource="{Binding Methods}" SelectedItem="{Binding Method}" AutomationProperties.Name="请求方法"/>
+   <TextBox x:Name="AddressInput" Grid.Column="1" Text="{Binding Address}" MaxLength="8192" PlaceholderText="绝对URL或 ${baseUrl}/路径" AutomationProperties.Name="请求地址"/>
+  </Grid>
+  <WrapPanel Grid.Row="1">
+   <Button Content="预览最终请求" Command="{Binding PreviewCommand}"/>
+   <Button x:Name="SendButton" Content="发送一次" Command="{Binding SendCommand}"/>
+   <Button Content="取消本次请求" Command="{Binding CancelCommand}"/>
+   <Button Content="对比来源结果" Command="{Binding CompareCommand}"/>
+   <TextBlock Text="规则：不应用（M3尚未接通）" Margin="8,4"/>
+  </WrapPanel>
+  <TabControl Grid.Row="2">
+   <TabItem Header="编辑">
+    <ScrollViewer><StackPanel Spacing="6" Margin="4">
+     <TextBlock Text="环境（不选则只使用本次变量）"/>
+     <ComboBox ItemsSource="{Binding Environments}" SelectedItem="{Binding SelectedEnvironment}" HorizontalAlignment="Stretch" AutomationProperties.Name="请求环境"/>
+     <TextBlock Text="Query：每行原始 name=value；重复键、转义保留。行首 # 加空格可禁用，自动同步URL。" TextWrapping="Wrap"/>
+     <TextBox Text="{Binding QueryText}" MaxLength="8192" AcceptsReturn="True" MinHeight="60" AutomationProperties.Name="查询参数"/>
+     <TextBlock Text="Header：每行 Name: Value；行首 # 加空格可禁用；身份值建议使用变量" TextWrapping="Wrap"/>
+     <TextBox x:Name="HeadersInput" Text="{Binding HeadersText}" MaxLength="65536" AcceptsReturn="True" MinHeight="70" AutomationProperties.Name="请求头"/>
+     <TextBlock Text="本次变量：每行 name=value；敏感值以 !name=value 标记"/>
+     <CheckBox Content="显示本次变量（仅当前页面）" IsChecked="{Binding RevealVariables}"/>
+     <TextBox Text="{Binding VariablesText}" MaxLength="262144" PasswordChar="{Binding VariablesMask}" AcceptsReturn="True" MinHeight="60" AutomationProperties.Name="本次变量"/>
+     <TextBlock Text="正文类型：None无正文 / Text文本 / Json / Form表单 / RawFile原始文件" TextWrapping="Wrap"/>
+     <ComboBox ItemsSource="{Binding BodyKinds}" SelectedItem="{Binding BodyKind}" AutomationProperties.Name="正文模式"/>
+     <TextBox x:Name="BodyInput" Text="{Binding BodyText}" MaxLength="262144" AcceptsReturn="True" MinHeight="140" PlaceholderText="文本或JSON；Form模式每行 name=value" AutomationProperties.Name="请求正文"/>
+     <WrapPanel><Button Content="选择完整原始文件" Click="SelectFile"/><TextBox Width="220" Text="{Binding MediaType}" PlaceholderText="文件Content-Type" AutomationProperties.Name="文件媒体类型"/></WrapPanel>
+    </StackPanel></ScrollViewer>
+   </TabItem>
+   <TabItem Header="预览"><TextBox Text="{Binding PreviewText}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/></TabItem>
+   <TabItem Header="结果与历史"><capture:CaptureView DataContext="{Binding Results}"/></TabItem>
+   <TabItem Header="对比"><TextBox Text="{Binding ComparisonText}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/></TabItem>
+   <TabItem Header="执行摘要"><Grid RowDefinitions="Auto,*"><TextBlock Text="重新加载模板与环境也会刷新历史；未保存的正文不能在重启后恢复。" TextWrapping="Wrap"/><ListBox Grid.Row="1" ItemsSource="{Binding History}"/></Grid></TabItem>
+   <TabItem Header="模板与环境">
+    <ScrollViewer><StackPanel Spacing="8" Margin="4">
+     <Button Content="加载模板与环境" Command="{Binding ReloadCommand}"/>
+     <TextBox Text="{Binding TemplateName}" MaxLength="128" PlaceholderText="模板名称" AutomationProperties.Name="模板名称"/>
+     <Button Content="另存当前模板" Command="{Binding SaveTemplateCommand}"/>
+     <ComboBox ItemsSource="{Binding Templates}" SelectedItem="{Binding SelectedTemplate}" HorizontalAlignment="Stretch" AutomationProperties.Name="模板选择"/>
+     <Button Content="载入选中模板" Command="{Binding LoadTemplateCommand}"/>
+     <WrapPanel><Button Content="更新选中模板" Command="{Binding UpdateTemplateCommand}"/><Button Content="删除选中模板" Command="{Binding DeleteTemplateCommand}"/></WrapPanel>
+     <TextBlock Text="模板保存未解析输入；敏感变量下次重新填写。打开模板不会发送请求。" TextWrapping="Wrap"/>
+     <TextBox Text="{Binding EnvironmentName}" MaxLength="128" PlaceholderText="环境名称" AutomationProperties.Name="环境名称"/>
+     <TextBox Text="{Binding EnvironmentText}" MaxLength="262144" AcceptsReturn="True" MinHeight="90" AutomationProperties.Name="普通环境变量"/>
+     <Button Content="另存普通环境" Command="{Binding SaveEnvironmentCommand}"/>
+     <WrapPanel><Button Content="更新所选环境" Command="{Binding UpdateEnvironmentCommand}"/><Button Content="删除所选环境" Command="{Binding DeleteEnvironmentCommand}"/></WrapPanel>
+    </StackPanel></ScrollViewer>
+   </TabItem>
+  </TabControl>
+  <TextBlock Grid.Row="3" Text="{Binding Status}" TextWrapping="Wrap" MaxHeight="70"/>
+ </Grid>
+</UserControl>

@@ -23,7 +23,7 @@ public partial class MainView : UserControl
         }, RoutingStrategies.Tunnel);
         KeyDown += (_, args) =>
         {
-            if (!SettingsOverlay.IsVisible && (DataContext as MainDocument)?.AnalysisVisible != true) CaptureWorkspaceView.RoutePageKey(args);
+            if (!SettingsOverlay.IsVisible && (DataContext as MainDocument)?.ShowCapture == true) CaptureWorkspaceView.RoutePageKey(args);
         };
     }
     private void ToggleSettings(object? sender, RoutedEventArgs args)
@@ -34,6 +34,9 @@ public partial class MainView : UserControl
     private void SaveSnapshot(object? sender, RoutedEventArgs args) => (DataContext as MainDocument)?.Capture?.BeginFileOperation(WorkspaceFileKind.Save);
     private void OpenArchive(object? sender, RoutedEventArgs args) => (DataContext as MainDocument)?.Capture?.BeginFileOperation(WorkspaceFileKind.Open);
     private void RecoverArchive(object? sender, RoutedEventArgs args) => (DataContext as MainDocument)?.Capture?.BeginFileOperation(WorkspaceFileKind.Recover);
+    private void OpenRequests(object? sender, RoutedEventArgs args) { if (DataContext is MainDocument document) document.RequestsVisible = document.HasRequests; }
+    private void OpenCapture(object? sender, RoutedEventArgs args) { if (DataContext is MainDocument document) { document.RequestsVisible = false; document.AnalysisVisible = false; } }
+    private async void ExtractRequest(object? sender, RoutedEventArgs args) { if (DataContext is MainDocument document) await document.ExtractDebugRequestAsync(); }
     private async void CopyAddress(object? sender, RoutedEventArgs args)
     {
         if (DataContext is not MainDocument document) return;

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "scope": "M4Foundation",
+  "fullM4Implemented": false,
+  "foundationTests": 87,
+  "fullBusinessScenarios": 80,
+  "fullCumulativeScenarios": 359,
+  "bodyBytes": 262144,
+  "fileBytes": 67108864,
+  "stagingBytes": 268435456,
+  "sharedRootBytes": 4294967296,
+  "sharedContentBytes": 33554432,
+  "activeRequests": 4,
+  "previewSeconds": 120,
+  "headerSeconds": 30,
+  "idleSeconds": 60,
+  "lifetimeSeconds": 1800,
+  "downloadSizes": [134217728, 1073741824],
+  "maximumPrivateDelta": 268435456,
+  "stopCycles": 20,
+  "maximumStopMilliseconds": 5000,
+  "layouts": [{"width":1200,"height":720},{"width":800,"height":600},{"width":520,"height":420}],
+  "themes": ["light", "dark"],
+  "views": ["editor", "preview", "result"],
+  "pending": [
+    "M3真实改写、原始/有效双快照及72项前置场景",
+    "M4全部80项场景逐项验收与359项同轮累计门禁",
+    "600秒捕获20路加主动4路混合负载及UI测量",
+    "草稿与库投影容器16MiB总额的完整压力验证",
+    "真实Host、物理输入、真实客户端与H01至H06人工验收"
+  ]
+}

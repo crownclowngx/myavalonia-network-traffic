@@ -1,5 +1,5 @@
 <UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
- xmlns:vm="using:NetWorkTrafficPlugin.Features.Main" xmlns:proxy="using:NetWorkTrafficPlugin.Features.ProxyStatus" xmlns:capture="using:NetWorkTrafficPlugin.Features.Capture" xmlns:analysis="using:NetWorkTrafficPlugin.Features.Analysis"
+ xmlns:vm="using:NetWorkTrafficPlugin.Features.Main" xmlns:proxy="using:NetWorkTrafficPlugin.Features.ProxyStatus" xmlns:capture="using:NetWorkTrafficPlugin.Features.Capture" xmlns:analysis="using:NetWorkTrafficPlugin.Features.Analysis" xmlns:requests="using:NetWorkTrafficPlugin.Features.Requests"
  x:Class="NetWorkTrafficPlugin.Features.Main.MainView" x:DataType="vm:MainDocument">
  <UserControl.Styles><Style Selector="Button"><Setter Property="MinHeight" Value="28"/><Setter Property="Padding" Value="8,3"/></Style></UserControl.Styles>
  <Grid RowDefinitions="Auto,*">
@@ -12,13 +12,14 @@
    <Button Grid.Column="1" Content="{Binding Proxy.Address}" Click="CopyAddress" IsEnabled="{Binding Proxy.HasAddress}" HorizontalAlignment="Left" ToolTip.Tip="复制实际代理地址"/>
    <Button x:Name="SaveSnapshotButton" Grid.Column="2" Content="保存快照" Click="SaveSnapshot" ToolTip.Tip="保存当前会话仍保留的全部记录"/>
    <Button x:Name="OpenButton" Grid.Column="3" Content="打开 ▾" AutomationProperties.Name="打开或恢复记录">
-    <Button.Flyout><MenuFlyout><MenuItem Header="打开只读存档" Click="OpenArchive"/><MenuItem Header="恢复工作日志" Click="RecoverArchive"/></MenuFlyout></Button.Flyout>
+    <Button.Flyout><MenuFlyout><MenuItem Header="打开只读存档" Click="OpenArchive"/><MenuItem Header="恢复工作日志" Click="RecoverArchive"/><Separator/><MenuItem Header="打开请求调试" Click="OpenRequests" IsEnabled="{Binding HasRequests}"/><MenuItem Header="提取选中请求到调试" Click="ExtractRequest" IsEnabled="{Binding HasRequests}"/><MenuItem Header="返回捕获列表" Click="OpenCapture"/></MenuFlyout></Button.Flyout>
    </Button>
    <Button x:Name="SettingsButton" Grid.Column="4" Content="设置" Click="ToggleSettings"/>
    <ToggleButton Grid.Column="5" Content="分组" IsChecked="{Binding AnalysisVisible}" IsVisible="{Binding HasAnalysis}" AutomationProperties.Name="请求与DSL分组切换"/>
   </Grid>
-  <Grid Grid.Row="1" IsVisible="{Binding !AnalysisVisible}"><capture:CaptureView x:Name="CaptureWorkspaceView" DataContext="{Binding Capture}"/></Grid>
+  <Grid Grid.Row="1" IsVisible="{Binding ShowCapture}"><capture:CaptureView x:Name="CaptureWorkspaceView" DataContext="{Binding Capture}"/></Grid>
   <Grid Grid.Row="1" IsVisible="{Binding AnalysisVisible}"><analysis:AnalysisView x:Name="AnalysisWorkspaceView" DataContext="{Binding Analysis}"/></Grid>
+  <Grid Grid.Row="1" IsVisible="{Binding RequestsVisible}"><requests:RequestView x:Name="RequestWorkspaceView" DataContext="{Binding Requests}"/></Grid>
   <Border x:Name="SettingsOverlay" Grid.Row="1" IsVisible="False" HorizontalAlignment="Right" Width="400" Margin="8" Padding="12" Background="{DynamicResource SystemControlBackgroundAltHighBrush}" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1">
    <Grid RowDefinitions="Auto,*" RowSpacing="8">
     <Grid ColumnDefinitions="*,Auto"><TextBlock Text="代理设置与接入" FontWeight="SemiBold"/><Button Grid.Column="1" Content="关闭" Click="ToggleSettings"/></Grid>

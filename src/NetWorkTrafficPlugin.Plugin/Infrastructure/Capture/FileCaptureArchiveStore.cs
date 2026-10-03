@@ -287,7 +287,7 @@ public sealed class FileCaptureArchiveStore(Action<string>? checkpoint = null) :
     public void Dispose() => DisposeAsync().AsTask().GetAwaiter().GetResult();
 }
 
-internal sealed class ArchiveCaptureSession(string directory, ArchiveManifest manifest, TrafficRecord[] records, string? diagnostic) : ICaptureSession
+internal sealed class ArchiveCaptureSession(string directory, ArchiveManifest manifest, TrafficRecord[] records, string? diagnostic) : ICaptureSession, ICaptureBodyStreamReader
 {
     public IDisposable AcquireReadLease() => new CaptureReadLease(() => { });
     public bool IsArchive => true;
@@ -300,6 +300,7 @@ internal sealed class ArchiveCaptureSession(string directory, ArchiveManifest ma
         return (query.NewestFirst ? selected.OrderByDescending(r => r.StartedUtc).ThenByDescending(r => r.Sequence) : selected.OrderBy(r => r.StartedUtc).ThenBy(r => r.Sequence)).Select(LiveCaptureSession.Summary).ToArray();
     }, token);
     public Task<byte[]> ReadBodyAsync(BodyDescriptor body, int maximumBytes, CancellationToken token) => CaptureBodyReader.ReadAsync(directory, body, maximumBytes, token);
+    public Task<Stream> OpenBodyAsync(BodyDescriptor body, CancellationToken token) => CaptureBodyReader.OpenAsync(directory, body, token);
     public StreamPreview? Stream(Guid id) => null;
     public Task<CaptureLease> FreezeAsync(CancellationToken token) { token.ThrowIfCancellationRequested(); return Task.FromResult(new CaptureLease(Snapshot(), records.ToArray(), () => { })); }
 }

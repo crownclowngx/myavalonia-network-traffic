@@ -6,6 +6,7 @@ using NetWorkTrafficPlugin.Features.Capture;
 using NetWorkTrafficPlugin.Features.Analysis;
 using NetWorkTrafficPlugin.Application.Analysis;
 using NetWorkTrafficPlugin.Application.Capture;
+using NetWorkTrafficPlugin.Features.Requests;
 
 namespace NetWorkTrafficPlugin.Features.Main;
 
@@ -18,16 +19,31 @@ public sealed partial class MainDocument :
     private ICaptureSession? _analysisSession;
     private IAnalysisSource? _analysisSource;
     public MainDocument(ProxyPanelModel proxy, CaptureWorkspace? capture = null, AnalysisWorkspace? analysis = null,
-        Func<ICaptureSession, IAnalysisSource>? analysisFactory = null)
+        Func<ICaptureSession, IAnalysisSource>? analysisFactory = null, RequestWorkspace? requests = null)
     {
-        Proxy = proxy; Capture = capture; Analysis = analysis; _analysisFactory = analysisFactory;
+        Proxy = proxy; Capture = capture; Analysis = analysis; _analysisFactory = analysisFactory; Requests = requests;
         if (analysis is not null) analysis.OpenRequest += OpenAnalyzedRequest;
     }
     public ProxyPanelModel Proxy { get; }
     public CaptureWorkspace? Capture { get; }
     public AnalysisWorkspace? Analysis { get; }
+    public RequestWorkspace? Requests { get; }
+    public bool HasRequests => Requests is not null;
     public bool HasAnalysis => Analysis is not null;
-    [ObservableProperty] private bool _analysisVisible;
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(ShowCapture))] private bool _analysisVisible;
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(ShowCapture))] private bool _requestsVisible;
+    public bool ShowCapture => !AnalysisVisible && !RequestsVisible;
+    partial void OnAnalysisVisibleChanged(bool value) { if (value) RequestsVisible = false; }
+    partial void OnRequestsVisibleChanged(bool value) { if (value) AnalysisVisible = false; }
+    public async Task ExtractDebugRequestAsync()
+    {
+        if (Requests is null) return;
+        var source = AnalysisVisible ? _analysisSession : Capture?.Session;
+        var id = AnalysisVisible ? Analysis?.SelectedRequest?.RecordId : Capture?.Selected?.RecordId;
+        RequestsVisible = true;
+        if (source is null || id is null) { Requests.Status = "请先在捕获列表或分组时间线选择一条请求。"; return; }
+        await Requests.ExtractAsync(source, id.Value);
+    }
     public void SyncAnalysisSource()
     {
         if (Analysis is null || _analysisFactory is null) return;
@@ -47,7 +63,7 @@ public sealed partial class MainDocument :
         catch (Exception ex) when (ex is IOException or OperationCanceledException)
         { if (Analysis is not null) Analysis.Status = "无法读取原请求：" + ex.GetType().Name; }
     }
-    public void Dispose() { Analysis?.Dispose(); Capture?.Dispose(); Proxy.Dispose(); }
+    public void Dispose() { Requests?.Dispose(); Analysis?.Dispose(); Capture?.Dispose(); Proxy.Dispose(); }
     private DocumentPresentationState _presentation = new("HTTP 工作台");
     private int _workbenchMessageApplied;
 

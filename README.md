@@ -1,6 +1,6 @@
 # NetWorkTrafficPlugin
 
-HTTP/HTTPS 流量工作台插件，支持 DSL 字段提取与分组、调用时间线；后续规划请求改写、手工请求和编辑重发。
+HTTP/HTTPS 流量工作台插件，支持 DSL 字段提取与分组、调用时间线，以及无规则手工请求调试；完整规则改写与双快照重发仍待接通。
 当前已实现 V2 / M0 代理技术基线、V3 / M1 抓包工作台与 V5 / M2 DSL 分组，显示名称为“HTTP 工作台”。真实 Host、真实客户端及人工验收待执行，自动结果见专用实施记录。
 M1 提供双向捕获、筛选、内容预览、SSE/NDJSON、受配额落盘、快照保存与只读回看。HTTP/2 空闲流按用户确认的范围降级为仅提示；保留客户端单流取消和全局停止。
 
@@ -12,10 +12,13 @@ V6 / M3 已实现共享表达式前端、v2 编译/纯规划、独立修订库�
 
 本期完整M2兼容回归已通过：316个测试（新增80）、207项同轮场景、445个门禁拒绝检查；源码摘要前后一致。该结果不代表完整M3或人工验收通过。
 
-V7 / M4 请求调试已补充详细执行方案，**尚未实施**：V7-01～18 覆盖手工请求、原始/有效快照提取、环境变量、最终预览、一次发送、模板/历史与有界对比。配套80项新增业务场景，完整门禁须在M3闭合后同轮覆盖359项；当前没有 `-Mode M4` 入口。SOLID为首要规定，朴素模式与详细中文注释；仅安排本地Debug开发验证，不使用AIFLOW、Windows CI或发布门禁。
+V7 / M4 已接入无规则手工请求、可靠旧快照提取、变量/环境、离线预览、一次发送、取消、模板/历史与双向有界对比。**完整M4未完成**：原始/有效双快照与应用规则依赖M3，600秒混合负载及全部80项/累计359项尚未闭合。`-Mode M4Foundation`验证已实现分项，`-Mode M4`当前明确失败并报告前置缺口；实际命令与结果见[V7实施记录](docs/archive/2026-10-03-v7-m4-implementation.md)。SOLID、朴素模式和中文注释贯穿实现；未使用AIFLOW、Windows CI或发布门禁。
 
 | 阅读目的 | 文档 |
 | --- | --- |
+| M4当前能力、限制和资源/安全语义 | [请求调试当前实现](docs/reference/network-traffic-m4-request-debugging.md) |
+| 手工、提取、模板/环境与本地检查 | [M4快速开始](docs/quick-start/network-traffic-m4.md) |
+| V7分项进度、SOLID审阅和实际验证 | [V7实施记录](docs/archive/2026-10-03-v7-m4-implementation.md) |
 | V7-01～18：M4 请求调试的实施顺序、交付文件和完成条件 | [V7 / M4 执行计划](docs/roadmap/network-traffic-v7-m4-request-debugging-plan.md) |
 | 草稿/变量、冻结预览、发送状态、来源、模板与对比目标契约 | [V7 请求调试专项设计](docs/design/network-traffic-v7-m4-request-debugging-design.md) |
 | 80项新增场景、359项累计要求、门禁反例与人工边界 | [V7 M4 专用验证矩阵](docs/maintenance/network-traffic-v7-m4-verification-plan.md) |
@@ -53,7 +56,7 @@ V7 / M4 请求调试已补充详细执行方案，**尚未实施**：V7-01～18 
 
 V2 / M0 生产代理、最小诊断、单元/协议测试和本地开发门禁已实现，完整本地开发门禁已通过，结果见实施记录。M0 以 SOLID 为首要规定，采用朴素设计和详细中文注释；仅安排本地开发验证，不使用 AIFLOW、Windows CI 或发布门禁。下方打包/部署命令保留为通用工程参考，不属于本轮实施或 M0 开发门禁。
 
-V3 / M1 按 V3-01～14 实施，补齐单元测试、失败注入、生产 UI 和资源测量。当前检查入口支持 `-Mode Docs` / `-Mode M0` / `-Mode M1` / `-Mode UX` / `-Mode M2`，默认仍为 M0；M1 完整继承 M0 后运行专项资源与桌面 UI 检查。只执行本地 Debug 开发门禁，发布门禁留到正式发布时使用。
+V3 / M1 按 V3-01～14 实施，补齐单元测试、失败注入、生产 UI 和资源测量。当前检查入口支持 `-Mode Docs` / `-Mode M0` / `-Mode M1` / `-Mode UX` / `-Mode M2` / `-Mode M4Foundation`，以及明确检查未闭合前置的 `-Mode M4`，默认仍为 M0；M1 完整继承 M0 后运行专项资源与桌面 UI 检查。只执行本地 Debug 开发门禁，发布门禁留到正式发布时使用。
 
 V4 使用 `pwsh -NoProfile -File tools/verify-development.ps1 -Mode UX`，同轮完整继承 M0/M1 后校验 40 项 V4 场景、20 张专项截图、阅读锚点与桌面资源。默认仍为 M0；Docs 只检查文档。
 

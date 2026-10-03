@@ -15,6 +15,9 @@ function Invoke-CheckedProcess {
     $info.CreateNoWindow = $true
     $info.RedirectStandardOutput = $true
     $info.RedirectStandardError = $true
+    # dotnet/pwsh的重定向输出使用UTF-8，显式指定避免中文诊断按本机旧代码页解码后永久损坏。
+    $info.StandardOutputEncoding = [Text.UTF8Encoding]::new($false)
+    $info.StandardErrorEncoding = [Text.UTF8Encoding]::new($false)
     foreach ($argument in $Arguments) { $info.ArgumentList.Add($argument) }
     $started = [DateTimeOffset]::UtcNow
     $process = [System.Diagnostics.Process]::new()
@@ -47,7 +50,7 @@ function Get-SourceHash([string] $Root) {
     Assert-Check ($LASTEXITCODE -eq 0) '不能枚举源码。'
     $rows = foreach ($path in $paths) {
         # 文档允许在测量期间补充结果；所有影响行为的源码、构建配置、锁、门禁/profile 均进入摘要。
-        if ($path -match '^(src|tests|tools)/' -or $path -match '^docs/examples/m[23]/.*\.dsl$' -or $path -match '^[^/]+\.(props|targets|slnx|json)$') {
+        if ($path -match '^(src|tests|tools)/' -or $path -match '^docs/examples/m[23]/.*\.dsl$' -or $path -match '^docs/examples/m4/.*\.json$' -or $path -match '^[^/]+\.(props|targets|slnx|json)$') {
             $full = Join-Path $Root $path
             if (Test-Path -LiteralPath $full -PathType Leaf) { "$path=$((Get-FileHash -LiteralPath $full -Algorithm SHA256).Hash)" }
         }

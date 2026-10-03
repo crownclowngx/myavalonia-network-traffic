@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": 1,
+  "Revision": 0,
+  "Templates": [
+    {
+      "Id": "72cb3490-f7df-4b17-b558-26625272f001",
+      "Revision": 1,
+      "Name": "合成JSON请求",
+      "Draft": {
+        "Id": "72cb3490-f7df-4b17-b558-26625272f002",
+        "Revision": 1,
+        "Method": "POST",
+        "Address": "${baseUrl}/api/messages?tag=${tag}&tag=second",
+        "Headers": [{ "Name": "X-Request-Label", "Value": "${label}", "Enabled": true, "Sensitive": false }],
+        "BodyKind": 2,
+        "Body": "{\"message\":\"${message}\",\"count\":9007199254740993}",
+        "Variables": [],
+        "Defaults": [
+          { "Name": "tag", "Value": "中文+%", "Sensitive": false },
+          { "Name": "label", "Value": "synthetic", "Sensitive": false },
+          { "Name": "message", "Value": "仅用于离线预览", "Sensitive": false }
+        ],
+        "ApplyRules": false
+      }
+    }
+  ],
+  "Environments": [
+    { "Id": "72cb3490-f7df-4b17-b558-26625272f003", "Revision": 1, "Name": "合成环境A", "Variables": [{ "Name": "baseUrl", "Value": "https://a.example.test", "Sensitive": false }] },
+    { "Id": "72cb3490-f7df-4b17-b558-26625272f004", "Revision": 1, "Name": "合成环境B", "Variables": [{ "Name": "baseUrl", "Value": "https://b.example.test", "Sensitive": false }] }
+  ]
+}
