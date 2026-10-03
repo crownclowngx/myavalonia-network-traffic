@@ -8,8 +8,13 @@ V4 / M1 工作台 UX 紧凑化与阅读体验已实现，完整本地 UX 门禁�
 
 V5 / M2 DSL 分组已实现：六位置字段提取、三值过滤、组合键分组、调用时间线、规则修订、保存视图与历史重算。`-Mode M2` 完整本地开发门禁通过：236个测试、207项同轮场景、445个门禁拒绝检查；实际结果与人工未验见 [V5 实施记录](docs/archive/2026-09-30-v5-m2-implementation.md)。以 SOLID 为首要规定，朴素设计和中文注释；不使用 AIFLOW、Windows CI 或发布门禁。
 
+V6 / M3 DSL 改写已补齐执行文档，**代码和 M3 门禁尚待实现**：V6-01～16 规定域名映射、请求修改、修订热切、原始/有效追查及本地验证。配套 72 项新业务场景，计划同轮继承前置后合计 279 项；这不是已通过数量。M3 设计沿用改写运行仅 HTTP/1.1 的协议边界，SOLID 为首要规定，中文注释需解释设计思路；不使用 AIFLOW、Windows CI 或发布门禁。
+
 | 阅读目的 | 文档 |
 | --- | --- |
+| V6-01～16：M3 DSL 改写的任务、文件交付与完成条件 | [V6 / M3 执行计划](docs/roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md) |
+| 计划中的 DSL v2、动作、失败、发送前边界与双快照 | [V6 改写专项设计](docs/design/network-traffic-v6-m3-dsl-rewrite-design.md) |
+| 72 项新场景、累计回归和门禁正反例要求 | [V6 M3 专用验证矩阵](docs/maintenance/network-traffic-v6-m3-verification-plan.md) |
 | 学习 DSL、查询完整语法与理解设计意图 | [DSL 使用与设计手册](docs/dsl/README.md) |
 | M2 当前语义、限制与预算 | [M2 DSL 说明](docs/reference/network-traffic-m2-dsl.md) |
 | M2 使用、保存视图与验证 | [M2 快速开始](docs/quick-start/network-traffic-m2.md) |

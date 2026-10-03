@@ -7,6 +7,7 @@
 > M1 详细任务为 [V3 执行计划](network-traffic-v3-m1-capture-plan.md)，配套[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)与[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)；当前行为见[M1 说明](../reference/network-traffic-m1-runtime.md)，结果见[V3 实施记录](../archive/2026-09-29-v3-m1-implementation.md)。
 > 2026-09-30 补充：[V4 / M1 UX 执行计划](network-traffic-v4-m1-ux-plan.md)、[专项设计](../design/network-traffic-v4-m1-ux-design.md)与[专用验证矩阵](../maintenance/network-traffic-v4-m1-ux-verification-plan.md)已接通实现，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)；是 M1 体验优化，不改变里程碑编号或启动 M2。
 > 同日补充：[V5 / M2 DSL 分组执行计划](network-traffic-v5-m2-dsl-grouping-plan.md)、[专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)及[专用验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)已接通实现；自动结果与人工未验见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md)，不将开发自动通过等同整体验收。
+> 同日补充：[V6 / M3 DSL 改写执行计划](network-traffic-v6-m3-dsl-rewrite-plan.md)、[专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)及[专用验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)已编写，V6-01～16 待实施；72 项新增业务场景和累计 279 项为验证要求，尚无 M3 执行结果。
 
 ## 1. 分期原则与总览
 
@@ -19,7 +20,7 @@ M 表示用户可使用的能力阶段，V 表示方案序号，包版本与交�
 | M0 技术基线 | 确认代理、HTTPS、流式、大文件与域名改写可以走通 | 现有模板 | 中，存在选型风险 | 已实现；自动结果见 V2 实施记录，人工未验 |
 | M1 可用抓包 | 查看真实流量，支持流式和大资源记录 | M0 | 大 | V3 已实现；人工待验；V4 UX 已接通实现，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md) |
 | M2 DSL 分组 | 用自定义字段分析一段时间内的调用过程 | M1 | 大 | V5开发完成，236个测试/207项同轮场景通过；人工未验见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md) |
-| M3 DSL 改写 | 可追踪地切换目标环境和修改请求 | M2，复用 M0 改写验证 | 中到大 | 未开始 |
+| M3 DSL 改写 | 可追踪地切换目标环境和修改请求 | M2，复用 M0 改写验证 | 中到大 | V6 执行文档已编写，代码/门禁待实施 |
 | M4 请求调试 | 手工发送、编辑重发、模板和结果对比 | M3 | 中到大 | 未开始 |
 | M5 文档辅助 | 接入现有文档或手工说明，辅助理解和请求构造 | M4 | 中，取决于实际文档格式 | 未开始 |
 | M6 稳定交付 | 完成累计回归、长时运行和真实 Host 交付验证 | 核心发布至少 M4；含文档的版本还依赖 M5 | 中 | 未开始 |
@@ -99,6 +100,8 @@ V5 首版固定 DSL v1、Query/Header/Cookie/JSON/urlencoded 表单/路径六位
 
 ## 5. M3：DSL 请求改写与环境映射
 
+具体顺序见 [V6-01～16 执行计划](network-traffic-v6-m3-dsl-rewrite-plan.md)。V6 将改写语法单独规划为 DSL v2，M2 v1 保持兼容；先用生产适配器证明 Body 有界读取和候选完成前零上游发送，再接通动作和 UI。固定 Titanium 7.0.13 下改写模式整次运行仅协商 HTTP/1.1，普通捕获 HTTP/2 继续回归；不能将 h1 回退写成 h2 跨 authority 改写通过。
+
 **用户流程：** 配置条件 → 预览命中和最终目标 → 启用 → 发起真实捕获请求 → 检查改写差异和目标结果。
 
 | 工作项 | 范围与交付物 |
@@ -114,6 +117,8 @@ V5 首版固定 DSL v1、Query/Header/Cookie/JSON/urlencoded 表单/路径六位
 **交付物：** 路由/改写语义规范、可编辑规则、命中诊断与差异页；流式、大资源回归证据。
 
 **边界：** CGate 到预发的示例可由用户规则表达；普通头和域名条件无需读取整个 Body。依赖 Body 的规则在预算内决定，无法提取时按声明策略处理。人工断点、响应 Mock 与文件内容修改不自动纳入本阶段。
+
+V6 首版失败策略固定为 block：作用域内条件未知、动作冲突、正文不支持/超限和目标校验失败均在发送前阻断，不静默回原环境。请求固定接纳时修订；原始/有效快照和实际发送状态分别记录。保存与预览不启用、不发网。测试及门禁要求见 [V6 专用矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)，仅安排本地 Debug 开发验证，不使用 AIFLOW、Windows CI 或发布门禁。
 
 ## 6. M4：手工请求、编辑重发与对比
 

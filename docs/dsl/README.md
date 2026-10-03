@@ -68,4 +68,6 @@ view "按调用者查看" {
 
 实施约束见 [V5 专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)，测试和开发门禁见 [V5 验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)，已执行结果见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md)。规划文档中的未来语法不能直接当作当前可用功能。
 
+M3 请求改写已单独规划为 [V6 执行计划](../roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md)，语言与运行契约见 [V6 改写专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)，测试要求见 [V6 验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)。其中 `dsl 2;`、rewrite 动作和 `-Mode M3` 均待实现，不能复制到当前 M2 编辑器运行。实现后将在本目录新增改写专章，并保留本手册的 v1 分析语义。
+
 维护本文件夹时，先核对生产编译器和求值器，再更新示例与说明；文档修改执行本地 `-Mode Docs` 检查。语言或运行行为发生变化时，按验证矩阵补齐测试并执行 M2 开发门禁。不使用 AIFLOW、Windows CI 或发布门禁。

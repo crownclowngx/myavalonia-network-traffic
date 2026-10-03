@@ -9,6 +9,8 @@
 
 ## 1. 验证层次与结果表达
 
+2026-09-30 补充：[V6 / M3 专用矩阵](network-traffic-v6-m3-verification-plan.md)细化 T12～T15：72 项业务自动场景、4 项工程审查、12 组门禁自测及 4 项人工验收，配套[V6 执行计划](../roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md)与[专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)。当前仅完成文档，代码与 `-Mode M3` 待实现；未来完整入口要求同轮继承 207 项前置，共 279 项，不代表已经通过。M3 仅安排本地 Debug 开发验证，不使用 AIFLOW、Windows CI 或发布门禁。
+
 | 层次 | 验证内容 | 不能替代的结论 |
 | --- | --- | --- |
 | 规则与模型测试 | 解析、类型、提取、分组、顺序、冲突、修订和状态机 | 不证明网络真的转发到正确目标 |

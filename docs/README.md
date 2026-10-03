@@ -2,11 +2,15 @@
 
 > 更新日期：2026-09-30。V2 / M0 与 V3 / M1 已实现；V4 / M1 UX 已实现并通过完整本地开发门禁（172 个唯一测试、143 项同轮场景），人工待验见 [V4 实施记录](archive/2026-09-30-v4-m1-ux-implementation.md)。当前行为、实际自动结果及人工未验项见以下专用文档。
 > V5 / M2 DSL 分组已实现，完整M2本地开发门禁通过（236个测试、207项同轮场景、445个拒绝检查）；实际结果与人工未验见 [V5 实施记录](archive/2026-09-30-v5-m2-implementation.md)。
+> V6 / M3 执行文档已编写，V6-01～16 及 M3 门禁均待实施；计划 72 项新场景与累计 279 项同轮回归，未执行业务验证。当前可运行语言仍为 DSL v1。
 
 ## 产品规划与当前状态
 
 | 阅读目的 | 入口 |
 | --- | --- |
+| V6-01～16：域名映射、请求修改、修订、追查与完成条件 | [V6 / M3 执行计划](roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md) |
+| SOLID、计划 DSL v2、动作/冲突/失败、Body 预算、存档兼容 | [V6 改写专项设计](design/network-traffic-v6-m3-dsl-rewrite-design.md) |
+| 72 项 M3 场景、累计 279 项要求、门禁自测与人工边界 | [V6 M3 专用验证矩阵](maintenance/network-traffic-v6-m3-verification-plan.md) |
 | DSL 入门教程、语法手册与设计意图 | [DSL 专用文档文件夹](dsl/README.md) |
 | M2 当前语义、限制与预算 | [M2 DSL 说明](reference/network-traffic-m2-dsl.md) |
 | M2 分组、视图保存与开发验证 | [M2 快速开始](quick-start/network-traffic-m2.md) |
@@ -33,7 +37,7 @@
 | 协议、规则、资源、UI、Host 的分阶段验证 | [专用验证计划](maintenance/network-traffic-verification-plan.md) |
 
 当前源码包含 Titanium 7.0.13 生产适配、共享协调器、双向有界捕获、生产 Document/Tool、内容预览、原生存档、受控协议/资源/UI 测试和本地门禁。HTTP/2 空闲流仅提示，不自动取消；M2 的 DSL 分组已实现，M3–M6 仍为后续规划。
-正式工程及插件身份保持不变，V3 采用“HTTP 工作台”。V1 是产品方案，V2 是 M0 执行方案，V3 是 M1 执行方案，V4 是现有 M1 的 UX 优化方案，V5 是 M2 DSL 分组方案，均不是包版本。V4 未启动 M2 DSL；实现与开发自动结果、真实 Host、真实客户端和人工验收分别登记。
+正式工程及插件身份保持不变，V3 采用“HTTP 工作台”。V1 是产品方案，V2 是 M0 执行方案，V3 是 M1 执行方案，V4 是现有 M1 的 UX 优化方案，V5 是 M2 DSL 分组方案，V6 是待实施的 M3 DSL 改写方案，均不是包版本。V4 未启动 M2 DSL；实现与开发自动结果、真实 Host、真实客户端和人工验收分别登记。
 
 DSL 教程、语法手册和设计意图集中放入 `dsl`。规划放入 `roadmap`，专项设计放入 `design`，可复用验证方法放入 `maintenance`。已新增当前行为 `reference`、使用步骤
 `quick-start` 和带日期的实施记录；现有模板开发文档暂保留当前位置。实现、自动验证、真实 Host、人工验收和发布分别记录。
@@ -47,6 +51,8 @@ V3 / M1 同样以 SOLID 为首要规定，单元测试、生产 UI、资源测�
 V4 文档沿用上述工程规定，定义 V4-01～12 和 40 项业务场景，额外包括 SOLID/中文注释审查、10 组门禁自测及 4 项人工验证。`-Mode UX` 与专用映射/profile/检查器已实现，在同轮继承 M0/M1，默认模式仍为 M0。完整 UX 同时检查 40 项新场景、20 张专项截图和真实桌面锚点；不运行 Windows CI 或发布门禁。
 
 V5 定义 V5-01～14、64项业务场景、4项工程审查、12组门禁自测与4项人工验收；实现已接通。`-Mode M2` 同轮继承 M0/M1/UX，固定207项场景；不使用 AIFLOW、Windows CI 或发布门禁。
+
+V6 定义 V6-01～16、72 项业务场景、4 项工程审查、12 组门禁自测与 4 项人工验收。`-Mode M3` 是未来交付入口，当前尚不支持；本次只运行 `-Mode Docs` 文档检查。设计要求改写运行在启动前固定 HTTP/1.1，发送前失败阻断而不回退原环境，保存/预览不启用规则；SOLID、朴素设计与详细中文注释贯穿实施，不使用 AIFLOW、Windows CI 或发布门禁。
 
 本解决方案用于开发 `myavalonia.plugin.network.traffic` Managed Plugin。它把真实插件、独立 Avalonia 开发窗口和
 自动化测试放在同一个解决方案中，使界面与业务代码既能快速预览，也能由 MyAvaloniaManagement Host
