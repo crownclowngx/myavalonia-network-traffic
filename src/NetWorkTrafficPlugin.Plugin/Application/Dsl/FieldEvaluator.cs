@@ -9,7 +9,7 @@ public interface IFieldSource
 public sealed class AnalysisLimitException(string message) : Exception(message);
 
 /// <summary>一轮共享工作计数与单调截止，取消不会只是放弃等待，所有子操作必须观察同一令牌。</summary>
-public sealed class EvaluationBudget(CancellationToken token, int milliseconds = 10000)
+public sealed class EvaluationBudget(CancellationToken token, int milliseconds = 10000, long maximumOperations = DslLimits.QueryOperations, long maximumBodyBytes = DslLimits.QueryBodyBytes)
 {
     private readonly Stopwatch _clock = Stopwatch.StartNew();
     public long Operations { get; private set; }
@@ -18,13 +18,13 @@ public sealed class EvaluationBudget(CancellationToken token, int milliseconds =
     public void Check()
     {
         token.ThrowIfCancellationRequested();
-        if (_clock.ElapsedMilliseconds > milliseconds) throw new AnalysisLimitException("分析超过时间预算；旧结果保持。");
+        if (_clock.ElapsedMilliseconds > milliseconds) throw new AnalysisLimitException("求值超过时间预算；候选结果不提交。");
     }
-    public void Step() { if (++Operations > DslLimits.QueryOperations) throw new AnalysisLimitException("整轮求值次数超限。"); if (Operations % 128 == 0) Check(); }
+    public void Step() { if (++Operations > maximumOperations) throw new AnalysisLimitException("整轮求值次数超限。"); if (Operations % 128 == 0) Check(); }
     public void Read(long encoded, long decoded)
     {
         Check(); EncodedBytes += encoded; DecodedBytes += decoded;
-        if (EncodedBytes > DslLimits.QueryBodyBytes || DecodedBytes > DslLimits.QueryBodyBytes) throw new AnalysisLimitException("整轮正文读取或解码超过32MiB。");
+        if (EncodedBytes > maximumBodyBytes || DecodedBytes > maximumBodyBytes) throw new AnalysisLimitException("整轮正文读取或解码超过32MiB。");
     }
 }
 
@@ -32,8 +32,10 @@ public sealed class EvaluationBudget(CancellationToken token, int milliseconds =
 /// 每记录一个求值上下文，字段按需要求值并记忆一次；短路分支不读取正文。
 /// 它只依赖字段端口，不知道文件、代理或控件。Unknown 的原始状态一直保留到展示。
 /// </summary>
-public sealed class FieldEvaluator(DslProgram program, IFieldSource source, EvaluationBudget budget, CancellationToken token)
+public sealed class FieldEvaluator(ExpressionContext program, IFieldSource source, EvaluationBudget budget, CancellationToken token)
 {
+    public FieldEvaluator(DslProgram program, IFieldSource source, EvaluationBudget budget, CancellationToken token)
+        : this(new ExpressionContext(program.Fields, program.ExpressionTypes), source, budget, token) { }
     private readonly Dictionary<string, FieldValue> _values = new(StringComparer.Ordinal);
     private readonly Dictionary<string, FieldDefinition> _fields = program.Fields.ToDictionary(f => f.Name, StringComparer.Ordinal);
     private int _steps;

@@ -1,6 +1,6 @@
-# M2 DSL 使用与设计手册
+# DSL 使用与设计手册
 
-本文件夹专门说明 HTTP 工作台当前实现的 **DSL v1**：如何写规则、每种语法是什么意思，以及为什么这样设计。内容对应 V5 / M2 实现，更新日期为 2026-09-30。
+本文件夹说明HTTP工作台的DSL：如何写规则、语法含义和设计理由。前三章对应当前产品使用的 **DSL v1 / V5分析**；第四章于2026-10-03补充 **DSL v2 / V6改写基础**，并明确尚未接入代理的边界。
 
 DSL 是“领域专用语言”。在这里，它把一批已经捕获的请求转换为业务字段，再按条件、时间窗口和业务键分组。例如：从 Query、Header 或 JSON 中提取调用者，把同一租户、同一调用者的请求放在一起，查看调用时间线。
 
@@ -11,6 +11,7 @@ DSL 是“领域专用语言”。在这里，它把一批已经捕获的请求�
 | 第一次使用，想从一个例子写出自己的规则 | [01 · 入门教程](01-tutorial.md) |
 | 查字段、函数、运算符、类型、时间窗口和错误码 | [02 · 语法手册](02-syntax-reference.md) |
 | 理解未知状态、组合键、快照、SOLID 和实现取舍 | [03 · 设计意图](03-design-rationale.md) |
+| 了解已实现的v2语言/纯规划，以及实际代理尚未接通的限制 | [04 · 改写基础](04-rewrite-foundation.md) |
 | 直接复制已有完整规则，核对固定输入的结果 | [可执行样例与 12 条合成记录](../examples/m2/README.md) |
 
 建议先完成教程的前两步，再按需要查语法手册。语法手册中的“片段”需要放入完整规则；以 `dsl 1;` 开头的 `dsl` 代码块可以整体复制到规则编辑器。
@@ -68,6 +69,6 @@ view "按调用者查看" {
 
 实施约束见 [V5 专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)，测试和开发门禁见 [V5 验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)，已执行结果见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md)。规划文档中的未来语法不能直接当作当前可用功能。
 
-M3 请求改写已单独规划为 [V6 执行计划](../roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md)，语言与运行契约见 [V6 改写专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)，测试要求见 [V6 验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)。其中 `dsl 2;`、rewrite 动作和 `-Mode M3` 均待实现，不能复制到当前 M2 编辑器运行。实现后将在本目录新增改写专章，并保留本手册的 v1 分析语义。
+M3 请求改写已单独规划为 [V6 执行计划](../roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md)，语言与运行契约见 [V6 改写专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)，测试要求见 [V6 验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)。其中 `dsl 2;` 和rewrite纯规划已实现，见 [第四章](04-rewrite-foundation.md)；实际代理/UI与 `-Mode M3` 尚未接通，不能复制到当前M2编辑器运行。v1分析语义保持。
 
 维护本文件夹时，先核对生产编译器和求值器，再更新示例与说明；文档修改执行本地 `-Mode Docs` 检查。语言或运行行为发生变化时，按验证矩阵补齐测试并执行 M2 开发门禁。不使用 AIFLOW、Windows CI 或发布门禁。

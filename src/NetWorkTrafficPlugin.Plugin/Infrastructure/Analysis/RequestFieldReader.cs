@@ -88,24 +88,8 @@ public sealed class RequestFieldReader(TrafficRecord record, ICaptureSession ses
             }
         return matches.Count == 0 ? FieldValue.Problem(ValueState.Missing, DslType.Strings) : FieldValue.Items(matches.AsReadOnly());
     }
-    public static string Decode(string text, bool form)
-    {
-        using var bytes = new MemoryStream();
-        for (var i = 0; i < text.Length;)
-        {
-            if (text[i] == '%')
-            {
-                if (i + 2 >= text.Length || !byte.TryParse(text.AsSpan(i + 1, 2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out var b)) throw new FormatException("百分号编码错误。");
-                bytes.WriteByte(b); i += 3;
-            }
-            else
-            {
-                var start = i; while (i < text.Length && text[i] != '%') i++;
-                bytes.Write(StrictUtf8.GetBytes(form ? text[start..i].Replace('+', ' ') : text[start..i]));
-            }
-        }
-        return StrictUtf8.GetString(bytes.GetBuffer(), 0, checked((int)bytes.Length));
-    }
+    // 分析与改写共享严格转义规则；保留旧入口，避免现有调用者因内部提取而破坏兼容。
+    public static string Decode(string text, bool form) => RequestFieldText.Decode(text, form);
     private async ValueTask<FieldValue> BodyAsync(AccessExpr access, CancellationToken token)
     {
         var body = record.RequestBody; var mime = body.ContentType?.Split(';')[0].Trim().ToLowerInvariant();

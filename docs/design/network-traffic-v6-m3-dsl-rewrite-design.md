@@ -1,7 +1,7 @@
 # V6 · M3 DSL 改写专项设计
 
-> 日期：2026-09-30。状态：**待实现的设计契约，不是当前运行说明**。
-> 配套：[V6 执行计划](../roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md)、[V6 验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)。当前语言仍为 [M2 DSL v1](../reference/network-traffic-m2-dsl.md)。
+> 日期：2026-09-30。状态：**目标设计契约；2026-10-03已实现语言/纯规划/修订基础，实际M3未接通**。能力阻断见 [专项记录](../maintenance/network-traffic-v6-body-capability.md)。
+> 配套：[V6 执行计划](../roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md)、[V6 验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)。当前产品页面仍为 [M2 DSL v1](../reference/network-traffic-m2-dsl.md)。
 
 ## 1. SOLID 与依赖方向
 
@@ -52,7 +52,7 @@ Infrastructure/Capture：原始/有效事实、轨迹、存档
 
 ### 3.1 版本与完整示例
 
-v1 分析和 v2 改写使用不同编译入口与编辑区域，首版不允许同文件混合 view/rewrite。下例是**计划语法，当前编译器不能执行**；实施后必须成为编译和行为夹具。
+v1 分析和 v2 改写使用不同编译入口与编辑区域，首版不允许同文件混合 view/rewrite。下例的v2语法已由独立编译器和纯规划器处理，固定夹具见 [route-and-json.dsl](../examples/m3/route-and-json.dsl)；实际代理与页面尚未接通。
 
 ```text
 dsl 2;
@@ -157,7 +157,7 @@ Body 字段首版支持 identity 编码、严格 UTF-8 的 JSON 和 urlencoded �
 
 ### 6.2 初始实现预算
 
-以下为计划开发 profile，实施时在生产常量、`m3-profile.json`、测试和文档四处核对；是验收阈值，不是已测性能承诺。
+以下为目标开发预算。基础常量与 `m3-profile.json` 已有一致性测试，但真实读取、轨迹、目标和预览集成尚未齐备；这些是验收阈值，不是已测性能承诺。V6-02的取消/Continue/N+1要求未擅自降低。
 
 | 项目 | 初始上限/阈值 | 超限行为 |
 | --- | --- | --- |

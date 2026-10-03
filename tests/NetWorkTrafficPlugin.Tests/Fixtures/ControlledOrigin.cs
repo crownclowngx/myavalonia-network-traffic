@@ -23,6 +23,8 @@ public sealed class ControlledOrigin : IAsyncDisposable
     private readonly ConcurrentDictionary<string, string> _sni = [];
     public static readonly byte[] Block = Enumerable.Range(0, 65536).Select(i => (byte)(i % 251)).ToArray();
     public readonly ConcurrentQueue<OriginReceipt> Receipts = [];
+    private int _requestHeadersReceived;
+    public int RequestHeadersReceived => Volatile.Read(ref _requestHeadersReceived);
     public readonly TaskCompletionSource ContinueStream = new(TaskCreationOptions.RunContinuationsAsynchronously);
     public readonly TaskCompletionSource StreamExited = new(TaskCreationOptions.RunContinuationsAsynchronously);
     public Uri Address { get; private set; } = null!;
@@ -62,6 +64,7 @@ public sealed class ControlledOrigin : IAsyncDisposable
         _app = builder.Build();
         _app.Run(async context =>
         {
+            Interlocked.Increment(ref _requestHeadersReceived);
             var hash = Convert.ToHexString(await SHA256.HashDataAsync(context.Request.Body, context.RequestAborted));
             var receipt = new OriginReceipt(target, context.Request.Method,
                 context.Features.Get<IHttpRequestFeature>()!.RawTarget!, context.Request.Host.Value ?? "", context.Request.Protocol,

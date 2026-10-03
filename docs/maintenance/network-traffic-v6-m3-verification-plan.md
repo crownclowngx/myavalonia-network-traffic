@@ -1,6 +1,6 @@
 # V6 · M3 单元测试、验证矩阵与本地开发门禁
 
-> 日期：2026-09-30。状态：**验证设计，M3 测试/门禁待实现，业务结果未执行**。
+> 日期：2026-09-30。状态：**完整M3验证要求尚未闭合；2026-10-03基础测试与真实缺口探针已实施，完整M3门禁未接通**。结果见 [本期记录](../archive/2026-10-03-v6-m3-foundation.md)，能力限制见 [V6-02](network-traffic-v6-body-capability.md)。
 > 配套：[V6 执行计划](../roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md)、[V6 改写专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)。
 
 SOLID 是首要规定；朴素使用设计模式，代码、测试及脚本使用详细中文注释并解释设计思路。不使用 AIFLOW，不新增或触发 Windows CI，不运行发布门禁。本机 Windows 的 Debug 单元/集成/UI/资源验证允许执行，发布相关门禁留到正式发布。

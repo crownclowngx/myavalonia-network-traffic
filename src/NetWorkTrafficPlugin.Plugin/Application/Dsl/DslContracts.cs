@@ -78,6 +78,8 @@ public sealed record AnalysisWindow(TimeSpan? Last, DateTimeOffset? From = null,
             throw new ArgumentException("窗口必须为七天内的正时长或带时区的半开区间。");
     }
 }
+/// <summary>表达式求值仅需要字段和已绑定类型；不取得分析窗口、分组或网络发送能力。</summary>
+public sealed record ExpressionContext(IReadOnlyList<FieldDefinition> Fields, IReadOnlyDictionary<DslExpr, DslType> ExpressionTypes);
 public sealed record DslProgram(string Source, string Name, IReadOnlyList<FieldDefinition> Fields, DslExpr Filter,
     AnalysisWindow Window, IReadOnlyList<DslExpr> GroupKeys, IReadOnlyList<string> Columns,
     IReadOnlyDictionary<string, DslType> FieldTypes, IReadOnlyDictionary<DslExpr, DslType> ExpressionTypes);

@@ -4,6 +4,8 @@
 
 第一次编写规则，建议从 [DSL 入门教程](../dsl/01-tutorial.md)开始；需要查函数和类型时看 [语法手册](../dsl/02-syntax-reference.md)，架构与取舍见 [设计意图](../dsl/03-design-rationale.md)。
 
+v2改写的基础实现和依赖限制见 [DSL第四章](../dsl/04-rewrite-foundation.md)；当前页面仍只接受v1，本快速开始不启用M3。
+
 ## 分析当前记录
 
 1. 在主 Document 顶部点“分组”。代理停止按钮继续位于顶栏。

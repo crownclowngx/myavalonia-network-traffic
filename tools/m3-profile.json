@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "scope": "M3-foundation",
+  "languageVersion": 2,
+  "fixedDependency": "Titanium.Web.Proxy/7.0.13",
+  "runtimeIntegrationEnabled": false,
+  "budgets": {
+    "rules": 32,
+    "actionsPerRule": 16,
+    "actions": 128,
+    "headerBytes": 65536,
+    "headerLines": 256,
+    "bodyBytes": 262144,
+    "bodySlots": 4,
+    "bodyReservationBytes": 4194304,
+    "bodyMilliseconds": 2000,
+    "metadataMilliseconds": 50,
+    "operations": 10000,
+    "uriCharacters": 8192,
+    "traceBytes": 16384,
+    "libraryBytes": 8388608,
+    "revisions": 200,
+    "configurations": 50
+  },
+  "requiredRuntimeCapabilities": {
+    "localContinueBeforeUpstream": true,
+    "cancellationReleaseMilliseconds": 1000,
+    "unknownBodyProbeBytes": 1
+  },
+  "knownGaps": [
+    "BeforeRequest 阶段不能向严格等待的客户端发送本地 100 Continue",
+    "取消及 TerminateSession 后读取仍可能等待客户端正文结束",
+    "正文上限按传输块检测，不保证物理读取仅多一个探测字节"
+  ]
+}

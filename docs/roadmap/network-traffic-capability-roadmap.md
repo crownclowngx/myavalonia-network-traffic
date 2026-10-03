@@ -1,13 +1,13 @@
 # HTTP 流量工作台能力路线图与里程碑
 
 > 对象：`myavalonia-network-traffic` / `myavalonia.plugin.network.traffic`。更新日期：2026-09-30。
-> 状态：M0 已实现并通过本地开发验证；M1 已实现，自动结果见 V3 实施记录；真实 Host/客户端与人工验收待执行。M2 已实现，M3–M6 为计划。
+> 状态：M0 已实现并通过本地开发验证；M1 已实现，自动结果见 V3 实施记录；真实 Host/客户端与人工验收待执行。M2已实现；M3基础代码已落地但真实接入阻断，M4–M6为计划。
 > 产品范围见[产品方案](network-traffic-product-plan.md)，验收场景见[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
 > M0 详细任务已补充为 [V2 执行计划](network-traffic-v2-m0-technical-baseline-plan.md)，配套[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)与[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)；实际结果见[当日实施记录](../archive/2026-09-29-v2-m0-implementation.md)。
 > M1 详细任务为 [V3 执行计划](network-traffic-v3-m1-capture-plan.md)，配套[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)与[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)；当前行为见[M1 说明](../reference/network-traffic-m1-runtime.md)，结果见[V3 实施记录](../archive/2026-09-29-v3-m1-implementation.md)。
 > 2026-09-30 补充：[V4 / M1 UX 执行计划](network-traffic-v4-m1-ux-plan.md)、[专项设计](../design/network-traffic-v4-m1-ux-design.md)与[专用验证矩阵](../maintenance/network-traffic-v4-m1-ux-verification-plan.md)已接通实现，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md)；是 M1 体验优化，不改变里程碑编号或启动 M2。
 > 同日补充：[V5 / M2 DSL 分组执行计划](network-traffic-v5-m2-dsl-grouping-plan.md)、[专项设计](../design/network-traffic-v5-m2-dsl-grouping-design.md)及[专用验证矩阵](../maintenance/network-traffic-v5-m2-verification-plan.md)已接通实现；自动结果与人工未验见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md)，不将开发自动通过等同整体验收。
-> 同日补充：[V6 / M3 DSL 改写执行计划](network-traffic-v6-m3-dsl-rewrite-plan.md)、[专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)及[专用验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)已编写，V6-01～16 待实施；72 项新增业务场景和累计 279 项为验证要求，尚无 M3 执行结果。
+> 同日补充：[V6 / M3 DSL 改写执行计划](network-traffic-v6-m3-dsl-rewrite-plan.md)、[专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)及[专用验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)已开始实施，语言/纯规划/修订基础见 [2026-10-03记录](../archive/2026-10-03-v6-m3-foundation.md)；真实读取存在能力缺口，完整M3未完成。72项新增和累计279项仍为未闭合的验证要求。
 
 ## 1. 分期原则与总览
 
@@ -20,7 +20,7 @@ M 表示用户可使用的能力阶段，V 表示方案序号，包版本与交�
 | M0 技术基线 | 确认代理、HTTPS、流式、大文件与域名改写可以走通 | 现有模板 | 中，存在选型风险 | 已实现；自动结果见 V2 实施记录，人工未验 |
 | M1 可用抓包 | 查看真实流量，支持流式和大资源记录 | M0 | 大 | V3 已实现；人工待验；V4 UX 已接通实现，结果见 [V4 实施记录](../archive/2026-09-30-v4-m1-ux-implementation.md) |
 | M2 DSL 分组 | 用自定义字段分析一段时间内的调用过程 | M1 | 大 | V5开发完成，236个测试/207项同轮场景通过；人工未验见 [V5 实施记录](../archive/2026-09-30-v5-m2-implementation.md) |
-| M3 DSL 改写 | 可追踪地切换目标环境和修改请求 | M2，复用 M0 改写验证 | 中到大 | V6 执行文档已编写，代码/门禁待实施 |
+| M3 DSL 改写 | 可追踪地切换目标环境和修改请求 | M2，复用 M0 改写验证 | 中到大 | V6语言/纯规划/修订基础已实现，发送接入与完整门禁受V6-02能力缺口阻断 |
 | M4 请求调试 | 手工发送、编辑重发、模板和结果对比 | M3 | 中到大 | 未开始 |
 | M5 文档辅助 | 接入现有文档或手工说明，辅助理解和请求构造 | M4 | 中，取决于实际文档格式 | 未开始 |
 | M6 稳定交付 | 完成累计回归、长时运行和真实 Host 交付验证 | 核心发布至少 M4；含文档的版本还依赖 M5 | 中 | 未开始 |

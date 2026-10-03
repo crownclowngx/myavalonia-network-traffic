@@ -1,7 +1,7 @@
 # HTTP 流量工作台：产品与规划方案
 
 > 对象：`myavalonia-network-traffic` / `myavalonia.plugin.network.traffic`。
-> 编写日期：2026-09-28。方案编号：V1；状态：V1 产品规划；V2/M0、V3/M1 已实施，V5/M2 已实现，M3–M6 待实施；人工验收另行登记。
+> 编写日期：2026-09-28。方案编号：V1；状态：V1产品规划；V2/M0、V3/M1已实施，V5/M2已实现，V6/M3基础代码已落地但实际接入阻断，M4–M6待实施；人工验收另行登记。
 > 配套：[能力路线图与里程碑](network-traffic-capability-roadmap.md)、[分阶段验证计划](../maintenance/network-traffic-verification-plan.md)。
 > 2026-09-29 补充：[V2 / M0 技术基线执行计划](network-traffic-v2-m0-technical-baseline-plan.md)、[专项技术设计](../design/network-traffic-v2-m0-technical-design.md)及[专用验证矩阵](../maintenance/network-traffic-v2-m0-verification-plan.md)已实施；当前行为及结论见[实施记录](../archive/2026-09-29-v2-m0-implementation.md)，本产品方案保持 V1 编号。
 > 同日补充：[V3 / M1 可用抓包执行计划](network-traffic-v3-m1-capture-plan.md)、[专项技术设计](../design/network-traffic-v3-m1-capture-design.md)和[专用验证矩阵](../maintenance/network-traffic-v3-m1-verification-plan.md)已实施，当前行为和 HTTP/2 空闲降级见[M1 说明](../reference/network-traffic-m1-runtime.md)，验证结果见[V3 记录](../archive/2026-09-29-v3-m1-implementation.md)；V3 不改变 V1 文档编号或包版本。
@@ -10,7 +10,7 @@
 
 V1 表示产品方案序号，M0–M6 表示能力里程碑，均不是插件包版本或交付日期。本文件整理本次产品讨论，并补充分阶段设计建议；编写规划不代表已开始实现、已通过验收或已发布。
 
-2026-09-30 补充：[V6 / M3 执行计划](network-traffic-v6-m3-dsl-rewrite-plan.md)、[改写专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)和[专用验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)已编写，V6-01～16 仍待实施。V6 细化 M3 的语言、发送前动作、修订、双快照与 72 项新业务验证；本产品方案保持 V1 编号。SOLID 为首要规定，朴素设计和详细中文注释，不使用 AIFLOW、Windows CI 或发布门禁。
+2026-10-03更新：[V6 / M3执行计划](network-traffic-v6-m3-dsl-rewrite-plan.md)、[改写专项设计](../design/network-traffic-v6-m3-dsl-rewrite-design.md)和[专用验证矩阵](../maintenance/network-traffic-v6-m3-verification-plan.md)已开始实施。语言/纯规划/修订基础已落地，实际发送受V6-02依赖能力缺口阻断，详见 [本期记录](../archive/2026-10-03-v6-m3-foundation.md)。72项新增业务验证仍未闭合，M3未完成；本产品方案保持V1编号。SOLID为首要规定，朴素设计和详细中文注释，不使用AIFLOW、Windows CI或发布门禁。
 
 ## 1. 产品定位与当前基线
 
