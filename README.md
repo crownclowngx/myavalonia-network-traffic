@@ -12,8 +12,13 @@ V6 / M3 已实现共享表达式前端、v2 编译/纯规划、独立修订库�
 
 本期完整M2兼容回归已通过：316个测试（新增80）、207项同轮场景、445个门禁拒绝检查；源码摘要前后一致。该结果不代表完整M3或人工验收通过。
 
+V7 / M4 请求调试已补充详细执行方案，**尚未实施**：V7-01～18 覆盖手工请求、原始/有效快照提取、环境变量、最终预览、一次发送、模板/历史与有界对比。配套80项新增业务场景，完整门禁须在M3闭合后同轮覆盖359项；当前没有 `-Mode M4` 入口。SOLID为首要规定，朴素模式与详细中文注释；仅安排本地Debug开发验证，不使用AIFLOW、Windows CI或发布门禁。
+
 | 阅读目的 | 文档 |
 | --- | --- |
+| V7-01～18：M4 请求调试的实施顺序、交付文件和完成条件 | [V7 / M4 执行计划](docs/roadmap/network-traffic-v7-m4-request-debugging-plan.md) |
+| 草稿/变量、冻结预览、发送状态、来源、模板与对比目标契约 | [V7 请求调试专项设计](docs/design/network-traffic-v7-m4-request-debugging-design.md) |
+| 80项新增场景、359项累计要求、门禁反例与人工边界 | [V7 M4 专用验证矩阵](docs/maintenance/network-traffic-v7-m4-verification-plan.md) |
 | V6-01～16：M3 DSL 改写的任务、文件交付与完成条件 | [V6 / M3 执行计划](docs/roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md) |
 | DSL v2、动作、失败、发送前边界与双快照的目标契约 | [V6 改写专项设计](docs/design/network-traffic-v6-m3-dsl-rewrite-design.md) |
 | 72 项新场景、累计回归和门禁正反例要求 | [V6 M3 专用验证矩阵](docs/maintenance/network-traffic-v6-m3-verification-plan.md) |

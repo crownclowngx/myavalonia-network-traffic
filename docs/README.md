@@ -1,14 +1,18 @@
 # NetWorkTrafficPlugin 文档导航与开发快速开始
 
-> 更新日期：2026-09-30。V2 / M0 与 V3 / M1 已实现；V4 / M1 UX 已实现并通过完整本地开发门禁（172 个唯一测试、143 项同轮场景），人工待验见 [V4 实施记录](archive/2026-09-30-v4-m1-ux-implementation.md)。当前行为、实际自动结果及人工未验项见以下专用文档。
+> 更新日期：2026-10-03。V2 / M0 与 V3 / M1 已实现；V4 / M1 UX 已实现并通过完整本地开发门禁（172 个唯一测试、143 项同轮场景），人工待验见 [V4 实施记录](archive/2026-09-30-v4-m1-ux-implementation.md)。当前行为、实际自动结果及人工未验项见以下专用文档。
 > V5 / M2 DSL 分组已实现，完整M2本地开发门禁通过（236个测试、207项同轮场景、445个拒绝检查）；实际结果与人工未验见 [V5 实施记录](archive/2026-09-30-v5-m2-implementation.md)。
 > V6 / M3 共享前端、v2编译/纯规划、修订库和快照协调基础已实现；实际发送、UI、存档和完整M3门禁受 [V6-02能力缺口](maintenance/network-traffic-v6-body-capability.md)阻断。见 [本期记录](archive/2026-10-03-v6-m3-foundation.md)与 [DSL第四章](dsl/04-rewrite-foundation.md)。产品页面仍使用v1，72/279是未完成的业务场景要求。
 > 本期完整M2兼容回归通过：316个测试（新增80）、207项同轮场景、445个门禁拒绝检查；这不是完整M3验收。
+> V7 / M4 请求调试执行方案已编写，代码未实施；18项任务、80项新增业务场景及完整359项累计要求见下方专用文档。完整M4依赖M3闭合，当前没有M3/M4开发入口；不使用AIFLOW、Windows CI或发布门禁。
 
 ## 产品规划与当前状态
 
 | 阅读目的 | 入口 |
 | --- | --- |
+| V7-01～18：手工请求、编辑重发、环境/模板、历史与对比 | [V7 / M4 执行计划](roadmap/network-traffic-v7-m4-request-debugging-plan.md) |
+| SOLID、预览一致性、正文完整性、发送/取消、来源和资源所有权 | [V7 请求调试专项设计](design/network-traffic-v7-m4-request-debugging-design.md) |
+| 80项M4场景、359项累计要求、单测与门禁正反例 | [V7 M4 专用验证矩阵](maintenance/network-traffic-v7-m4-verification-plan.md) |
 | V6-01～16：域名映射、请求修改、修订、追查与完成条件 | [V6 / M3 执行计划](roadmap/network-traffic-v6-m3-dsl-rewrite-plan.md) |
 | SOLID、计划 DSL v2、动作/冲突/失败、Body 预算、存档兼容 | [V6 改写专项设计](design/network-traffic-v6-m3-dsl-rewrite-design.md) |
 | 72 项 M3 场景、累计 279 项要求、门禁自测与人工边界 | [V6 M3 专用验证矩阵](maintenance/network-traffic-v6-m3-verification-plan.md) |
