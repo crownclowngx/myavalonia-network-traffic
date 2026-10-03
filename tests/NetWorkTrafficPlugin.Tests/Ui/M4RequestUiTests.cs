@@ -64,14 +64,23 @@ public sealed class M4RequestUiTests
                 // 显式模板保存和载入也不能产生额外请求；使用生产命令，恢复后发送仍需重新预览。
                 page.TemplateName="界面模板"; await page.SaveTemplateCommand.ExecuteAsync(null); Assert.Single(page.Templates);
                 page.SelectedTemplate=page.Templates[0]; page.LoadTemplateCommand.Execute(null); Assert.Single(origin.Receipts);
+                Assert.Contains("# disabled=not-sent", page.QueryText);
                 page.TemplateName="新修订"; await page.UpdateTemplateCommand.ExecuteAsync(null);
                 Assert.Equal(2, Assert.Single(page.Templates).Revision); Assert.Equal("新修订", page.Templates[0].Name);
                 page.EnvironmentName="环境A"; page.EnvironmentText="baseUrl=https://a.example.test"; await page.SaveEnvironmentCommand.ExecuteAsync(null);
                 page.EnvironmentText="baseUrl=https://b.example.test"; await page.UpdateEnvironmentCommand.ExecuteAsync(null);
                 Assert.Equal(2, Assert.Single(page.Environments).Revision);
+                await page.PreviewCommand.ExecuteAsync(null); Assert.True(page.SendCommand.CanExecute(null));
+                tabs.SelectedIndex=0; Pump(window);
+                Click(window,view.GetVisualDescendants().OfType<Button>().Single(b=>Equals(b.Content,"清除环境选择")));
+                Assert.Null(page.SelectedEnvironment); Assert.False(page.SendCommand.CanExecute(null)); Assert.Single(page.Environments);
+                page.SelectedEnvironment=page.Environments[0];
                 await page.DeleteEnvironmentCommand.ExecuteAsync(null); Assert.Empty(page.Environments);
                 await page.DeleteTemplateCommand.ExecuteAsync(null); Assert.Empty(page.Templates); Assert.Single(origin.Receipts);
                 Assert.Equal('●', page.VariablesMask);
+                page.BodyKind=RequestBodyKind.Form; page.BodyText=" key = value \n# disabled=no";
+                await page.PreviewCommand.ExecuteAsync(null); Assert.Contains("+key+=+value+", page.PreviewText);
+                Assert.Single(origin.Receipts);
             }
             finally { window.Close(); }
         }

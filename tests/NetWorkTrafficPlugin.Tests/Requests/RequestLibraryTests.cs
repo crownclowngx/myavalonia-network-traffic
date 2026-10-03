@@ -23,6 +23,10 @@ public sealed class RequestLibraryTests
             var loaded = await new FileRequestLibraryStore(root).LoadAsync(default);
             Assert.Equal("${baseUrl}/api?token=${secret}", Assert.Single(loaded.Templates).Draft.Address);
             Assert.Null(loaded.Templates[0].Draft.Origin);
+            var forged = loaded.Templates[0] with { Draft = loaded.Templates[0].Draft with
+                { Origin = new(Guid.NewGuid(), Guid.NewGuid(), 1, RequestSnapshotKind.Original) } };
+            await Assert.ThrowsAsync<RequestFailure>(() => store.CommitAsync(loaded with { Templates = [forged] }, loaded.Revision, default));
+            Assert.Equal(text, await File.ReadAllTextAsync(Path.Combine(root, "requests.json")));
         }
         finally { TemporaryArtifacts.Delete(root); }
     }

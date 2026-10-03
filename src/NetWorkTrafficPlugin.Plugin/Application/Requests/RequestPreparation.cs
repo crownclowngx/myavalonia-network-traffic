@@ -64,6 +64,11 @@ public sealed class RequestPreparation(ContentMemoryBudget memory, IRequestBodyS
     {
         token.ThrowIfCancellationRequested();
         if (draft.ApplyRules) throw new RequestFailure("RQ007", "M3 真实改写与双快照尚未接通，不能应用当前规则。");
+        if (draft.Origin is { } origin && (origin.Kind != RequestSnapshotKind.LegacyObserved || origin.SessionId == Guid.Empty ||
+            origin.RecordId == Guid.Empty || origin.Revision < 1))
+            throw new RequestFailure("RQ011", "来源身份无效，或当前尚不支持该原始/有效快照。");
+        if (draft.QueryEditorText is { } query && (query.Length > RequestLimits.UriCharacters || !RequestQueryEditor.Matches(draft.Address, query)))
+            throw new RequestFailure("RQ002", "Query编辑态与请求地址不一致，请重新核对。");
         if (!_previews.Wait(0)) throw new RequestFailure("RQ009", "已有四项准备或预览，请先关闭旧预览。");
         var allocation = memory.TryReserve(RequestLimits.ReservationBytes);
         if (allocation is null) { _previews.Release(); throw new RequestFailure("RQ008", "共享内容额度不足，请关闭旧预览后再试。"); }

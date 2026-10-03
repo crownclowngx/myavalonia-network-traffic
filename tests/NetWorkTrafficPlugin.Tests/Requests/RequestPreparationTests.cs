@@ -47,6 +47,11 @@ public sealed class RequestPreparationTests
         using var value = await new RequestPreparation(new()).PrepareAsync(draft, env, default);
         Assert.Equal("https://stage.example.test/v1/%E4%B8%AD%2F%E6%96%87?a=1&a=%2B&q=%2B%20%25%24%7Bsegment%7D", value.Wire.Address.AbsoluteUri);
         Assert.Equal(new[] { "中/文", "${literal}" }, value.Wire.Headers.Select(h => h.Value));
+        var query = "a=%2B\n\na=2\n# disabled=3\n";
+        var address = RequestQueryEditor.Apply("https://example.test/?old=1", query);
+        Assert.Equal("https://example.test/?a=%2B&&a=2&", address);
+        Assert.True(RequestQueryEditor.Matches(address, query));
+        Assert.Equal("a=%2B\n\na=2\n", RequestQueryEditor.FromAddress(address));
     }
     [Theory]
     [InlineData("{\"x\":1,\"x\":2}")] [InlineData("{\"x\":1,}")] [InlineData("\uFEFF{}")]
@@ -81,6 +86,10 @@ public sealed class RequestPreparationTests
         await Assert.ThrowsAsync<RequestFailure>(() => prepare.PrepareAsync(Draft() with { BodyKind = RequestBodyKind.Text, Body = new('a', RequestLimits.BodyBytes + 1) }, null, default));
         var failure = await Assert.ThrowsAsync<RequestFailure>(() => prepare.PrepareAsync(Draft() with { ApplyRules = true }, null, default));
         Assert.Equal("RQ007", failure.Code); Assert.Equal(0, memory.Reserved);
+        var unsupported = Draft() with { Origin = new(Guid.NewGuid(), Guid.NewGuid(), 1, RequestSnapshotKind.Effective) };
+        Assert.Equal("RQ011", (await Assert.ThrowsAsync<RequestFailure>(() => prepare.PrepareAsync(unsupported, null, default))).Code);
+        await Assert.ThrowsAsync<RequestFailure>(() => prepare.PrepareAsync(Draft() with { QueryEditorText = "unexpected=1" }, null, default));
+        Assert.Equal(0, memory.Reserved);
     }
     [Fact]
     public async Task 文件冻结后原文件变化不改变发送且租约防删除()

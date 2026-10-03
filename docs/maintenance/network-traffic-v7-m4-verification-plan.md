@@ -6,7 +6,7 @@
 
 ## 1. 分层、计数和通用断言
 
-当前`m4-test-map.json`登记87条参数行、43个方法，完整80项业务ID全部保留`not-accepted`。`TestM4DevelopmentGate.ps1`的12组25个拒绝反例验证当前分项检查器；下文G01～G12完整验收要求仍需随M3/359项接通补齐，不能宣称已逐条闭合。当前产物为`m4-send.json`、`m4-resource.json`、18张PNG及metadata、普通/资源TRX与汇总；其余拟产物保持待交付。
+当前`m4-test-map.json`登记87条参数行、43个方法，完整80项业务ID全部保留`not-accepted`。`TestM4DevelopmentGate.ps1`的12组28个拒绝反例验证当前分项检查器，包含PNG实际解码与布尔类型校验；下文G01～G12完整验收要求仍需随M3/359项接通补齐，不能宣称已逐条闭合。当前产物为`m4-send.json`、`m4-resource.json`、18张PNG及metadata、普通/资源TRX与汇总；其余拟产物保持待交付。
 
 本矩阵固定 **80 项自动业务场景**：A8 + E8 + B8 + S8 + X8 + H8 + D8 + U8 + R8 + C8。编号完整写作 V7-A01 等；J01～J05 为工程审阅，G01～G12 为门禁自测，H01～H06 为人工验收，均不计入80项业务场景。人工 H 不带 V7 前缀，与历史业务组 V7-H 明确区分。
 

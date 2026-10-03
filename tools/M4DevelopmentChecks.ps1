@@ -45,18 +45,22 @@ function Test-M4Resources($Data, $Profile) {
 function Test-M4Image([string]$Path, $Metadata, [string]$RunId, [string]$SourceHash, [int]$Width, [int]$Height) {
     Assert-Check (Test-Path -LiteralPath $Path -PathType Leaf) '缺少M4生产截图。'
     Assert-Check ($Metadata.schemaVersion -eq 1 -and $Metadata.runId -ceq $RunId -and $Metadata.sourceHash -ceq $SourceHash -and
-        $Metadata.width -eq $Width -and $Metadata.height -eq $Height -and $Metadata.realHost -eq $false) 'M4截图身份/尺寸/Host范围错误。'
+        $Metadata.width -eq $Width -and $Metadata.height -eq $Height -and $Metadata.realHost -is [bool] -and $Metadata.realHost -eq $false) 'M4截图身份/尺寸/Host范围错误。'
     Assert-Check ((Get-FileHash -LiteralPath $Path).Hash -ceq $Metadata.sha256) 'M4截图摘要错误。'
     $bytes = [IO.File]::ReadAllBytes($Path)
     Assert-Check ($bytes.Length -gt 24 -and [Convert]::ToHexString($bytes[0..7]) -ceq '89504E470D0A1A0A') 'M4截图不是有效PNG。'
     $actualWidth = [int64]$bytes[16]*16777216 + [int64]$bytes[17]*65536 + [int64]$bytes[18]*256 + $bytes[19]
     $actualHeight = [int64]$bytes[20]*16777216 + [int64]$bytes[21]*65536 + [int64]$bytes[22]*256 + $bytes[23]
     Assert-Check ($actualWidth -eq $Width -and $actualHeight -eq $Height) 'M4 PNG尺寸与声明不符。'
+    # 摘要和PNG头不能证明像素数据可解码；损坏文件即使重算摘要也必须被拒绝。
+    $decoded = [Drawing.Image]::FromFile($Path)
+    try { Assert-Check ($decoded.Width -eq $Width -and $decoded.Height -eq $Height) 'M4解码后的尺寸不符。' }
+    finally { $decoded.Dispose() }
 }
 function Test-M4Report($Report, [string]$EndingHash) {
     Assert-Check ($Report.mode -ceq 'M4Foundation' -and $Report.sourceHash -ceq $EndingHash) 'M4范围错误或运行期间源码改变。'
-    foreach ($flag in @('fullM4Passed','m3Passed','manualAccepted','hostVerified','windowsCiExecuted','releaseGateExecuted','deployed')) {
-        Assert-Check ($Report[$flag] -eq $false) "M4分项报告越界宣称：$flag"
+    foreach ($flag in @('fullM4Passed','m3Passed','manualAccepted','realClientVerified','hostVerified','windowsCiExecuted','releaseGateExecuted','deployed')) {
+        Assert-Check ($Report[$flag] -is [bool] -and $Report[$flag] -eq $false) "M4分项报告越界宣称：$flag"
     }
 }
 function Test-M4Prerequisites([bool]$M3Supported, [int]$Cumulative, [bool]$SameRun) {

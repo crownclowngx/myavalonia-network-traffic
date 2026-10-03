@@ -16,7 +16,7 @@ $report = [ordered]@{
     schemaVersion=1; mode=$Mode; runId=$runId; sourceHash=$sourceHash; profileHash=(Get-FileHash (Join-Path $PSScriptRoot 'm4-profile.json')).Hash
     mapHash=(Get-FileHash (Join-Path $PSScriptRoot 'm4-test-map.json')).Hash; startedUtc=$started; head=(& git -C $root rev-parse HEAD)
     dirty=@(& git -C $root status --porcelain).Count -gt 0; sdk=(& dotnet --version); os=[Runtime.InteropServices.RuntimeInformation]::OSDescription
-    automaticPassed=$false; fullM4Passed=$false; m3Passed=$false; manualAccepted=$false; hostVerified=$false
+    automaticPassed=$false; fullM4Passed=$false; m3Passed=$false; manualAccepted=$false; realClientVerified=$false; hostVerified=$false
     windowsCiExecuted=$false; releaseGateExecuted=$false; deployed=$false; testCount=0; foundationTests=0
     pending=$profile.pending; commands=$history; documentationHash=(Get-DocumentationHash $root)
 }

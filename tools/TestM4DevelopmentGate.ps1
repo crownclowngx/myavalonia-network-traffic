@@ -51,14 +51,18 @@ try {
     Test-M4Image $image $metadata 'self' 'hash' 4 3
     Reject-M4 'G09 缺截图' { Test-M4Image (Join-Path $directory 'missing.png') $metadata 'self' 'hash' 4 3 }
     $metadata.sha256='wrong'; Reject-M4 'G09 截图摘要伪造' { Test-M4Image $image $metadata 'self' 'hash' 4 3 }
-    $report=@{mode='M4Foundation';sourceHash='hash';fullM4Passed=$false;m3Passed=$false;manualAccepted=$false;hostVerified=$false;windowsCiExecuted=$false;releaseGateExecuted=$false;deployed=$false}
+    $corrupt=[IO.File]::ReadAllBytes($image)[0..31]; [IO.File]::WriteAllBytes($image,$corrupt); $metadata.sha256=(Get-FileHash $image).Hash
+    Reject-M4 'G09 截断PNG即使摘要匹配也拒绝' { Test-M4Image $image $metadata 'self' 'hash' 4 3 }
+    $report=@{mode='M4Foundation';sourceHash='hash';fullM4Passed=$false;m3Passed=$false;manualAccepted=$false;realClientVerified=$false;hostVerified=$false;windowsCiExecuted=$false;releaseGateExecuted=$false;deployed=$false}
     Test-M4Report $report 'hash'
     Reject-M4 'G10 运行中源码变化' { Test-M4Report $report 'changed' }
     Test-M4Prerequisites $true 359 $true
     Reject-M4 'G11 缺M3真实能力' { Test-M4Prerequisites $false 359 $true }
     Reject-M4 'G11 累计场景缺项' { Test-M4Prerequisites $true 358 $true }
     Reject-M4 'G11 复用旧轮' { Test-M4Prerequisites $true 359 $false }
-    foreach($flag in @('fullM4Passed','m3Passed','manualAccepted','hostVerified','windowsCiExecuted','releaseGateExecuted','deployed')) {
+    $badReport=Copy-M4 $report; $badReport.fullM4Passed='false'
+    Reject-M4 'G12 字符串不能冒充布尔事实' { Test-M4Report $badReport 'hash' }
+    foreach($flag in @('fullM4Passed','m3Passed','manualAccepted','realClientVerified','hostVerified','windowsCiExecuted','releaseGateExecuted','deployed')) {
         $badReport=Copy-M4 $report; $badReport[$flag]=$true
         Reject-M4 "G12 范围越界 $flag" { Test-M4Report $badReport 'hash' }
     }

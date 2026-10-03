@@ -29,7 +29,7 @@ public sealed record RequestEnvironment(Guid Id, long Revision, string Name, Req
 public sealed record RequestDraft(Guid Id, long Revision, string Method, string Address, RequestField[] Headers,
     RequestBodyKind BodyKind = RequestBodyKind.None, string Body = "", RequestField[]? Form = null,
     Guid? BodyAssetId = null, string? MediaType = null, RequestVariable[]? Variables = null,
-    RequestVariable[]? Defaults = null, RequestOrigin? Origin = null, bool ApplyRules = false)
+    RequestVariable[]? Defaults = null, RequestOrigin? Origin = null, bool ApplyRules = false, string? QueryEditorText = null)
 { public override string ToString() => "请求草稿（内容省略）"; }
 
 /// <summary>

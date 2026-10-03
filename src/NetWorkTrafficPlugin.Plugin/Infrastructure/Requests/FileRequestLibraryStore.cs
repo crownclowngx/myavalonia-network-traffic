@@ -107,7 +107,8 @@ public sealed class FileRequestLibraryStore(string directory, Action<string>? ch
                 (draft.Form?.Any(f => f is null || f.Name is null || f.Value is null) ?? false) ||
                 !Enum.IsDefined(draft.BodyKind) || (draft.BodyKind == RequestBodyKind.RawFile) != (draft.BodyAssetId is not null) ||
                 draft.Address.Length > RequestLimits.UriCharacters || draft.Headers.Length > 256 || draft.Body.Length > RequestLimits.BodyBytes ||
-                (draft.Form?.Length ?? 0) > 256 || draft.ApplyRules)
+                (draft.Form?.Length ?? 0) > 256 || draft.ApplyRules || draft.Origin is not null ||
+                draft.QueryEditorText is { } query && (query.Length > RequestLimits.UriCharacters || !RequestQueryEditor.Matches(draft.Address, query)))
                 throw new RequestFailure("RQ012", "模板输入超限或包含尚不支持的运行状态。");
             cost += Encoding.UTF8.GetByteCount(draft.Body) + Encoding.UTF8.GetByteCount(draft.Address);
             foreach (var header in draft.Headers)

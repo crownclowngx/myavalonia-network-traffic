@@ -56,6 +56,7 @@ public sealed partial class RequestWorkspace : ObservableObject, IDisposable
     public IAsyncRelayCommand PreviewCommand { get; }
     public IAsyncRelayCommand SendCommand { get; }
     public IRelayCommand CancelCommand { get; }
+    public IRelayCommand ClearEnvironmentCommand { get; }
     public IAsyncRelayCommand ReloadCommand { get; }
     public IAsyncRelayCommand SaveTemplateCommand { get; }
     public IRelayCommand LoadTemplateCommand { get; }
@@ -75,6 +76,8 @@ public sealed partial class RequestWorkspace : ObservableObject, IDisposable
         PreviewCommand = new AsyncRelayCommand(() => RunAsync(PreviewAsync));
         SendCommand = new AsyncRelayCommand(() => RunAsync(SendAsync), () => !Busy && _prepared?.IsReady == true);
         CancelCommand = new RelayCommand(() => _attempt?.Cancel());
+        // ComboBox选择非空环境后无法自然回到空项，显式清除仅修改本页选择并按既有代次规则撤销预览。
+        ClearEnvironmentCommand = new RelayCommand(() => SelectedEnvironment = null);
         ReloadCommand = new AsyncRelayCommand(() => RunAsync(ReloadAsync));
         SaveTemplateCommand = new AsyncRelayCommand(() => RunAsync(SaveTemplateAsync));
         LoadTemplateCommand = new RelayCommand(() => { if (SelectedTemplate is { } value) Load(value.Draft); });
@@ -94,12 +97,8 @@ public sealed partial class RequestWorkspace : ObservableObject, IDisposable
             _querySync = true;
             try
             {
-                if (e.PropertyName == nameof(Address)) QueryText = Address.Contains('?') ? Address[(Address.IndexOf('?') + 1)..].Replace("&", "\n", StringComparison.Ordinal) : "";
-                else
-                {
-                    var query = string.Join("&", QueryText.Split('\n').Select(s => s.TrimEnd('\r')).Where(s => s.Length > 0 && !s.StartsWith("# ", StringComparison.Ordinal)));
-                    var prefix = Address.Split('?', 2)[0]; Address = prefix + (query.Length == 0 ? "" : "?" + query);
-                }
+                if (e.PropertyName == nameof(Address)) QueryText = RequestQueryEditor.FromAddress(Address);
+                else Address = RequestQueryEditor.Apply(Address, QueryText);
             }
             finally { _querySync = false; }
         }
@@ -115,7 +114,7 @@ public sealed partial class RequestWorkspace : ObservableObject, IDisposable
     }
     public RequestDraft Snapshot() => new(_draftId, _revision, Method, Address, ParseFields(HeadersText, ':'), BodyKind, BodyText,
         BodyKind == RequestBodyKind.Form ? ParseFields(BodyText, '=') : null, BodyKind == RequestBodyKind.RawFile ? _bodyAsset : null,
-        BodyKind is RequestBodyKind.RawFile or RequestBodyKind.Text ? MediaType : null, ParseVariables(VariablesText), _defaults, _origin);
+        BodyKind is RequestBodyKind.RawFile or RequestBodyKind.Text ? MediaType : null, ParseVariables(VariablesText), _defaults, _origin, QueryEditorText: QueryText);
     private static RequestField[] ParseFields(string text, char separator)
     {
         if (text.Length > RequestLimits.BodyBytes) throw new RequestFailure("RQ008", "编辑输入超过预算。");
@@ -125,7 +124,9 @@ public sealed partial class RequestWorkspace : ObservableObject, IDisposable
             if (!enabled) line = line[2..];
             var split = line.IndexOf(separator);
             if (split < 1) throw new RequestFailure("RQ003", "每行请使用名称和分隔符，再填写值。");
-            return new RequestField(line[..split].Trim(), line[(split + 1)..].TrimEnd('\r').TrimStart(' '), enabled);
+            // Header允许名称与冒号周围的排版空白；Form中的空格属于实体数据，不能沿用Header的Trim规则。
+            var name = line[..split]; var value = line[(split + 1)..].TrimEnd('\r');
+            return new RequestField(separator == ':' ? name.Trim() : name, separator == ':' ? value.TrimStart(' ') : value, enabled);
         }).ToArray();
     }
     private static RequestVariable[] ParseVariables(string text) => ParseFields(text, '=').Where(v => v.Enabled).Select(v =>
@@ -206,6 +207,7 @@ public sealed partial class RequestWorkspace : ObservableObject, IDisposable
         Method = draft.Method; Address = draft.Address; BodyKind = draft.BodyKind; BodyText = draft.BodyKind == RequestBodyKind.Form
             ? string.Join("\n", (draft.Form ?? []).Select(f => (f.Enabled ? "" : "# ") + f.Name + "=" + f.Value)) : draft.Body;
         HeadersText = string.Join("\n", draft.Headers.Select(h => (h.Enabled ? "" : "# ") + h.Name + ": " + h.Value));
+        if (draft.QueryEditorText is { } query) QueryText = query;
         VariablesText = string.Join("\n", (draft.Variables ?? []).Select(v => (v.Sensitive ? "!" : "") + v.Name + "=" + v.Value));
         MediaType = draft.MediaType ?? "application/octet-stream"; Invalidate(); Status = "草稿已载入；原始/有效双快照和应用规则仍不可用。";
     }

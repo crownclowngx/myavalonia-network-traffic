@@ -18,6 +18,7 @@
     <ScrollViewer><StackPanel Spacing="6" Margin="4">
      <TextBlock Text="环境（不选则只使用本次变量）"/>
      <ComboBox ItemsSource="{Binding Environments}" SelectedItem="{Binding SelectedEnvironment}" HorizontalAlignment="Stretch" AutomationProperties.Name="请求环境"/>
+     <Button Content="清除环境选择" Command="{Binding ClearEnvironmentCommand}"/>
      <TextBlock Text="Query：每行原始 name=value；重复键、转义保留。行首 # 加空格可禁用，自动同步URL。" TextWrapping="Wrap"/>
      <TextBox Text="{Binding QueryText}" MaxLength="8192" AcceptsReturn="True" MinHeight="60" AutomationProperties.Name="查询参数"/>
      <TextBlock Text="Header：每行 Name: Value；行首 # 加空格可禁用；身份值建议使用变量" TextWrapping="Wrap"/>
@@ -28,7 +29,7 @@
      <TextBlock Text="正文类型：None无正文 / Text文本 / Json / Form表单 / RawFile原始文件" TextWrapping="Wrap"/>
      <ComboBox ItemsSource="{Binding BodyKinds}" SelectedItem="{Binding BodyKind}" AutomationProperties.Name="正文模式"/>
      <TextBox x:Name="BodyInput" Text="{Binding BodyText}" MaxLength="262144" AcceptsReturn="True" MinHeight="140" PlaceholderText="文本或JSON；Form模式每行 name=value" AutomationProperties.Name="请求正文"/>
-     <WrapPanel><Button Content="选择完整原始文件" Click="SelectFile"/><TextBox Width="220" Text="{Binding MediaType}" PlaceholderText="文件Content-Type" AutomationProperties.Name="文件媒体类型"/></WrapPanel>
+     <WrapPanel><Button Content="选择完整原始文件" Click="SelectFile"/><TextBox Width="220" Text="{Binding MediaType}" MaxLength="256" PlaceholderText="文件Content-Type" AutomationProperties.Name="文件媒体类型"/></WrapPanel>
     </StackPanel></ScrollViewer>
    </TabItem>
    <TabItem Header="预览"><TextBox Text="{Binding PreviewText}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/></TabItem>
