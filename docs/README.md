@@ -12,6 +12,7 @@
 
 | 阅读目的 | 入口 |
 | --- | --- |
+| 真实 Host 类型预检失败、日志依赖修复与部署检查 | [Host 加载专用说明](maintenance/network-traffic-host-loading.md) |
 | V8-01～18：M5文档辅助的实现顺序、文件交付与前置边界 | [V8 / M5 执行计划](roadmap/network-traffic-v8-m5-documentation-plan.md) |
 | SOLID、OpenAPI子集、来源/匹配、手工覆盖、草稿和资源契约 | [V8 文档辅助专项设计](design/network-traffic-v8-m5-documentation-design.md) |
 | 72项新场景、431项累计要求、单测分层、门禁自测与人工验收 | [V8 M5 专用验证矩阵](maintenance/network-traffic-v8-m5-verification-plan.md) |

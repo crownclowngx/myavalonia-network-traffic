@@ -1,7 +1,7 @@
 # NetWorkTrafficPlugin
 
 HTTP/HTTPS 流量工作台插件，支持 DSL 字段提取与分组、调用时间线，以及无规则手工请求调试；完整规则改写与双快照重发仍待接通。
-当前已实现 V2 / M0 代理技术基线、V3 / M1 抓包工作台与 V5 / M2 DSL 分组，显示名称为“HTTP 工作台”。真实 Host、真实客户端及人工验收待执行，自动结果见专用实施记录。
+当前已实现 V2 / M0 代理技术基线、V3 / M1 抓包工作台与 V5 / M2 DSL 分组，显示名称为“HTTP 工作台”。真实 Host 加载与窗口创建已完成[专项修复验证](docs/maintenance/network-traffic-host-loading.md)；完整真实客户端和人工验收仍待执行，自动结果见专用实施记录。
 M1 提供双向捕获、筛选、内容预览、SSE/NDJSON、受配额落盘、快照保存与只读回看。HTTP/2 空闲流按用户确认的范围降级为仅提示；保留客户端单流取消和全局停止。
 
 V4 / M1 工作台 UX 紧凑化与阅读体验已实现，完整本地 UX 门禁通过（172 个唯一测试、143 项同轮场景）；V4-01～V4-12 的结果和人工未验范围见 [V4 实施记录](docs/archive/2026-09-30-v4-m1-ux-implementation.md)。重点是双行列表、紧凑工具栏、独立跟随、正文优先、分栏/窄屏导航和明确的快照操作，配套 40 项 V4 业务验证场景。V4 沿用 SOLID 首要规定、朴素设计和详细中文注释，仅执行本地 Debug 开发验证，未使用 AIFLOW、Windows CI 或发布门禁。
@@ -18,6 +18,7 @@ V8 / M5 文档辅助已编写 **V8-01～V8-18 执行方案**，代码和专项�
 
 | 阅读目的 | 文档 |
 | --- | --- |
+| 真实 Host 类型预检失败、日志依赖修复与部署检查 | [Host 加载专用说明](docs/maintenance/network-traffic-host-loading.md) |
 | V8-01～18：M5文档辅助的任务、依赖、交付与完成条件 | [V8 / M5 执行计划](docs/roadmap/network-traffic-v8-m5-documentation-plan.md) |
 | 格式子集、来源获取、接口匹配、手工保护、草稿转换与预算 | [V8 文档辅助专项设计](docs/design/network-traffic-v8-m5-documentation-design.md) |
 | 72项新增场景、431项累计要求、单测与门禁正反例 | [V8 M5 专用验证矩阵](docs/maintenance/network-traffic-v8-m5-verification-plan.md) |
