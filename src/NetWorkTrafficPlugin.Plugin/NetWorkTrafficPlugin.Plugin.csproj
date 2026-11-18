@@ -7,7 +7,7 @@
     <PluginVersion>1.0.0</PluginVersion>
     <ManagedPluginRuntimeIdentifier>win-x64</ManagedPluginRuntimeIdentifier>
     <ManagedPluginEntryType>NetWorkTrafficPlugin.Plugin.NetWorkTrafficPluginModule</ManagedPluginEntryType>
-    <ManagedPluginSdkMinInclusive>3.4.1</ManagedPluginSdkMinInclusive>
+    <ManagedPluginSdkMinInclusive>3.4.2</ManagedPluginSdkMinInclusive>
     <ManagedPluginSdkMaxExclusive>4.0.0</ManagedPluginSdkMaxExclusive>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
